@@ -4,7 +4,7 @@ import HeroImage from "@/public/assets/hero.png";
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full py-[96px] bg-transparent flex flex-col items-center gap-5">
+    <section className="relative w-full pt-[96px] bg-transparent flex flex-col items-center gap-5">
       <div
         className="absolute inset-0 bg-[#FF7A00]/15 mask mask-[url('/assets/Blocks.svg')] mask-repeat"
         style={{ WebkitMaskRepeat: "repeat" }}
