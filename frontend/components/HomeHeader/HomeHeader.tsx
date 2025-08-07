@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import AuthButton from "@/components/AuthButton";
+import AuthButton from "@/components/HomeHeader/AuthButton";
 import logo from "@/public/assets/logo.png";
 
 export default function HomeHeader() {
