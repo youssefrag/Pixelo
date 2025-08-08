@@ -13,49 +13,35 @@ export default function SitesSection() {
       <div className="text-[#414651] font-[400] text-[18px]">
         Sites made in minutes using Pixelo
       </div>
-      <div className="flex gap-10">
-        <div className="w-[300px] h-[240px] relative">
-          <Image
-            src={Site1}
-            alt="site1"
-            fill
-            className="object-contain rounded-[24px]"
-          />
-        </div>
-        <div className="w-[300px] h-[240px] relative">
-          <Image
-            src={Site2}
-            alt="site2"
-            fill
-            className="object-contain rounded-[24px]"
-          />
-        </div>
-        <div className="w-[300px] h-[240px] relative">
-          <Image
-            src={Site3}
-            alt="site3"
-            fill
-            className="object-contain rounded-[24px]"
-          />
-        </div>
+      <div className="flex gap-10 mb-[50px]">
+        {[Site1, Site2, Site3].map((src, i) => (
+          <div
+            key={i}
+            className="w-[300px] h-[240px] relative shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer rounded-[16px] overflow-hidden"
+          >
+            <Image
+              src={src}
+              alt={`site${i + 1}`}
+              fill
+              className="object-cover"
+            />
+          </div>
+        ))}
       </div>
       <div className="flex gap-10">
-        <div className="w-[300px] h-[240px] relative">
-          <Image
-            src={Site4}
-            alt="site4"
-            fill
-            className="object-contain rounded-[24px]"
-          />
-        </div>
-        <div className="w-[300px] h-[240px] relative">
-          <Image
-            src={Site5}
-            alt="site5"
-            fill
-            className="object-contain rounded-[24px]"
-          />
-        </div>
+        {[Site4, Site5].map((src, i) => (
+          <div
+            key={i}
+            className="w-[300px] h-[240px] relative shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer rounded-[16px] overflow-hidden"
+          >
+            <Image
+              src={src}
+              alt={`site${i + 1}`}
+              fill
+              className="object-cover"
+            />
+          </div>
+        ))}
       </div>
     </section>
   );
