@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function HowItWorks() {
   return (
     <section>
-      <div className="px-[60px] pb-[60px] mb-[30px]">
+      <div id="how-it-works" className="px-[60px] pb-[60px]">
         <div className="flex justify-between items-center mb-[60px]">
           <div>
             <div className="text-[#FF7A00] font-[600]">HOW IT WORKS</div>
@@ -66,7 +66,10 @@ export default function HowItWorks() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center pb-[60px] mb-[80px">
+      <div
+        id="features"
+        className="flex flex-col items-center pb-[60px] mb-[80px] pt-[70px]"
+      >
         <div className="text-[#FF7A00] text-[16px] font-[600] mb-[10px]">
           WHY US?
         </div>

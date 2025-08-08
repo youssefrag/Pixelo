@@ -1,7 +1,10 @@
 "use client";
 
-import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { ReactNode } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+
+import { useScrollDirection } from "@/hooks/useScrollDirection";
 
 export default function HomeHeaderShell({ children }: { children: ReactNode }) {
   const dir = useScrollDirection(6);
@@ -13,16 +16,15 @@ export default function HomeHeaderShell({ children }: { children: ReactNode }) {
       <div className="relative mx-auto max-w-screen-2xl group pointer-events-auto">
         {/* Peek handle */}
         <div
-          className={`absolute left-1/2 -translate-x-1/2 mt-1 transition-opacity duration-200
+          className={`absolute left-1/2 -translate-x-1/2 transition-opacity duration-200
             ${hidden ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         >
           <button
             aria-label="Open header"
-            className="rounded-full bg-white/90 backdrop-blur px-3 py-1 shadow-md border border-black/5
-                       text-sm flex items-center gap-2 cursor-pointer"
+            className="w-screen bg-white/90 backdrop-blur py-2 shadow-md border-b border-black/5
+                   flex justify-center items-center gap-2 cursor-pointer"
           >
-            <span className="text-lg">🗄️</span>
-            <span className="hidden sm:inline">Open</span>
+            <FontAwesomeIcon icon={faBars} className="text-[#FF7A00]" />
           </button>
         </div>
 

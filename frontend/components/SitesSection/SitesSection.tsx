@@ -7,7 +7,10 @@ import Site5 from "@/public/assets/site5.png";
 
 export default function SitesSection() {
   return (
-    <section className="w-full py-[96px] flex flex-col items-center gap-5">
+    <section
+      id="sites-section"
+      className="w-full pb-[96px] pt-[140px] flex flex-col items-center gap-5"
+    >
       <div className="text-[#FF7A00] font-[600] text-lg">PIXELO SITES</div>
       <div className="font-[500] text-[44px]">Explore What You Can Build</div>
       <div className="text-[#414651] font-[400] text-[18px]">
