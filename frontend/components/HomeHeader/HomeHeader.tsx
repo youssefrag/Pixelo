@@ -6,7 +6,7 @@ import logo from "@/public/assets/logo.png";
 export default function HomeHeader() {
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white flex justify-between h-[96px] items-center px-20">
+      <header className="sticky top-0 z-50 bg-white flex justify-between h-[96px] items-center px-20 shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
         <Image
           src={logo}
           alt="logo"

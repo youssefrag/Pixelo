@@ -1,35 +1,44 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 
-function useScrollDirection(threshold = 8) {
-  const lastY = useRef(0);
-  const ticking = useRef(false);
-  const [dir, setDir] = useState<"up" | "down" | "none">("none");
+import { useScrollDirection } from "@/hooks/useScrollDirection";
+import { ReactNode } from "react";
 
-  useEffect(() => {
-    lastY.current = Math.max(window.scrollY, 0);
+export default function HomeHeaderShell({ children }: { children: ReactNode }) {
+  const dir = useScrollDirection(6);
+  const hidden = dir === "up";
 
-    const onScroll = () => {
-      const currentY = Math.max(window.scrollY, 0);
-      const delta = currentY - lastY.current;
+  return (
+    <div className="fixed top-0 inset-x-0 z-50 pointer-events-none">
+      {/* Inner container can receive hover, so group works */}
+      <div className="relative mx-auto max-w-screen-2xl group pointer-events-auto">
+        {/* Peek handle */}
+        <div
+          className={`absolute left-1/2 -translate-x-1/2 mt-1 transition-opacity duration-200
+            ${hidden ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        >
+          <button
+            aria-label="Open header"
+            className="rounded-full bg-white/90 backdrop-blur px-3 py-1 shadow-md border border-black/5
+                       text-sm flex items-center gap-2 cursor-pointer"
+          >
+            <span className="text-lg">🗄️</span>
+            <span className="hidden sm:inline">Open</span>
+          </button>
+        </div>
 
-      if (!ticking.current) {
-        window.requestAnimationFrame(() => {
-          if (Math.abs(delta) > threshold) {
-            setDir(delta > 0 ? "down" : "up");
-            lastY.current = currentY;
-          } else if (currentY === 0) {
-            setDir("none");
-          }
-          ticking.current = false;
-        });
-        ticking.current = true;
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [threshold]);
-
-  return dir;
+        {/* Header */}
+        <header
+          className={`transition-transform duration-300 will-change-transform
+            ${
+              hidden
+                ? "-translate-y-full group-hover:translate-y-0"
+                : "translate-y-0"
+            }
+            bg-white/90 backdrop-blur shadow-[0_8px_20px_rgba(0,0,0,0.15)]`}
+        >
+          {children}
+        </header>
+      </div>
+    </div>
+  );
 }
