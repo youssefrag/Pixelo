@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 import HeroImage from "@/public/assets/hero.png";
@@ -16,9 +17,12 @@ export default function HeroSection() {
         Pixelo lets you drag, drop, and launch professional websites in minutes.
         No coding, just creativity
       </div>
-      <button className="relative z-10 bg-[#FF7A00] px-[16px] py-[12px] rounded-full text-white font-[600] text-lg">
+      <Link
+        href="/builder"
+        className="relative z-10 bg-[#FF7A00] px-[16px] py-[12px] rounded-full text-white font-[600] text-lg cursor-pointer"
+      >
         Start Building
-      </button>
+      </Link>
       <Image className="relative z-10" src={HeroImage} alt="hero" />
     </section>
   );
