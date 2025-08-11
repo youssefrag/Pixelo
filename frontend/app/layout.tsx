@@ -1,7 +1,11 @@
 import localFont from "next/font/local";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
 import "./globals.css";
+import Providers from "./Providers";
 
+config.autoAddCss = false;
 const switzer = localFont({
   variable: "--font-switzer",
   src: [
@@ -13,9 +17,6 @@ const switzer = localFont({
   ],
   display: "swap",
 });
-import { config } from "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-svg-core/styles.css";
-config.autoAddCss = false;
 
 export default function RootLayout({
   children,
@@ -24,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={switzer.variable}>
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
