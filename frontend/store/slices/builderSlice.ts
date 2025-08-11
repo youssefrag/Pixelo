@@ -43,5 +43,5 @@ const builderSlice = createSlice({
   },
 });
 
-export const { select } = builderSlice.actions;
+export const { select, addSection } = builderSlice.actions;
 export default builderSlice.reducer;
