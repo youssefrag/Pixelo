@@ -22,6 +22,10 @@ export default function LeftBar() {
     dispatch(addSection({ name: `Section ${newIndex}` }));
   };
 
+  const renderSections = rootOrder.map((sectionId) => {
+    return <h1 key={sectionId}>{nodes[sectionId].name}</h1>;
+  });
+
   return (
     <div className="w-[260px] border-r border-[#E9EAEB]">
       <div className="flex px-[25px] py-[10px] ]">
@@ -54,10 +58,12 @@ export default function LeftBar() {
         <div className="border-b border-[#E9EAEB] w-[95%]"></div>
       </div>
       <div className="px-[30px]">
-        {rootOrder.length === 0 && (
+        {rootOrder.length === 0 ? (
           <div className="text-[#6D6D6D] font-[600] mb-[15px]">
             No sections added yet
           </div>
+        ) : (
+          renderSections
         )}
         <button
           onClick={handleAdd}
