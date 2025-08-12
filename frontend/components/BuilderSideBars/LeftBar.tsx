@@ -24,60 +24,40 @@ export default function LeftBar() {
     expanded = {},
   } = useSelector((state: RootState) => state.builderSlice);
 
-  // const handleAdd = (parentId: string | null = null) => {
-  //   const index = parentId
-  //     ? (nodes[parentId]?.children.length ?? 0) + 1
-  //     : rootOrder.length + 1;
+  const reverseParentIndex = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const n of Object.values(nodes)) {
+      if (!n) continue;
+      for (const c of n.children) map.set(c, n.id);
+    }
 
-  //   dispatch(addSection({ name: `Section ${index}`, parentId }));
-  // };
+    return map;
+  }, [nodes]);
+
+  const getParentOf = useCallback(
+    (id: string | null): string | null => {
+      if (!id) return null;
+      return nodes[id]?.parentId ?? reverseParentIndex.get(id) ?? null;
+    },
+    [nodes, reverseParentIndex]
+  );
 
   const autoOpenAncestors = useMemo(() => {
     const set = new Set<string>();
-    let cur = selectedId ? nodes[selectedId]?.parentId ?? null : null;
+    if (!selectedId) return set;
+
+    let cur = getParentOf(selectedId);
+
     while (cur) {
       set.add(cur);
-      cur = nodes[cur]?.parentId ?? null;
+      cur = getParentOf(cur);
     }
     return set;
-  }, [nodes, selectedId]);
+  }, [nodes, selectedId, reverseParentIndex]);
 
-  // const renderSections = rootOrder.map((sectionId) => {
-  //   if (selectedId !== sectionId) {
-  //     return (
-  //       <div
-  //         onClick={() => dispatch(select(sectionId))}
-  //         key={sectionId}
-  //         className="flex items-center gap-3"
-  //       >
-  //         <FontAwesomeIcon icon={faCaretRight} size="2x" />
-  //         {nodes[sectionId].name}
-  //       </div>
-  //     );
-  //   } else {
-  //     return (
-  //       <div className="flex-col" key={sectionId}>
-  //         <div className="flex items-center gap-3">
-  //           <FontAwesomeIcon icon={faCaretDown} size="2x" />
-  //           {nodes[sectionId].name}
-  //         </div>
-  //         {nodes[sectionId].children.length === 0 && (
-  //           <div>Section has no children</div>
-  //         )}
-  //         <button
-  //           onClick={() => handleAdd(sectionId)}
-  //           className="bg-[#FF7A00] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer"
-  //         >
-  //           <FontAwesomeIcon icon={faPlus} size="1x" /> Add inner section
-  //         </button>
-  //       </div>
-  //     );
-  //   }
-  // });
-
-  const isOpen = useCallback(
-    (id: string) => !!expanded[id] || autoOpenAncestors.has(id),
-    [expanded, autoOpenAncestors]
+  const isOpen = useCallback<(id: string) => boolean>(
+    (id) => id === selectedId || !!expanded?.[id] || autoOpenAncestors.has(id),
+    [selectedId, expanded, autoOpenAncestors]
   );
 
   const onToggleExpand = useCallback(
