@@ -49,6 +49,7 @@ const builderSlice = createSlice({
         state.rootOrder.push(id);
       }
     },
+
     select(state, action: PayloadAction<string | null>) {
       state.selectedId = action.payload;
     },
