@@ -4,7 +4,7 @@ import { useState } from "react";
 import { UseDispatch, useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 
 import type { RootState, AppDispatch } from "@/store";
 import { addSection, select } from "@/store/slices/builderSlice";
@@ -23,7 +23,16 @@ export default function LeftBar() {
   };
 
   const renderSections = rootOrder.map((sectionId) => {
-    return <h1 key={sectionId}>{nodes[sectionId].name}</h1>;
+    return (
+      <div
+        onClick={() => dispatch(select(sectionId))}
+        key={sectionId}
+        className="flex items-center gap-3"
+      >
+        <FontAwesomeIcon icon={faCaretRight} size="2x" />
+        {nodes[sectionId].name}
+      </div>
+    );
   });
 
   return (
