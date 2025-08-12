@@ -12,9 +12,7 @@ export default function HomeHeaderShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="fixed top-0 inset-x-0 z-50 pointer-events-none">
-      {/* Inner container can receive hover, so group works */}
-      <div className="relative mx-auto max-w-screen-2xl group pointer-events-auto">
-        {/* Peek handle */}
+      <div className="relative w-full group pointer-events-auto">
         <div
           className={`absolute left-1/2 -translate-x-1/2 transition-opacity duration-200
             ${hidden ? "opacity-100" : "opacity-0 pointer-events-none"}`}

@@ -15,37 +15,39 @@ export default function HomeHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur flex justify-between h-[96px] items-center px-20 shadow-[0_4px_12px_rgba(0,0,0,0.1)] ">
-        <Image
-          src={logo}
-          alt="logo"
-          width={logo.width}
-          height={logo.height}
-          className="block"
-        />
-        <div className="flex items-center gap-4">
-          <a
-            onClick={() => handleScroll("sites-section")}
-            className="font-medium cursor-pointer transition-colors duration-200 ease-in-out hover:text-[#cc6200]"
-          >
-            Pixelo Sites
-          </a>
-          <a
-            onClick={() => handleScroll("how-it-works")}
-            className="font-medium cursor-pointer transition-colors duration-200 ease-in-out hover:text-[#cc6200]"
-          >
-            How it Works
-          </a>
-          <a
-            onClick={() => handleScroll("features")}
-            className="font-medium cursor-pointer transition-colors duration-200 ease-in-out hover:text-[#cc6200]"
-          >
-            Features
-          </a>
-        </div>
-        <div className="flex items-center gap-4">
-          <AuthButton variant="login">Login</AuthButton>
-          <AuthButton variant="register">Register</AuthButton>
+      <header className="z-50 bg-white/90 backdrop-blur shadow-[0_4px_12px_rgba(0,0,0,0.1)] w-full">
+        <div className="mx-auto max-w-screen-2xl flex justify-between h-[96px] items-center px-20">
+          <Image
+            src={logo}
+            alt="logo"
+            width={logo.width}
+            height={logo.height}
+            className="block"
+          />
+          <div className="flex items-center gap-4">
+            <a
+              onClick={() => handleScroll("sites-section")}
+              className="font-medium cursor-pointer transition-colors duration-200 ease-in-out hover:text-[#cc6200]"
+            >
+              Pixelo Sites
+            </a>
+            <a
+              onClick={() => handleScroll("how-it-works")}
+              className="font-medium cursor-pointer transition-colors duration-200 ease-in-out hover:text-[#cc6200]"
+            >
+              How it Works
+            </a>
+            <a
+              onClick={() => handleScroll("features")}
+              className="font-medium cursor-pointer transition-colors duration-200 ease-in-out hover:text-[#cc6200]"
+            >
+              Features
+            </a>
+          </div>
+          <div className="flex items-center gap-4">
+            <AuthButton variant="login">Login</AuthButton>
+            <AuthButton variant="register">Register</AuthButton>
+          </div>
         </div>
       </header>
     </>
