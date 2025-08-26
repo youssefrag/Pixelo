@@ -20,16 +20,20 @@ const builderSlice = createSlice({
       const id = nanoid();
       const parentId = action.payload.parentId ?? null;
 
+      const parent = parentId ? state.nodes[parentId] : undefined;
+      const depth = parent ? parent.depth + 1 : 1;
+
       state.nodes[id] = {
         id,
         type: "section",
         name: action.payload.name,
-        parentId: null,
+        parentId,
         children: [],
+        depth,
       };
 
-      if (parentId && state.nodes[parentId]) {
-        state.nodes[parentId].children.push(id);
+      if (parent) {
+        parent.children.push(id);
       } else {
         state.rootOrder.push(id);
       }

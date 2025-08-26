@@ -21,18 +21,27 @@ export default function LeftBar() {
     expanded = {},
   } = useSelector((state: RootState) => state.builderSlice);
 
-  console.log(rootOrder);
+  const addTopLevel = () => {
+    const index = rootOrder.length + 1;
+    dispatch(addSection({ name: `Section ${index}`, parentId: null }));
+  };
 
   return (
     <div className="w-[260px] border-r border-[#E9EAEB] p-4">
-      {!rootOrder.length && (
+      {!rootOrder.length ? (
         <div className="text-[#6D6D6D] font-[600] mb-[15px]">
           No sections added yet!
         </div>
+      ) : (
+        <ul>
+          {rootOrder.map((id) => {
+            return <li key={id}>{nodes[id].name}</li>;
+          })}
+        </ul>
       )}
       <div className="border-t pt-[10px]">
         <button
-          // onClick={addTopLevel}
+          onClick={addTopLevel}
           className="bg-[#FF7A00] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer"
         >
           + Add section

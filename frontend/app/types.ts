@@ -6,6 +6,7 @@ export type Node = {
   name: string;
   parentId: string | null;
   children: string[];
+  depth: number;
 };
 
 export type BuilderState = {
