@@ -8,37 +8,49 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
+  type WebStorage,
 } from "redux-persist";
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
 import userSlice from "./slices/userSlice";
 import builderSlice from "./slices/builderSlice";
 
-const createNoopStorage = () => ({
-  getItem: async (_key: string) => null,
-  setItem: async (_key: string, _value: string) => {},
-  removeItem: async (_key: string) => {},
+// Fallback storage for environments without window (e.g., SSR in Next.js)
+const createNoopStorage = (): WebStorage => ({
+  getItem(_key) {
+    return Promise.resolve(null);
+  },
+  setItem(_key, _value) {
+    return Promise.resolve(); // void
+  },
+  removeItem(_key) {
+    return Promise.resolve(); // void
+  },
 });
 
-const storage =
+const storage: WebStorage =
   typeof window !== "undefined"
-    ? (await import("redux-persist/lib/storage")).default
+    ? createWebStorage("local")
     : createNoopStorage();
 
-const rootReducer = combineReducers({ userSlice, builderSlice });
+const rootReducer = combineReducers({
+  userSlice,
+  builderSlice,
+});
 
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["userSlice", "builderSlice"],
+  whitelist: ["userSlice", "builderSlice"], // can also use `allowlist`
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (gDM) =>
-    gDM({
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
