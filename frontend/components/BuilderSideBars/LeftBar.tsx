@@ -10,7 +10,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import type { RootState, AppDispatch } from "@/store";
-import { addSection, select, toggleExpand } from "@/store/slices/builderSlice";
+import SectionTree from "./SectionTree";
+import { addSection, select } from "@/store/slices/builderSlice";
 
 export default function LeftBar() {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,11 +34,7 @@ export default function LeftBar() {
           No sections added yet!
         </div>
       ) : (
-        <ul>
-          {rootOrder.map((id) => {
-            return <li key={id}>{nodes[id].name}</li>;
-          })}
-        </ul>
+        <SectionTree />
       )}
       <div className="border-t pt-[10px]">
         <button

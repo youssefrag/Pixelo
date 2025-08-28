@@ -1,5 +1,28 @@
 import { memo } from "react";
 
-export const SectionNode = memo(function SectionNode() {
-  return <h1>Section</h1>;
+import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+
+import type { RootState, AppDispatch } from "@/store";
+
+type SectionNodeProps = {
+  id: string;
+};
+
+export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const node = useSelector((s: RootState) => s.builderSlice.nodes[id]);
+
+  console.log(node);
+
+  if (node.type === "section") {
+    return (
+      <div className="flex items-center gap-4 bg-[#FFEFE0] ">
+        <FontAwesomeIcon icon={faChevronDown} />
+        <div className="bg-[#FFEFE0]">{node.name}</div>
+      </div>
+    );
+  }
 });

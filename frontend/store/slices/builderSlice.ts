@@ -42,17 +42,8 @@ const builderSlice = createSlice({
     select(state, action: PayloadAction<string | null>) {
       state.selectedId = action.payload;
     },
-    toggleExpand: (state, action: PayloadAction<string>) => {
-      const id = action.payload;
-
-      if (!state.expanded) state.expanded = {};
-
-      const prev = !!state.expanded[id];
-      state.expanded[id] = !prev;
-      state.expanded[id] = !state.expanded[id];
-    },
   },
 });
 
-export const { select, addSection, toggleExpand } = builderSlice.actions;
+export const { select, addSection } = builderSlice.actions;
 export default builderSlice.reducer;
