@@ -15,8 +15,8 @@ export default function SectionTree() {
   return (
     <div>
       {rootOrder.map((id) => {
-        // return expanded.includes(id) ? (
-        return id === selectedId ? (
+        return expanded.includes(id) ? (
+          // return id === selectedId ? (
           <SectionNode key={id} id={id} />
         ) : (
           <div

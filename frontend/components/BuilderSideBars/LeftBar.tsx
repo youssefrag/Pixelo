@@ -25,6 +25,7 @@ export default function LeftBar() {
   const addTopLevel = () => {
     const index = rootOrder.length + 1;
     dispatch(addSection({ name: `Section ${index}`, parentId: null }));
+    dispatch(select(selectedId));
   };
 
   return (
