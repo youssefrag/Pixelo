@@ -37,9 +37,11 @@ const builderSlice = createSlice({
       } else {
         state.rootOrder.push(id);
       }
+      state.selectedId = id;
     },
 
     select(state, action: PayloadAction<string | null>) {
+      console.log("REACHED HERE");
       state.selectedId = action.payload;
     },
   },

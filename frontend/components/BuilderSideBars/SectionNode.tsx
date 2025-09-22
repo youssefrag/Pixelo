@@ -19,10 +19,20 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
 
   if (node.type === "section") {
     return (
-      <div className="flex items-center gap-4 bg-[#FFEFE0] ">
-        <FontAwesomeIcon icon={faChevronDown} />
-        <div className="bg-[#FFEFE0]">{node.name}</div>
-      </div>
+      <>
+        <div className="flex items-center gap-4 bg-[#FFEFE0]">
+          <FontAwesomeIcon icon={faChevronDown} />
+          <div className="bg-[#FFEFE0]">{node.name}</div>
+        </div>
+        <div className="flex flex-col gap-4 ml-6 my-3">
+          <button className="bg-[#ffa24d] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer">
+            Add Section
+          </button>
+          <button className="bg-[#ffa24d] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer">
+            Add Component
+          </button>
+        </div>
+      </>
     );
   }
 });

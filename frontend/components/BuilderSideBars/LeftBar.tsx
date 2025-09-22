@@ -41,7 +41,7 @@ export default function LeftBar() {
           onClick={addTopLevel}
           className="bg-[#FF7A00] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer"
         >
-          + Add section
+          + Add Section
         </button>
       </div>
     </div>
