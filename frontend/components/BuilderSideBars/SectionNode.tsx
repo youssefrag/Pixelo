@@ -37,15 +37,20 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
     dispatch(select(action.payload.id));
   };
 
+  const isSelected = node.id === selectedId;
+
   if (node.type === "section") {
     return (
       <>
         <div
           onClick={() => dispatch(select(id))}
-          className="cursor-pointer flex items-center gap-4 bg-[#FFEFE0]"
+          // className="cursor-pointer flex items-center gap-4 bg-[#FFEFE0]"
+          className={`cursor-pointer flex items-center gap-4 ${
+            isSelected ? "bg-[#FF7A00] text-white font-bold" : "bg-[#FFEFE0]"
+          }`}
         >
           <FontAwesomeIcon icon={faChevronDown} />
-          <div className="bg-[#FFEFE0]">{node.name}</div>
+          <div>{node.name}</div>
         </div>
 
         <div className="flex flex-col gap-4 ml-6 my-3">
@@ -63,7 +68,9 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
         </div>
         {node.children.map((childId) =>
           expanded.includes(childId) ? (
-            <SectionNode key={childId} id={childId} />
+            <div key={childId} className="ml-6">
+              <SectionNode id={childId} />
+            </div>
           ) : (
             <div
               key={childId}
