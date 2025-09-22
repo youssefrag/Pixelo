@@ -13,5 +13,5 @@ export type BuilderState = {
   rootOrder: string[];
   nodes: Record<string, Node>;
   selectedId: string | null;
-  expanded: Record<string, boolean>;
+  expanded: string[];
 };

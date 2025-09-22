@@ -8,17 +8,15 @@ import { SectionNode } from "./SectionNode";
 
 export default function SectionTree() {
   const dispatch = useDispatch<AppDispatch>();
-  const {
-    rootOrder,
-    nodes,
-    selectedId,
-    expanded = {},
-  } = useSelector((state: RootState) => state.builderSlice);
+  const { rootOrder, nodes, selectedId, expanded } = useSelector(
+    (state: RootState) => state.builderSlice
+  );
 
   return (
     <div>
       {rootOrder.map((id) => {
-        return selectedId === id ? (
+        // return expanded.includes(id) ? (
+        return id === selectedId ? (
           <SectionNode key={id} id={id} />
         ) : (
           <div

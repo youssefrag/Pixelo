@@ -6,7 +6,7 @@ const initialState: BuilderState = {
   rootOrder: [],
   nodes: {},
   selectedId: null,
-  expanded: {},
+  expanded: [],
 };
 
 const builderSlice = createSlice({
@@ -38,10 +38,10 @@ const builderSlice = createSlice({
         state.rootOrder.push(id);
       }
       state.selectedId = id;
+      state.expanded = [id];
     },
 
     select(state, action: PayloadAction<string | null>) {
-      console.log("REACHED HERE");
       state.selectedId = action.payload;
     },
   },
