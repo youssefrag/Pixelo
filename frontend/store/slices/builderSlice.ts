@@ -7,12 +7,26 @@ const initialState: BuilderState = {
   nodes: {},
   selectedId: null,
   expanded: [],
+  ui: {
+    leftBar: { tab: "layout" },
+  },
 };
 
 const builderSlice = createSlice({
   name: "builder",
   initialState,
   reducers: {
+    openComponentPicker(state, action: PayloadAction<{ parentId: string }>) {
+      state.ui.leftBar = {
+        tab: "component",
+        parentId: action.payload.parentId,
+      };
+    },
+    closeComponentPicker(state) {
+      state.ui.leftBar = {
+        tab: "layout",
+      };
+    },
     addSection: {
       reducer: (
         state,
@@ -80,5 +94,6 @@ const builderSlice = createSlice({
   },
 });
 
-export const { select, addSection } = builderSlice.actions;
+export const { select, addSection, openComponentPicker, closeComponentPicker } =
+  builderSlice.actions;
 export default builderSlice.reducer;

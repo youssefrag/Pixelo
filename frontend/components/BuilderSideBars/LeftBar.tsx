@@ -11,16 +11,22 @@ import {
 
 import type { RootState, AppDispatch } from "@/store";
 import SectionTree from "./SectionTree";
-import { addSection, select } from "@/store/slices/builderSlice";
+import {
+  addSection,
+  select,
+  openComponentPicker,
+} from "@/store/slices/builderSlice";
+import ComponentPicker from "./ComponentPicker";
 
 export default function LeftBar() {
+  const [tab, setTab] = useState<"layout" | "component">("layout");
+
   const dispatch = useDispatch<AppDispatch>();
-  const {
-    rootOrder,
-    nodes,
-    selectedId,
-    expanded = {},
-  } = useSelector((state: RootState) => state.builderSlice);
+  const { rootOrder, nodes, selectedId, ui } = useSelector(
+    (state: RootState) => state.builderSlice
+  );
+
+  console.log(ui);
 
   const addTopLevel = () => {
     const index = rootOrder.length + 1;
@@ -28,23 +34,27 @@ export default function LeftBar() {
     dispatch(select(selectedId));
   };
 
-  return (
-    <div className="w-[260px] border-r border-[#E9EAEB] p-4">
-      {!rootOrder.length ? (
-        <div className="text-[#6D6D6D] font-[600] mb-[15px]">
-          No sections added yet!
+  if (ui.leftBar.tab === "layout") {
+    return (
+      <div className="w-[260px] border-r border-[#E9EAEB] p-4">
+        {!rootOrder.length ? (
+          <div className="text-[#6D6D6D] font-[600] mb-[15px]">
+            No sections added yet!
+          </div>
+        ) : (
+          <SectionTree />
+        )}
+        <div className="border-t pt-[10px]">
+          <button
+            onClick={addTopLevel}
+            className="bg-[#FF7A00] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer"
+          >
+            + Add Section
+          </button>
         </div>
-      ) : (
-        <SectionTree />
-      )}
-      <div className="border-t pt-[10px]">
-        <button
-          onClick={addTopLevel}
-          className="bg-[#FF7A00] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer"
-        >
-          + Add Section
-        </button>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <ComponentPicker />;
+  }
 }

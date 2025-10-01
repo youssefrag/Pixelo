@@ -14,4 +14,9 @@ export type BuilderState = {
   nodes: Record<string, Node>;
   selectedId: string | null;
   expanded: string[];
+  ui: { leftBar: LeftBarTab };
 };
+
+export type LeftBarTab =
+  | { tab: "layout" }
+  | { tab: "component"; parentId: string };

@@ -8,7 +8,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import type { RootState, AppDispatch } from "@/store";
-import { addSection, select } from "@/store/slices/builderSlice";
+import {
+  addSection,
+  select,
+  openComponentPicker,
+} from "@/store/slices/builderSlice";
 
 type SectionNodeProps = {
   id: string;
@@ -16,8 +20,6 @@ type SectionNodeProps = {
 
 export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
   const dispatch = useDispatch<AppDispatch>();
-
-  // const node = useSelector((s: RootState) => s.builderSlice.nodes[id]);
 
   const { rootOrder, nodes, selectedId, expanded } = useSelector(
     (state: RootState) => state.builderSlice
@@ -35,6 +37,10 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
     );
 
     dispatch(select(action.payload.id));
+  };
+
+  const handleAddComponent = () => {
+    dispatch(openComponentPicker({ parentId: id }));
   };
 
   const isSelected = node.id === selectedId;
@@ -62,7 +68,10 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
               Add Section
             </button>
           )}
-          <button className="bg-[#ffa24d] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer">
+          <button
+            onClick={handleAddComponent}
+            className="bg-[#ffa24d] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer"
+          >
             Add Component
           </button>
         </div>
