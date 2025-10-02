@@ -19,8 +19,6 @@ import {
 import ComponentPicker from "./ComponentPicker";
 
 export default function LeftBar() {
-  const [tab, setTab] = useState<"layout" | "component">("layout");
-
   const dispatch = useDispatch<AppDispatch>();
   const { rootOrder, nodes, selectedId, ui } = useSelector(
     (state: RootState) => state.builderSlice

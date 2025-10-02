@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit";
 
-import { BuilderState, Node } from "@/app/types";
+import { BuilderState, BuilderNode, isSection, isComponent } from "@/app/types";
 
 const initialState: BuilderState = {
   rootOrder: [],
@@ -33,12 +33,13 @@ const builderSlice = createSlice({
         action: PayloadAction<{
           id: string;
           name: string;
-          parentId: string | null; // <- normalized (no undefined)
+          parentId: string | null;
         }>
       ) => {
         const { id, name, parentId } = action.payload;
 
         const parent = parentId ? state.nodes[parentId] : undefined;
+
         const depth = parent ? parent.depth + 1 : 1;
 
         state.nodes[id] = {
@@ -47,10 +48,11 @@ const builderSlice = createSlice({
           name,
           parentId,
           children: [],
+          styles: {},
           depth,
         };
 
-        if (parent) parent.children.push(id);
+        if (parent && isSection(parent)) parent.children.push(id);
         else state.rootOrder.push(id);
 
         state.selectedId = id;
@@ -81,9 +83,9 @@ const builderSlice = createSlice({
       const seen = new Set(state.expanded);
 
       while (current !== null) {
-        const node: Node = state.nodes[current];
+        const node: BuilderNode = state.nodes[current];
         if (!node) break;
-        const parentId = node.parentId;
+        const parentId: string | null = node.parentId;
         if (parentId !== null && !seen.has(parentId)) {
           state.expanded.push(parentId);
           seen.add(parentId);
