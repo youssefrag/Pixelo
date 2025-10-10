@@ -24,8 +24,6 @@ export default function LeftBar() {
     (state: RootState) => state.builderSlice
   );
 
-  console.log(ui);
-
   const addTopLevel = () => {
     const index = rootOrder.length + 1;
     dispatch(addSection({ name: `Section ${index}`, parentId: null }));

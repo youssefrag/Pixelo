@@ -50,6 +50,7 @@ export const isComponent = (n: BuilderNode): n is ComponentNode =>
 
 export type TextDraft = {
   id: string;
+  type: "component";
   kind: "heading" | "paragraph";
   targetParentId: string | null;
   props: { text: string };

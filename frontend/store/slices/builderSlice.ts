@@ -77,7 +77,6 @@ const builderSlice = createSlice({
       },
     },
     select(state, action: PayloadAction<string | null>) {
-      console.log("REACHED HERE");
       state.selectedId = action.payload;
       if (state.selectedId === null) return;
 
@@ -115,6 +114,7 @@ const builderSlice = createSlice({
 
       state.ui.draft = {
         id,
+        type: "component",
         kind,
         targetParentId: parentId,
         props: { text: "" },
@@ -129,12 +129,27 @@ const builderSlice = createSlice({
       if (!state.ui.draft) return;
       state.ui.draft.props.text = action.payload;
     },
-    updateTextDraftStyle(
+
+    updateSelectedStyle(
       state,
       action: PayloadAction<{ key: string; value: string }>
     ) {
-      if (!state.ui.draft) return;
-      state.ui.draft.styles[action.payload.key] = action.payload.value;
+      const { key, value } = action.payload;
+
+      const { selectedId } = state;
+
+      if (!selectedId) return;
+
+      if (state.ui.draft && state.ui.draft.id === selectedId) {
+        state.ui.draft.styles[key] = value;
+        return;
+      }
+
+      const node = state.nodes[selectedId];
+
+      if (!node) return;
+
+      node.styles[key] = value;
     },
   },
 });
@@ -146,5 +161,6 @@ export const {
   closeComponentPicker,
   startTextDraft,
   updateTextDraftContent,
+  updateSelectedStyle,
 } = builderSlice.actions;
 export default builderSlice.reducer;
