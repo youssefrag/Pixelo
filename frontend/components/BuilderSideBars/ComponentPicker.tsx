@@ -3,7 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import type { RootState, AppDispatch } from "@/store";
-import { closeComponentPicker } from "@/store/slices/builderSlice";
+import {
+  closeComponentPicker,
+  startTextDraft,
+} from "@/store/slices/builderSlice";
+
 import HIcon from "@/public/assets/heading-01.svg";
 import PIcon from "@/public/assets/pilcrow-01.svg";
 import TableIcon from "@/public/assets/table.svg";
@@ -14,8 +18,16 @@ import VideoIcon from "@/public/assets/play-circle.svg";
 export default function ComponentPicker() {
   const dispatch = useDispatch<AppDispatch>();
 
+  const { ui } = useSelector((state: RootState) => state.builderSlice);
+
+  const parentId = ui.leftBar.tab === "component" ? ui.leftBar.parentId : null;
+
   const handleBackToLayout = () => {
     dispatch(closeComponentPicker());
+  };
+
+  const handleHeadingDraft = () => {
+    dispatch(startTextDraft({ kind: "heading", parentId }));
   };
 
   return (
@@ -32,7 +44,10 @@ export default function ComponentPicker() {
       <div className="my-3 font-[600] text-[16px]">Text</div>
       <div className="grid grid-cols-2 gap-4 pb-5 border-b border-b-[#E9EAEB]">
         <div>
-          <div className="h-[86px] w-[109px] bg-gray-200 flex justify-center items-center rounded-2xl cursor-pointer">
+          <div
+            onClick={handleHeadingDraft}
+            className="h-[86px] w-[109px] bg-gray-200 flex justify-center items-center rounded-2xl cursor-pointer"
+          >
             <HIcon className="w-6 h-6 text-black" />
           </div>
           <div className="mt-1 text-[14px]">Heading</div>

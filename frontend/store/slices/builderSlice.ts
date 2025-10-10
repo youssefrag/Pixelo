@@ -122,6 +122,11 @@ const builderSlice = createSlice({
   },
 });
 
-export const { select, addSection, openComponentPicker, closeComponentPicker } =
-  builderSlice.actions;
+export const {
+  select,
+  addSection,
+  openComponentPicker,
+  closeComponentPicker,
+  startTextDraft,
+} = builderSlice.actions;
 export default builderSlice.reducer;
