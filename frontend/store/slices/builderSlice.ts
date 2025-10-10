@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit";
 
-import { BuilderState, BuilderNode, isSection, isComponent } from "@/app/types";
+import {
+  BuilderState,
+  BuilderNode,
+  isSection,
+  isComponent,
+  DraftState,
+} from "@/app/types";
 
 const initialState: BuilderState = {
   rootOrder: [],
@@ -9,6 +15,7 @@ const initialState: BuilderState = {
   expanded: [],
   ui: {
     leftBar: { tab: "layout" },
+    draft: null,
   },
 };
 
@@ -69,7 +76,6 @@ const builderSlice = createSlice({
         };
       },
     },
-
     select(state, action: PayloadAction<string | null>) {
       console.log("REACHED HERE");
       state.selectedId = action.payload;
@@ -92,6 +98,26 @@ const builderSlice = createSlice({
         }
         current = parentId;
       }
+    },
+    startTextDraft(
+      state,
+      action: PayloadAction<{
+        kind: "heading" | "paragraph";
+        parentId: string | null;
+      }>
+    ) {
+      const { kind, parentId } = action.payload;
+
+      state.ui.leftBar = { tab: "component", parentId: parentId ?? "" };
+
+      state.ui.draft = {
+        kind,
+        targetParentId: parentId,
+        props: { text: "" },
+        styles: {
+          vatiant: kind === "heading" ? "h2" : "p",
+        },
+      };
     },
   },
 });

@@ -33,7 +33,10 @@ export type BuilderState = {
   nodes: Record<string, BuilderNode>;
   selectedId: string | null;
   expanded: string[];
-  ui: { leftBar: LeftBarTab };
+  ui: {
+    leftBar: LeftBarTab;
+    draft: DraftState;
+  };
 };
 
 export type LeftBarTab =
@@ -44,3 +47,12 @@ export const isSection = (n: BuilderNode): n is SectionNode =>
   n.type === "section";
 export const isComponent = (n: BuilderNode): n is ComponentNode =>
   n.type === "component";
+
+export type TextDraft = {
+  kind: "heading" | "paragraph";
+  targetParentId: string | null;
+  props: { text: string };
+  styles: Record<string, string>;
+};
+
+export type DraftState = TextDraft | null;
