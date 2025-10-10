@@ -29,8 +29,8 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
 
   const handeAddNestedSection = () => {
     console.log(node);
-    const siblingsCount = node.children.length;
-    const sectionName = `${node.name} - ${siblingsCount + 1}`;
+    const siblingsCount = node.children?.length;
+    const sectionName = `${node.name} - ${siblingsCount || 0 + 1}`;
 
     const action = dispatch(
       addSection({ name: sectionName, parentId: node.id })

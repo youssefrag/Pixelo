@@ -107,10 +107,12 @@ const builderSlice = createSlice({
       }>
     ) {
       const { kind, parentId } = action.payload;
+      const id = nanoid();
 
       state.ui.leftBar = { tab: "component", parentId: parentId ?? "" };
 
       state.ui.draft = {
+        id,
         kind,
         targetParentId: parentId,
         props: { text: "" },
@@ -118,6 +120,19 @@ const builderSlice = createSlice({
           vatiant: kind === "heading" ? "h2" : "p",
         },
       };
+
+      state.selectedId = id;
+    },
+    updateTextDraftContent(state, action: PayloadAction<{ value: string }>) {
+      if (!state.ui.draft) return;
+      state.ui.draft.props.text = action.payload.value;
+    },
+    updateTextDraftStyle(
+      state,
+      action: PayloadAction<{ key: string; value: string }>
+    ) {
+      if (!state.ui.draft) return;
+      state.ui.draft.styles[action.payload.key] = action.payload.value;
     },
   },
 });

@@ -9,7 +9,7 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
   const { draft } = ui;
 
   return (
-    <div>
+    <div className="p-[10rem]">
       {draft && draft.targetParentId === sectionId && <DraftTextInput />}
     </div>
   );
