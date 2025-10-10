@@ -99,6 +99,8 @@ const builderSlice = createSlice({
         current = parentId;
       }
     },
+
+    // Logic for creating text components
     startTextDraft(
       state,
       action: PayloadAction<{
@@ -123,9 +125,9 @@ const builderSlice = createSlice({
 
       state.selectedId = id;
     },
-    updateTextDraftContent(state, action: PayloadAction<{ value: string }>) {
+    updateTextDraftContent(state, action: PayloadAction<string>) {
       if (!state.ui.draft) return;
-      state.ui.draft.props.text = action.payload.value;
+      state.ui.draft.props.text = action.payload;
     },
     updateTextDraftStyle(
       state,
@@ -143,5 +145,6 @@ export const {
   openComponentPicker,
   closeComponentPicker,
   startTextDraft,
+  updateTextDraftContent,
 } = builderSlice.actions;
 export default builderSlice.reducer;
