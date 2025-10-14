@@ -17,13 +17,9 @@ export default function RightBar() {
   const target =
     ui.draft && ui.draft.id === selectedId ? ui.draft : nodes[selectedId ?? ""];
 
-  // if (!target || !selectedId) return <SectionEditor />;
-
   const setStyle = (key: string, value: string) => {
     dispatch(updateSelectedStyle({ key, value }));
   };
-
-  // console.log(target.type);
 
   return (
     <div className="w-[260px] border-l border-[#E9EAEB] p-4">
