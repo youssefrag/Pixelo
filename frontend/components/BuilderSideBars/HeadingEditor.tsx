@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -5,6 +6,7 @@ import {
   faAlignCenter,
   faAlignRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { HexColorPicker } from "react-colorful";
 
 import type { RootState, AppDispatch } from "@/store";
 
@@ -56,6 +58,27 @@ export default function HeadingEditor({
 
   const onFontWeightChange = (value: string) => {
     dispatch(updateSelectedStyle({ key: "fontWeight", value }));
+  };
+
+  // logic for color
+
+  const [isOpen, setIsOpen] = useState(false);
+  const popover = useRef<HTMLDivElement>(null);
+
+  const color = styles?.color;
+
+  useEffect(() => {
+    const closeOnOutsideClick = (e: MouseEvent) => {
+      if (popover.current && !popover.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    return () => document.removeEventListener("mousedown", closeOnOutsideClick);
+  }, []);
+
+  const handleColorChange = (newColor: string) => {
+    dispatch(updateSelectedStyle({ key: "color", value: newColor }));
   };
 
   return (
@@ -152,7 +175,7 @@ export default function HeadingEditor({
           />
         </div>
       </div>
-      <div>
+      <div className="mb-8">
         <h2 className="mb-3">Heading weight</h2>
 
         <div className="space-y-2 mt-3">
@@ -167,6 +190,36 @@ export default function HeadingEditor({
               </option>
             ))}
           </select>
+        </div>
+      </div>
+      <div>
+        <div className="relative inline-block">
+          <label className="text-sm text-neutral-600 block mb-2 font-bold">
+            Choose color
+          </label>
+
+          {/* color swatch button */}
+          <button
+            type="button"
+            className="h-8 w-8 rounded border border-gray-300 shadow-sm"
+            style={{ backgroundColor: color }}
+            onClick={() => setIsOpen(!isOpen)}
+          />
+
+          {isOpen && (
+            <div
+              ref={popover}
+              className="absolute z-50 mt-2 rounded-lg border border-gray-200 bg-white p-3 shadow-lg"
+            >
+              <HexColorPicker color={color} onChange={handleColorChange} />
+              <input
+                type="text"
+                value={color}
+                onChange={(e) => handleColorChange(e.target.value)}
+                className="mt-2 w-full rounded border px-2 py-1 text-sm"
+              />
+            </div>
+          )}
         </div>
       </div>
     </>

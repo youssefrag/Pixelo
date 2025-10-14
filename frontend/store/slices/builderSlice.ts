@@ -128,6 +128,7 @@ const builderSlice = createSlice({
           font: "",
           fontSizePx: "32",
           fontWeight: "font-normal",
+          color: "#000000",
         },
       };
 

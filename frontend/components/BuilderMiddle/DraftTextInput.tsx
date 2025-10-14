@@ -22,7 +22,7 @@ export default function DraftTextInput() {
 
   const inputBaseStyles = `w-[${Number(
     styles?.fontSizePx
-  )}rem] rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400`;
+  )}rem] rounded-lg border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400`;
 
   const { headingVariantStyles, containerVariantStyles } = styles
     ? getVariableStylesHeading(styles)
@@ -41,7 +41,10 @@ export default function DraftTextInput() {
           /text-\[[^\]]+\]\s?/g,
           ""
         )}`}
-        style={{ fontSize: `${styles?.fontSizePx ?? 32}px` }}
+        style={{
+          fontSize: `${styles?.fontSizePx ?? 32}px`,
+          color: styles?.color ?? "#000000",
+        }}
       />
     </div>
   );
