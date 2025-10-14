@@ -14,6 +14,7 @@ import SectionTree from "./SectionTree";
 import {
   addSection,
   select,
+  clearDraft,
   openComponentPicker,
 } from "@/store/slices/builderSlice";
 import ComponentPicker from "./ComponentPicker";

@@ -33,6 +33,7 @@ const builderSlice = createSlice({
       state.ui.leftBar = {
         tab: "layout",
       };
+      state.ui.draft = null;
     },
     addSection: {
       reducer: (
@@ -75,6 +76,9 @@ const builderSlice = createSlice({
           },
         };
       },
+    },
+    clearDraft(state) {
+      state.ui.draft = null;
     },
     select(state, action: PayloadAction<string | null>) {
       state.selectedId = action.payload;
@@ -120,6 +124,7 @@ const builderSlice = createSlice({
         props: { text: "" },
         styles: {
           vatiant: kind === "heading" ? "h2" : "p",
+          textAlign: "left",
         },
       };
 
@@ -159,6 +164,7 @@ export const {
   addSection,
   openComponentPicker,
   closeComponentPicker,
+  clearDraft,
   startTextDraft,
   updateTextDraftContent,
   updateSelectedStyle,
