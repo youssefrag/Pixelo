@@ -1,8 +1,8 @@
 import localFont from "next/font/local";
 import { config } from "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-svg-core/styles.css";
+// import "@fortawesome/fontawesome-svg-core/styles.css";
 
-import "./globals.css";
+import "@/app/globals.css";
 import Providers from "./Providers";
 
 config.autoAddCss = false;

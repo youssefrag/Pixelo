@@ -17,5 +17,7 @@ export function getVariableStylesHeading(styles: Record<string, string>): {
       break;
   }
 
+  headingVariantStyles += styles.font;
+
   return { headingVariantStyles, containerVariantStyles };
 }

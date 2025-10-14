@@ -125,6 +125,7 @@ const builderSlice = createSlice({
         styles: {
           vatiant: kind === "heading" ? "h2" : "p",
           textAlign: "left",
+          font: "",
         },
       };
 

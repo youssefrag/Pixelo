@@ -28,6 +28,7 @@ export default function DraftTextInput() {
     : { headingVariantStyles: "", containerVariantStyles: "" };
 
   console.log(containerVariantStyles);
+  console.log(headingVariantStyles);
 
   return (
     <div className={`${containerBaseStyles} ${containerVariantStyles}`}>
@@ -35,7 +36,7 @@ export default function DraftTextInput() {
         type="text"
         onChange={handleTextChange}
         placeholder="Type your heading..."
-        className={`${inputBaseStyles}`}
+        className={`${inputBaseStyles} ${headingVariantStyles}`}
       />
     </div>
   );

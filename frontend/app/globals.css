@@ -1,5 +1,27 @@
 @import "tailwindcss";
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@400;700&family=Poppins:wght@400;600;700&family=Bebas+Neue&family=Pacifico&display=swap");
+
 html {
   scroll-behavior: smooth;
+}
+
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
+
+.font-playfair {
+  font-family: "Playfair Display", serif;
+}
+
+.font-poppins {
+  font-family: "Poppins", sans-serif;
+}
+
+.font-bebas {
+  font-family: "Bebas Neue", sans-serif;
+}
+
+.font-pacifico {
+  font-family: "Pacifico", cursive;
 }
