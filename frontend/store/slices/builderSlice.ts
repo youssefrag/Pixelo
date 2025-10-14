@@ -127,6 +127,7 @@ const builderSlice = createSlice({
           textAlign: "left",
           font: "",
           fontSizePx: "32",
+          fontWeight: "font-normal",
         },
       };
 
