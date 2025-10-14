@@ -45,8 +45,7 @@ export default function HeadingEditor({
     dispatch(updateSelectedStyle({ key: "font", value }));
   };
 
-  const selectedFont =
-    FONT_OPTIONS.find((f) => f.id === font) ?? FONT_OPTIONS[0];
+  // logic for font size
 
   console.log(styles);
 
@@ -105,7 +104,7 @@ export default function HeadingEditor({
           )}
         </div>
       </div>
-      <div>
+      <div className="mb-4">
         <h2>Font</h2>
         <div className="space-y-2 mt-3">
           <select
@@ -119,6 +118,29 @@ export default function HeadingEditor({
               </option>
             ))}
           </select>
+        </div>
+      </div>
+      <div>
+        <h2 className="mb-3">Heading size (px)</h2>
+
+        <div>
+          {/* <label className="text-sm text-neutral-600"></label> */}
+          <input
+            type="number"
+            min={16}
+            max={96}
+            step={1}
+            value={styles?.fontSizePx ?? 32} // keep whatever type you store
+            onChange={(e) =>
+              dispatch(
+                updateSelectedStyle({
+                  key: "fontSizePx",
+                  value: e.target.value,
+                })
+              )
+            }
+            className="w-24 rounded border px-3 py-2 text-md font-semibold"
+          />
         </div>
       </div>
     </>

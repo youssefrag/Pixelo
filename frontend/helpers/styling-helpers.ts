@@ -18,6 +18,7 @@ export function getVariableStylesHeading(styles: Record<string, string>): {
   }
 
   headingVariantStyles += styles.font;
+  headingVariantStyles += ` text-[${styles.fontSizePx}px]`;
 
   return { headingVariantStyles, containerVariantStyles };
 }

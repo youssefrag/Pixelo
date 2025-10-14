@@ -20,8 +20,9 @@ export default function DraftTextInput() {
 
   const containerBaseStyles = "flex";
 
-  const inputBaseStyles =
-    "w-[20rem] rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400";
+  const inputBaseStyles = `w-[${Number(
+    styles?.fontSizePx
+  )}rem] rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400`;
 
   const { headingVariantStyles, containerVariantStyles } = styles
     ? getVariableStylesHeading(styles)
@@ -36,7 +37,11 @@ export default function DraftTextInput() {
         type="text"
         onChange={handleTextChange}
         placeholder="Type your heading..."
-        className={`${inputBaseStyles} ${headingVariantStyles}`}
+        className={`${inputBaseStyles} ${headingVariantStyles.replace(
+          /text-\[[^\]]+\]\s?/g,
+          ""
+        )}`}
+        style={{ fontSize: `${styles?.fontSizePx ?? 32}px` }}
       />
     </div>
   );
