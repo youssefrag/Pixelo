@@ -11,6 +11,8 @@ export default function DraftTextInput() {
 
   const { ui } = useSelector((state: RootState) => state.builderSlice);
 
+  const text = ui.draft?.props.text ?? "";
+
   const styles = ui.draft?.styles;
   console.log(styles);
 
@@ -35,6 +37,7 @@ export default function DraftTextInput() {
     <div className={`${containerBaseStyles} ${containerVariantStyles}`}>
       <input
         type="text"
+        value={text}
         onChange={handleTextChange}
         placeholder="Type your heading..."
         className={`${inputBaseStyles} ${headingVariantStyles.replace(

@@ -87,6 +87,8 @@ const builderSlice = createSlice({
       state.selectedId = action.payload;
       if (state.selectedId === null) return;
 
+      state.ui.draft = null;
+
       const startId = state.selectedId;
 
       state.expanded = [startId];
@@ -117,7 +119,7 @@ const builderSlice = createSlice({
       const { kind, parentId } = action.payload;
       const id = nanoid();
 
-      state.ui.leftBar = { tab: "component", parentId: parentId ?? "" };
+      state.ui.leftBar = { tab: "layout" };
 
       state.ui.draft = {
         draft: "text",
@@ -142,64 +144,6 @@ const builderSlice = createSlice({
       if (!state.ui.draft) return;
       state.ui.draft.props.text = action.payload;
     },
-
-    // updateSelectedStyle(
-    //   state,
-    //   action: PayloadAction<{ key: string; value: string }>
-    // ) {
-    //   const { key, value } = action.payload;
-
-    //   const { selectedId } = state;
-
-    //   if (!selectedId) return;
-
-    //   if (state.ui.draft && state.ui.draft.id === selectedId) {
-    //     state.ui.draft.styles[key] = value;
-    //     return;
-    //   }
-
-    //   const node = state.nodes[selectedId];
-
-    //   if (!node) return;
-
-    //   node.styles[key] = value;
-    // },
-
-    // saveComponentDraft(
-    //   state,
-    //   action: PayloadAction<{
-    //     id: string;
-    //     kind: string;
-    //     parentId: string;
-    //     styles: Record<string, string>;
-    //     props: Record<string, unknown>;
-    //   }>
-    // ) {
-    //   const { id, kind, parentId, styles, props } = action.payload;
-
-    //   const parent = state.nodes[parentId];
-
-    //   if (kind === "heading") {
-    //     if (!state.nodes[id]) {
-    //       state.nodes[id] = {
-    //         id,
-    //         name: "heading",
-    //         parentId,
-    //         depth: parent.depth + 1,
-    //         styles,
-    //         type: "component",
-    //         kind: "heading",
-    //         props,
-    //       };
-
-    //       parent.children?.push(id);
-
-    //       clearDraft();
-
-    //       state.selectedId = parentId;
-    //     }
-    //   }
-    // },
 
     updateSelectedStyle(
       state,

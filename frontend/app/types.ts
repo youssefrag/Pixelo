@@ -26,6 +26,8 @@ export type ComponentNode = BaseNode & {
   children?: never;
 };
 
+export type HeadingComponentNode = Extract<ComponentNode, { kind: "heading" }>;
+
 export type BuilderNode = SectionNode | ComponentNode;
 
 export type BuilderState = {

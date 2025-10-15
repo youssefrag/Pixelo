@@ -44,7 +44,7 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
     dispatch(openComponentPicker({ parentId: id }));
   };
 
-  const isSelected = node.id === selectedId;
+  const isSectionSelected = node.id === selectedId;
 
   if (node.type === "section") {
     return (
@@ -53,7 +53,9 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
           onClick={() => dispatch(select(id))}
           // className="cursor-pointer flex items-center gap-4 bg-[#FFEFE0]"
           className={`cursor-pointer flex items-center gap-4 ${
-            isSelected ? "bg-[#FF7A00] text-white font-bold" : "bg-[#FFEFE0]"
+            isSectionSelected
+              ? "bg-[#FF7A00] text-white font-bold"
+              : "bg-[#FFEFE0]"
           }`}
         >
           <FontAwesomeIcon icon={faChevronDown} />
@@ -76,8 +78,10 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
             Add Component
           </button>
         </div>
-        {node.children.map((childId) =>
-          expanded.includes(childId) ? (
+        {node.children.map((childId) => {
+          const isChildSelected = selectedId === childId;
+
+          return expanded.includes(childId) ? (
             <div key={childId} className="ml-6">
               <SectionNode id={childId} />
             </div>
@@ -94,12 +98,20 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
             <div
               key={childId}
               onClick={() => dispatch(editComponent({ id: childId }))}
-              className="flex items-center gap-4 cursor-pointer ml-6 mb-2"
+              className={`flex items-center gap-4 cursor-pointer ml-6 mb-2 pl-2                   ${
+                isChildSelected
+                  ? "bg-[#FF7A00] text-white font-bold"
+                  : "bg-[#FFEFE0]"
+              }`}
             >
-              <div className="font-bold">Component - {nodes[childId].name}</div>
+              <div
+                className={`font-bold cursor-pointer flex items-center gap-4`}
+              >
+                Component - {nodes[childId].name}
+              </div>
             </div>
-          )
-        )}
+          );
+        })}
       </>
     );
   }
