@@ -163,14 +163,16 @@ export default function HeadingEditor({
             max={96}
             step={1}
             value={styles?.fontSizePx ?? 32} // keep whatever type you store
-            onChange={(e) =>
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              const clamped = Math.max(16, Math.min(96, value));
               dispatch(
                 updateSelectedStyle({
                   key: "fontSizePx",
-                  value: e.target.value,
+                  value: String(clamped),
                 })
-              )
-            }
+              );
+            }}
             className="w-24 rounded border px-3 py-2 text-md font-semibold"
           />
         </div>
