@@ -160,6 +160,42 @@ const builderSlice = createSlice({
 
       node.styles[key] = value;
     },
+
+    saveComponentDraft(
+      state,
+      action: PayloadAction<{
+        id: string;
+        kind: string;
+        parentId: string;
+        styles: Record<string, string>;
+        props: Record<string, unknown>;
+      }>
+    ) {
+      const { id, kind, parentId, styles, props } = action.payload;
+
+      const parent = state.nodes[parentId];
+
+      if (kind === "heading") {
+        if (!state.nodes[id]) {
+          state.nodes[id] = {
+            id,
+            name: "heading",
+            parentId,
+            depth: parent.depth + 1,
+            styles,
+            type: "component",
+            kind: "heading",
+            props,
+          };
+
+          parent.children?.push(id);
+
+          clearDraft();
+
+          state.selectedId = parentId;
+        }
+      }
+    },
   },
 });
 
@@ -172,5 +208,6 @@ export const {
   startTextDraft,
   updateTextDraftContent,
   updateSelectedStyle,
+  saveComponentDraft,
 } = builderSlice.actions;
 export default builderSlice.reducer;

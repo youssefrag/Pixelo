@@ -10,7 +10,10 @@ import { HexColorPicker } from "react-colorful";
 
 import type { RootState, AppDispatch } from "@/store";
 
-import { updateSelectedStyle } from "@/store/slices/builderSlice";
+import {
+  updateSelectedStyle,
+  saveComponentDraft,
+} from "@/store/slices/builderSlice";
 
 const FONT_OPTIONS = [
   { id: "", label: "Switzer" },
@@ -46,6 +49,10 @@ export default function HeadingEditor({
 
   const styles = isDraft ? ui.draft?.styles : nodes[componentId].styles;
 
+  const parentId = isDraft
+    ? ui.draft?.targetParentId
+    : nodes[componentId].parentId;
+
   const font = styles?.font ?? "font-switzer";
 
   const onFontChange = (value: string) => {
@@ -79,6 +86,18 @@ export default function HeadingEditor({
 
   const handleColorChange = (newColor: string) => {
     dispatch(updateSelectedStyle({ key: "color", value: newColor }));
+  };
+
+  const handleSaveHeading = () => {
+    dispatch(
+      saveComponentDraft({
+        id: componentId,
+        kind: "heading",
+        parentId: parentId ?? "",
+        styles: styles ?? {},
+        props: { text: ui.draft?.props.text },
+      })
+    );
   };
 
   return (
@@ -223,6 +242,15 @@ export default function HeadingEditor({
             </div>
           )}
         </div>
+      </div>
+      <div className="mt-4 flex justify-around">
+        <button
+          onClick={handleSaveHeading}
+          className="bg-[#FF7A00] px-6 py-3 rounded-md text-white"
+        >
+          Save
+        </button>
+        <button>Delete</button>
       </div>
     </>
   );
