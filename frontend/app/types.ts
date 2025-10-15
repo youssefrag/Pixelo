@@ -48,13 +48,19 @@ export const isSection = (n: BuilderNode): n is SectionNode =>
 export const isComponent = (n: BuilderNode): n is ComponentNode =>
   n.type === "component";
 
-export type TextDraft = {
+type DraftBase = {
   id: string;
   type: "component";
-  kind: "heading" | "paragraph";
   targetParentId: string | null;
-  props: { text: string };
   styles: Record<string, string>;
 };
+
+export type TextDraft = DraftBase & {
+  draft: "text";
+  kind: "heading" | "paragraph";
+  props: { text: string };
+};
+
+export type ComponentDraft = TextDraft | null;
 
 export type DraftState = TextDraft | null;

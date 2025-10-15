@@ -6,20 +6,26 @@ import HeadingEditor from "./HeadingEditor";
 
 export default function ComponentEditor() {
   const dispatch = useDispatch<AppDispatch>();
-
-  const { rootOrder, nodes, selectedId, ui } = useSelector(
+  const { nodes, selectedId, ui } = useSelector(
     (state: RootState) => state.builderSlice
   );
 
-  if (!selectedId) return;
+  if (!selectedId) return null;
 
-  const componentType = nodes[selectedId]
-    ? nodes[selectedId].type
-    : ui.draft?.kind;
+  const draft = ui.draft && ui.draft.id === selectedId ? ui.draft : null;
+  const node = nodes[selectedId];
 
-  const isDraft = selectedId === ui.draft?.id;
+  const kind =
+    draft?.kind ?? (node && node.type === "component" ? node.kind : undefined);
 
-  if (componentType === "heading") {
-    return <HeadingEditor componentId={selectedId} isDraft={isDraft} />;
+  const isDraft = Boolean(draft);
+
+  switch (kind) {
+    case "heading":
+      return <HeadingEditor componentId={selectedId} isDraft={isDraft} />;
+    case "paragraph":
+      return null;
+    default:
+      return null;
   }
 }

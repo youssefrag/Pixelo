@@ -14,8 +14,9 @@ export default function RightBar() {
     (state: RootState) => state.builderSlice
   );
 
-  const target =
-    ui.draft && ui.draft.id === selectedId ? ui.draft : nodes[selectedId ?? ""];
+  const target = ui.draft ?? (selectedId ? nodes[selectedId] : undefined);
+
+  console.log(target);
 
   const setStyle = (key: string, value: string) => {
     dispatch(updateSelectedStyle({ key, value }));
@@ -27,7 +28,7 @@ export default function RightBar() {
       {!target ? (
         <SectionEditor />
       ) : target.type === "component" ? (
-        <ComponentEditor />
+        <ComponentEditor key={ui.draft?.id ?? selectedId ?? "none"} />
       ) : (
         <SectionEditor />
       )}

@@ -12,6 +12,7 @@ import {
   addSection,
   select,
   openComponentPicker,
+  editComponent,
 } from "@/store/slices/builderSlice";
 
 type SectionNodeProps = {
@@ -80,7 +81,7 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
             <div key={childId} className="ml-6">
               <SectionNode id={childId} />
             </div>
-          ) : (
+          ) : nodes[childId].type === "section" ? (
             <div
               key={childId}
               onClick={() => dispatch(select(childId))}
@@ -88,6 +89,14 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
             >
               <FontAwesomeIcon icon={faChevronRight} />
               <div>{nodes[childId].name}</div>
+            </div>
+          ) : (
+            <div
+              key={childId}
+              onClick={() => dispatch(editComponent({ id: childId }))}
+              className="flex items-center gap-4 cursor-pointer ml-6 mb-2"
+            >
+              <div className="font-bold">Component - {nodes[childId].name}</div>
             </div>
           )
         )}

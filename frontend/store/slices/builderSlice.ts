@@ -6,7 +6,10 @@ import {
   isSection,
   isComponent,
   DraftState,
+  ComponentKind,
 } from "@/app/types";
+
+import { isTextKind } from "@/helpers/type-helpers";
 
 const initialState: BuilderState = {
   rootOrder: [],
@@ -117,13 +120,14 @@ const builderSlice = createSlice({
       state.ui.leftBar = { tab: "component", parentId: parentId ?? "" };
 
       state.ui.draft = {
+        draft: "text",
         id,
         type: "component",
         kind,
         targetParentId: parentId,
         props: { text: "" },
         styles: {
-          vatiant: kind === "heading" ? "h2" : "p",
+          variant: kind === "heading" ? "h2" : "p",
           textAlign: "left",
           font: "",
           fontSizePx: "32",
@@ -139,62 +143,166 @@ const builderSlice = createSlice({
       state.ui.draft.props.text = action.payload;
     },
 
+    // updateSelectedStyle(
+    //   state,
+    //   action: PayloadAction<{ key: string; value: string }>
+    // ) {
+    //   const { key, value } = action.payload;
+
+    //   const { selectedId } = state;
+
+    //   if (!selectedId) return;
+
+    //   if (state.ui.draft && state.ui.draft.id === selectedId) {
+    //     state.ui.draft.styles[key] = value;
+    //     return;
+    //   }
+
+    //   const node = state.nodes[selectedId];
+
+    //   if (!node) return;
+
+    //   node.styles[key] = value;
+    // },
+
+    // saveComponentDraft(
+    //   state,
+    //   action: PayloadAction<{
+    //     id: string;
+    //     kind: string;
+    //     parentId: string;
+    //     styles: Record<string, string>;
+    //     props: Record<string, unknown>;
+    //   }>
+    // ) {
+    //   const { id, kind, parentId, styles, props } = action.payload;
+
+    //   const parent = state.nodes[parentId];
+
+    //   if (kind === "heading") {
+    //     if (!state.nodes[id]) {
+    //       state.nodes[id] = {
+    //         id,
+    //         name: "heading",
+    //         parentId,
+    //         depth: parent.depth + 1,
+    //         styles,
+    //         type: "component",
+    //         kind: "heading",
+    //         props,
+    //       };
+
+    //       parent.children?.push(id);
+
+    //       clearDraft();
+
+    //       state.selectedId = parentId;
+    //     }
+    //   }
+    // },
+
     updateSelectedStyle(
       state,
       action: PayloadAction<{ key: string; value: string }>
     ) {
       const { key, value } = action.payload;
 
-      const { selectedId } = state;
-
-      if (!selectedId) return;
-
-      if (state.ui.draft && state.ui.draft.id === selectedId) {
+      if (state.ui.draft) {
         state.ui.draft.styles[key] = value;
         return;
       }
 
-      const node = state.nodes[selectedId];
+      const id = state.selectedId;
+      if (!id) return;
 
-      if (!node) return;
+      const node = state.nodes[id];
+      if (!node || node.type !== "component") return;
 
       node.styles[key] = value;
     },
-
     saveComponentDraft(
       state,
       action: PayloadAction<{
         id: string;
-        kind: string;
+        kind: ComponentKind;
         parentId: string;
         styles: Record<string, string>;
         props: Record<string, unknown>;
       }>
     ) {
-      const { id, kind, parentId, styles, props } = action.payload;
+      const { id, kind, parentId } = action.payload;
 
       const parent = state.nodes[parentId];
+      if (!parent || parent.type !== "section") return;
 
-      if (kind === "heading") {
-        if (!state.nodes[id]) {
-          state.nodes[id] = {
-            id,
-            name: "heading",
-            parentId,
-            depth: parent.depth + 1,
-            styles,
-            type: "component",
-            kind: "heading",
-            props,
-          };
+      let props: Record<string, unknown> = action.payload.props;
 
-          parent.children?.push(id);
-
-          clearDraft();
-
-          state.selectedId = parentId;
+      switch (kind) {
+        case "heading":
+        case "paragraph": {
+          const raw = props["text"];
+          props = { text: typeof raw === "string" ? raw : "" };
+          break;
         }
       }
+
+      const styles = { ...action.payload.styles };
+
+      const existing = state.nodes[id];
+
+      if (!existing) {
+        state.nodes[id] = {
+          id,
+          name: kind,
+          parentId,
+          depth: parent.depth + 1,
+          styles,
+          type: "component",
+          kind,
+          props,
+        };
+        parent.children.push(id);
+      } else {
+        if (existing.type !== "component") return;
+
+        existing.styles = styles;
+        existing.props = props;
+      }
+
+      state.ui.draft = null;
+      state.selectedId = parentId;
+      state.ui.leftBar.tab = "layout";
+    },
+    editComponent(
+      state,
+      action: PayloadAction<{
+        id: string;
+      }>
+    ) {
+      const node = state.nodes[action.payload.id];
+
+      if (!node || !isComponent(node)) return;
+
+      if (!isTextKind(node.kind)) {
+        // Not supported yet → clear draft (or just return; your call)
+        state.ui.draft = null;
+        return;
+      }
+
+      const rawText = (node.props as Record<string, unknown>)?.["text"];
+      const text = typeof rawText === "string" ? rawText : "";
+
+      state.ui.draft = {
+        draft: "text",
+        id: node.id,
+        type: "component",
+        kind: node.kind,
+        targetParentId: node.parentId,
+        styles: { ...node.styles },
+        props: { text },
+      };
+
+      state.selectedId = action.payload.id;
     },
   },
 });
@@ -209,5 +317,6 @@ export const {
   updateTextDraftContent,
   updateSelectedStyle,
   saveComponentDraft,
+  editComponent,
 } = builderSlice.actions;
 export default builderSlice.reducer;
