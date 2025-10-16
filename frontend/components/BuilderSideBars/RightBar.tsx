@@ -16,7 +16,7 @@ export default function RightBar() {
 
   const target = ui.draft ?? (selectedId ? nodes[selectedId] : undefined);
 
-  console.log(target);
+  // console.log(target);
 
   const setStyle = (key: string, value: string) => {
     dispatch(updateSelectedStyle({ key, value }));

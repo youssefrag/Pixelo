@@ -14,7 +14,7 @@ export default function DraftTextInput() {
   const text = ui.draft?.props.text ?? "";
 
   const styles = ui.draft?.styles;
-  console.log(styles);
+  // console.log(styles);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(updateTextDraftContent(e.target.value));
@@ -30,8 +30,8 @@ export default function DraftTextInput() {
     ? getVariableStylesHeading(styles)
     : { headingVariantStyles: "", containerVariantStyles: "" };
 
-  console.log(containerVariantStyles);
-  console.log(headingVariantStyles);
+  // console.log(containerVariantStyles);
+  // console.log(headingVariantStyles);
 
   return (
     <div className={`${containerBaseStyles} ${containerVariantStyles}`}>

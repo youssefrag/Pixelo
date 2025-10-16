@@ -26,7 +26,7 @@ export type ComponentNode = BaseNode & {
   children?: never;
 };
 
-export type HeadingComponentNode = Extract<ComponentNode, { kind: "heading" }>;
+export type HeadingComponentNode = ComponentNode & { kind: "heading" };
 
 export type BuilderNode = SectionNode | ComponentNode;
 
@@ -66,3 +66,11 @@ export type TextDraft = DraftBase & {
 export type ComponentDraft = TextDraft | null;
 
 export type DraftState = TextDraft | null;
+
+// export type HeadingStyles = {
+//   textAlign?: "left" | "center" | "right";
+//   font?: string;
+//   fontSizePx?: string;
+//   fontWeight?: string;
+//   color?: string;
+// };
