@@ -2,12 +2,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 import type { RootState, AppDispatch } from "@/store";
 
-import { updateTextDraftContent } from "@/store/slices/builderSlice";
+import {
+  updateTextDraftContent,
+  saveComponentDraft,
+} from "@/store/slices/builderSlice";
 
 import { getVariableStylesHeading } from "../../helpers/styling-helpers";
 import { useEffect, useMemo, useRef } from "react";
 
-export default function DraftTextInput() {
+export default function DraftHeadingInput() {
   const dispatch = useDispatch<AppDispatch>();
 
   const { ui } = useSelector((state: RootState) => state.builderSlice);
@@ -55,6 +58,24 @@ export default function DraftTextInput() {
     styles?.color,
   ]);
 
+  // Save on pressing enter
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (!ui.draft) return;
+      dispatch(
+        saveComponentDraft({
+          id: ui.draft?.id,
+          kind: "heading",
+          parentId: ui.draft.targetParentId ?? "",
+          styles: ui.draft.styles,
+          props: ui.draft.props,
+        })
+      );
+    }
+  };
+
   const containerBase = "flex";
   const inputUI = `rounded-lg border border-gray-300 px-3 py-2 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 ${safeHeadingClass}`;
 
@@ -78,6 +99,7 @@ export default function DraftTextInput() {
         ref={inputRef}
         type="text"
         value={text}
+        onKeyDown={handleKeyDown}
         onChange={(e) => dispatch(updateTextDraftContent(e.target.value))}
         placeholder="Type heading..."
         className={inputUI}

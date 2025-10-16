@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
-import DraftTextInput from "./DraftTextInput";
+import DraftHeadingInput from "./DraftHeadingInput";
 import RenderHeading from "../RenderComponents/RenderHeading";
 import { BuilderNode, HeadingComponentNode } from "@/app/types";
 
@@ -25,7 +25,7 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
             draft.id === child.id &&
             draft.targetParentId === sectionId;
 
-          if (isEditingThis) return <DraftTextInput key={child.id} />;
+          if (isEditingThis) return <DraftHeadingInput key={child.id} />;
 
           return (
             <RenderHeading
@@ -51,7 +51,7 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
   return (
     <>
       {renderedChildren}
-      {shouldAppendNewDraft && <DraftTextInput key={`draft-${sectionId}`} />}
+      {shouldAppendNewDraft && <DraftHeadingInput key={`draft-${sectionId}`} />}
     </>
   );
 }
