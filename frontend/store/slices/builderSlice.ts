@@ -109,14 +109,13 @@ const builderSlice = createSlice({
     },
 
     // Logic for creating text components
-    startTextDraft(
+    startHeadingDraft(
       state,
       action: PayloadAction<{
-        kind: "heading" | "paragraph";
         parentId: string | null;
       }>
     ) {
-      const { kind, parentId } = action.payload;
+      const { parentId } = action.payload;
       const id = nanoid();
 
       state.ui.leftBar = { tab: "layout" };
@@ -125,11 +124,11 @@ const builderSlice = createSlice({
         draft: "text",
         id,
         type: "component",
-        kind,
+        kind: "heading",
         targetParentId: parentId,
         props: { text: "" },
         styles: {
-          variant: kind === "heading" ? "h2" : "p",
+          variant: "h2",
           textAlign: "left",
           font: "",
           fontSizePx: "32",
@@ -140,6 +139,39 @@ const builderSlice = createSlice({
 
       state.selectedId = id;
     },
+
+    startParagraphDraft(
+      state,
+      action: PayloadAction<{
+        parentId: string | null;
+      }>
+    ) {
+      const { parentId } = action.payload;
+      const id = nanoid();
+
+      state.ui.leftBar = { tab: "layout" };
+
+      state.ui.draft = {
+        draft: "text",
+        id,
+        type: "component",
+        kind: "paragraph",
+        targetParentId: parentId,
+        props: { text: "" },
+        styles: {
+          variant: "p",
+          textAlign: "left",
+          font: "",
+          fontSizePx: "16",
+          fontWeight: "font-normal",
+          color: "#000000",
+          lineHeight: "1.5",
+        },
+      };
+
+      state.selectedId = id;
+    },
+
     updateTextDraftContent(state, action: PayloadAction<string>) {
       if (!state.ui.draft) return;
       state.ui.draft.props.text = action.payload;
@@ -283,7 +315,8 @@ export const {
   openComponentPicker,
   closeComponentPicker,
   clearDraft,
-  startTextDraft,
+  startHeadingDraft,
+  startParagraphDraft,
   updateTextDraftContent,
   updateSelectedStyle,
   saveComponentDraft,

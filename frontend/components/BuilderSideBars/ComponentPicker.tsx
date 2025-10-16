@@ -5,7 +5,8 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import type { RootState, AppDispatch } from "@/store";
 import {
   closeComponentPicker,
-  startTextDraft,
+  startHeadingDraft,
+  startParagraphDraft,
 } from "@/store/slices/builderSlice";
 
 import HIcon from "@/public/assets/heading-01.svg";
@@ -27,7 +28,11 @@ export default function ComponentPicker() {
   };
 
   const handleHeadingDraft = () => {
-    dispatch(startTextDraft({ kind: "heading", parentId }));
+    dispatch(startHeadingDraft({ parentId }));
+  };
+
+  const handleParagraphDraft = () => {
+    dispatch(startParagraphDraft({ parentId }));
   };
 
   return (
@@ -53,7 +58,10 @@ export default function ComponentPicker() {
           <div className="mt-1 text-[14px]">Heading</div>
         </div>
         <div>
-          <div className="h-[86px] w-[109px] bg-gray-200 flex justify-center items-center rounded-2xl cursor-pointer">
+          <div
+            onClick={handleParagraphDraft}
+            className="h-[86px] w-[109px] bg-gray-200 flex justify-center items-center rounded-2xl cursor-pointer"
+          >
             <PIcon className="w-6 h-6 text-black" />
           </div>
           <div className="mt-1 text-[14px]">Paragraph</div>

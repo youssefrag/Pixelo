@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 import DraftHeadingInput from "./DraftHeadingInput";
+import DraftParagraphInput from "./DraftParagraphInput";
 import RenderHeading from "../RenderComponents/RenderHeading";
 import { BuilderNode, HeadingComponentNode } from "@/app/types";
 
@@ -42,16 +43,31 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
     return null;
   });
 
-  const shouldAppendNewDraft =
+  const shouldAppendHeadingDraft =
     !!draft &&
+    draft.kind === "heading" &&
     draft.draft === "text" &&
     !nodes[draft.id] &&
     draft.targetParentId === sectionId;
 
+  const shouldAppendParagraphDraft =
+    !!draft &&
+    draft.kind === "paragraph" &&
+    draft.draft === "text" &&
+    !nodes[draft.id] &&
+    draft.targetParentId === sectionId;
+
+  // console.log(shouldAppendParagraphDraft);
+
   return (
     <>
       {renderedChildren}
-      {shouldAppendNewDraft && <DraftHeadingInput key={`draft-${sectionId}`} />}
+      {shouldAppendHeadingDraft && (
+        <DraftHeadingInput key={`draft-${sectionId}`} />
+      )}
+      {shouldAppendParagraphDraft && (
+        <DraftParagraphInput key={`draft-${sectionId}`} />
+      )}
     </>
   );
 }

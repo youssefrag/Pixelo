@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "@/store";
 
 import HeadingEditor from "./HeadingEditor";
+import ParagraphEditor from "./ParagraphEditor";
 
 export default function ComponentEditor() {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,13 +19,11 @@ export default function ComponentEditor() {
   const kind =
     draft?.kind ?? (node && node.type === "component" ? node.kind : undefined);
 
-  const isDraft = Boolean(draft);
-
   switch (kind) {
     case "heading":
-      return <HeadingEditor componentId={selectedId} isDraft={isDraft} />;
+      return <HeadingEditor componentId={selectedId} />;
     case "paragraph":
-      return null;
+      return <ParagraphEditor componentId={selectedId} />;
     default:
       return null;
   }

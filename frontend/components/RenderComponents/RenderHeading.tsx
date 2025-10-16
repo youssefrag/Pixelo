@@ -18,13 +18,13 @@ export default function RenderHeading({
   const text = heading?.props.text as string;
   const styles = heading.styles;
 
-  console.log(styles);
+  // console.log(styles);
 
   const { headingVariantStyles, containerVariantStyles } =
     getVariableStylesHeading(styles);
 
-  console.log(headingVariantStyles);
-  console.log(containerVariantStyles);
+  // console.log(headingVariantStyles);
+  // console.log(containerVariantStyles);
 
   const safeHeadingClass = headingVariantStyles.replace(
     /text-\[[^\]]+\]\s?/g,

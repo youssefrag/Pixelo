@@ -66,11 +66,3 @@ export type TextDraft = DraftBase & {
 export type ComponentDraft = TextDraft | null;
 
 export type DraftState = TextDraft | null;
-
-// export type HeadingStyles = {
-//   textAlign?: "left" | "center" | "right";
-//   font?: string;
-//   fontSizePx?: string;
-//   fontWeight?: string;
-//   color?: string;
-// };

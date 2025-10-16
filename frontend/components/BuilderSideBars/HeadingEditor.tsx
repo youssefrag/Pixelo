@@ -37,22 +37,16 @@ const FONT_WEIGHTS = [
 
 export default function HeadingEditor({
   componentId,
-  isDraft,
 }: {
   componentId: string;
-  isDraft: boolean;
 }) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { rootOrder, nodes, ui } = useSelector(
-    (state: RootState) => state.builderSlice
-  );
+  const { ui } = useSelector((state: RootState) => state.builderSlice);
 
-  const styles = isDraft ? ui.draft?.styles : nodes[componentId].styles;
+  const styles = ui.draft?.styles;
 
-  const parentId = isDraft
-    ? ui.draft?.targetParentId
-    : nodes[componentId].parentId;
+  const parentId = ui.draft?.targetParentId;
 
   const font = styles?.font ?? "font-switzer";
 
