@@ -1,5 +1,9 @@
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState, AppDispatch } from "@/store";
+
 import { HeadingComponentNode } from "@/app/types";
 
+import { select, editComponent } from "@/store/slices/builderSlice";
 import { getVariableStylesHeading } from "@/helpers/styling-helpers";
 
 export default function RenderHeading({
@@ -8,6 +12,8 @@ export default function RenderHeading({
   heading: HeadingComponentNode;
 }) {
   if (!heading) return null;
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const text = heading?.props.text as string;
   const styles = heading.styles;
@@ -28,7 +34,10 @@ export default function RenderHeading({
   return (
     <div className={`flex ${containerVariantStyles}`}>
       <h2
-        className={safeHeadingClass}
+        onClick={() => {
+          dispatch(editComponent({ id: heading.id }));
+        }}
+        className={`${safeHeadingClass} cursor-pointer`}
         style={{
           fontSize: styles?.fontSizePx ? `${styles.fontSizePx}px` : undefined,
           color: styles?.color || undefined,

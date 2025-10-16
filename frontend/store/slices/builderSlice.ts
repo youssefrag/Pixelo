@@ -248,6 +248,32 @@ const builderSlice = createSlice({
 
       state.selectedId = action.payload.id;
     },
+    deleteComponent(state, action: PayloadAction<{ id: string }>) {
+      const { id } = action.payload;
+      const existing = state.nodes[id];
+
+      if (existing) {
+        const parentId = existing.parentId;
+        if (parentId == null) {
+          state.ui.draft = null;
+          return;
+        }
+
+        const parent = state.nodes[parentId];
+
+        delete state.nodes[id];
+
+        if (parent && Array.isArray(parent.children)) {
+          parent.children = parent.children.filter((childId) => childId !== id);
+        }
+
+        state.selectedId = parent?.id ?? null;
+      } else {
+        state.selectedId = state.ui.draft?.targetParentId ?? null;
+      }
+
+      state.ui.draft = null;
+    },
   },
 });
 
@@ -262,5 +288,6 @@ export const {
   updateSelectedStyle,
   saveComponentDraft,
   editComponent,
+  deleteComponent,
 } = builderSlice.actions;
 export default builderSlice.reducer;

@@ -13,6 +13,7 @@ import type { RootState, AppDispatch } from "@/store";
 import {
   updateSelectedStyle,
   saveComponentDraft,
+  deleteComponent,
 } from "@/store/slices/builderSlice";
 
 const FONT_OPTIONS = [
@@ -98,6 +99,10 @@ export default function HeadingEditor({
         props: { text: ui.draft?.props.text },
       })
     );
+  };
+
+  const handleDeleteheading = () => {
+    dispatch(deleteComponent({ id: componentId }));
   };
 
   return (
@@ -246,11 +251,13 @@ export default function HeadingEditor({
       <div className="mt-4 flex justify-around">
         <button
           onClick={handleSaveHeading}
-          className="bg-[#FF7A00] px-6 py-3 rounded-md text-white"
+          className="bg-[#FF7A00] px-6 py-3 rounded-md text-white cursor-pointer"
         >
           Save
         </button>
-        <button>Delete</button>
+        <button onClick={handleDeleteheading} className="cursor-pointer">
+          Delete
+        </button>
       </div>
     </>
   );
