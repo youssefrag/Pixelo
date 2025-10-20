@@ -24,3 +24,28 @@ export function getVariableStylesHeading(styles: Record<string, string>): {
 
   return { headingVariantStyles, containerVariantStyles };
 }
+
+export function getVariableStylesParagraph(styles: Record<string, string>): {
+  paragraphVariantStyles: string;
+  containerVariantStyles: string;
+} {
+  let paragraphVariantStyles = "";
+  let containerVariantStyles = "";
+
+  switch (styles.textAlign) {
+    case "left":
+      containerVariantStyles += "justify-start ";
+      paragraphVariantStyles += "text-left ";
+      break;
+    case "center":
+      containerVariantStyles += "justify-center ";
+      paragraphVariantStyles += "text-center ";
+      break;
+    case "right":
+      containerVariantStyles += "justify-end ";
+      paragraphVariantStyles += "text-right ";
+      break;
+  }
+
+  return { paragraphVariantStyles, containerVariantStyles };
+}

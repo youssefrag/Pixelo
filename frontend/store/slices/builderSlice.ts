@@ -166,6 +166,8 @@ const builderSlice = createSlice({
           fontWeight: "font-normal",
           color: "#000000",
           lineHeight: "1.5",
+          width: "80",
+          rows: "3",
         },
       };
 

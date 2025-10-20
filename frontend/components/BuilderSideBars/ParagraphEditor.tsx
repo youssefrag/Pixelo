@@ -38,6 +38,10 @@ export default function ParagraphEditor({
 
   const styles = ui.draft?.styles;
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(updateSelectedStyle({ key: "width", value: e.target.value }));
+  };
+
   return (
     <>
       <div className="mb-[2rem]">
@@ -92,6 +96,20 @@ export default function ParagraphEditor({
             />
           )}
         </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <label className="font-medium text-gray-700">
+          Width: {styles?.width}%
+        </label>
+        <input
+          type="range"
+          min={10}
+          max={100}
+          step={10}
+          value={styles?.width ?? 80}
+          onChange={handleChange}
+          className="w-full accent-gray-700 cursor-pointer"
+        />
       </div>
     </>
   );

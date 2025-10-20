@@ -88,7 +88,7 @@ export default function DraftHeadingInput() {
         style={{
           position: "absolute",
           visibility: "hidden",
-          whiteSpace: "pre", // preserve spaces
+          whiteSpace: "pre",
           fontSize: styles?.fontSizePx ? `${styles.fontSizePx}px` : undefined,
           fontWeight: styles?.fontWeight as any,
           letterSpacing: "inherit",
