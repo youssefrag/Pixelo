@@ -4,7 +4,12 @@ import { RootState } from "@/store";
 import DraftHeadingInput from "./DraftHeadingInput";
 import DraftParagraphInput from "./DraftParagraphInput";
 import RenderHeading from "../RenderComponents/RenderHeading";
-import { BuilderNode, HeadingComponentNode } from "@/app/types";
+import {
+  BuilderNode,
+  HeadingComponentNode,
+  ParagraphComponentNode,
+} from "@/app/types";
+import RenderParagraph from "../RenderComponents/RenderParagraph";
 
 export default function SectionRender({ sectionId }: { sectionId: string }) {
   const { nodes, ui } = useSelector((state: RootState) => state.builderSlice);
@@ -32,6 +37,21 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
             <RenderHeading
               key={child.id}
               heading={child as HeadingComponentNode}
+            />
+          );
+        }
+        case "paragraph": {
+          const isEditingThis =
+            draft &&
+            draft.id === child.id &&
+            draft.targetParentId === sectionId;
+
+          if (isEditingThis) return <DraftParagraphInput key={child.id} />;
+
+          return (
+            <RenderParagraph
+              key={child.id}
+              paragraph={child as ParagraphComponentNode}
             />
           );
         }

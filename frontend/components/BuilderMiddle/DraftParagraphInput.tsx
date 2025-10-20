@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "@/store";
 import { updateTextDraftContent } from "@/store/slices/builderSlice";
 import { getVariableStylesParagraph } from "@/helpers/styling-helpers";
-import { useMemo } from "react";
+import { useLayoutEffect, useMemo, useRef } from "react";
 
 export default function DraftParagraphInput() {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,9 +22,20 @@ export default function DraftParagraphInput() {
   const containerBase = "flex";
   const inputUI = `rounded-lg border border-gray-300 px-3 py-2 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400`;
 
+  // autosize on mount + when value or font-size changes
+  const taRef = useRef<HTMLTextAreaElement | null>(null);
+  useLayoutEffect(() => {
+    const el = taRef.current;
+    if (!el) return;
+    // Reset then grow to scrollHeight
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [text, styles?.fontSizePx]); // re-measure when content or font size changes
+
   return (
     <div className={`${containerBase} ${containerVariantStyles}`}>
       <textarea
+        ref={taRef}
         rows={3}
         value={text}
         onChange={(e) => {

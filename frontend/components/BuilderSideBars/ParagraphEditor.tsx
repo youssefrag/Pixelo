@@ -1,12 +1,16 @@
 import { AppDispatch, RootState } from "@/store";
-import { updateSelectedStyle } from "@/store/slices/builderSlice";
+import {
+  deleteComponent,
+  saveComponentDraft,
+  updateSelectedStyle,
+} from "@/store/slices/builderSlice";
 import {
   faAlignCenter,
   faAlignLeft,
   faAlignRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -40,6 +44,8 @@ export default function ParagraphEditor({
 
   const styles = ui.draft?.styles;
 
+  const parentId = ui.draft?.targetParentId;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(updateSelectedStyle({ key: "width", value: e.target.value }));
   };
@@ -59,8 +65,34 @@ export default function ParagraphEditor({
 
   const color = styles?.color;
 
+  useEffect(() => {
+    const closeOnOutsideClick = (e: MouseEvent) => {
+      if (popover.current && !popover.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    return () => document.removeEventListener("mousedown", closeOnOutsideClick);
+  }, []);
+
   const handleColorChange = (newColor: string) => {
     dispatch(updateSelectedStyle({ key: "color", value: newColor }));
+  };
+
+  const handleSaveParagraph = () => {
+    dispatch(
+      saveComponentDraft({
+        id: componentId,
+        kind: "paragraph",
+        parentId: parentId ?? "",
+        styles: styles ?? {},
+        props: { text: ui.draft?.props.text },
+      })
+    );
+  };
+
+  const handleDeleteParagraph = () => {
+    dispatch(deleteComponent({ id: componentId }));
   };
 
   return (
@@ -219,6 +251,17 @@ export default function ParagraphEditor({
             </div>
           )}
         </div>
+      </div>
+      <div className="mt-4 flex justify-around">
+        <button
+          onClick={handleSaveParagraph}
+          className="bg-[#FF7A00] px-6 py-3 rounded-md text-white cursor-pointer"
+        >
+          Save
+        </button>
+        <button onClick={handleDeleteParagraph} className="cursor-pointer">
+          Delete
+        </button>
       </div>
     </>
   );
