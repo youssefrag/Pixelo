@@ -6,6 +6,11 @@ html {
   scroll-behavior: smooth;
 }
 
+textarea {
+  resize: none;
+  overflow: hidden;
+}
+
 .font-inter {
   font-family: "Inter", sans-serif;
 }

@@ -27,8 +27,16 @@ export default function DraftParagraphInput() {
       <textarea
         rows={3}
         value={text}
-        onChange={(e) => dispatch(updateTextDraftContent(e.target.value))}
-        style={{ width: `${styles?.width ?? 80}%` }}
+        onChange={(e) => {
+          dispatch(updateTextDraftContent(e.target.value));
+          e.target.style.height = "auto";
+          e.target.style.height = `${e.target.scrollHeight}px`;
+        }}
+        style={{
+          fontSize: styles?.fontSizePx ? `${styles.fontSizePx}px` : undefined,
+          color: styles?.color || undefined,
+          width: `${styles?.width ?? 80}%`,
+        }}
         className={`${inputUI} ${paragraphVariantStyles}`}
       ></textarea>
     </div>

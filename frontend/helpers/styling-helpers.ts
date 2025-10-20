@@ -47,5 +47,9 @@ export function getVariableStylesParagraph(styles: Record<string, string>): {
       break;
   }
 
+  paragraphVariantStyles += styles.font;
+  // paragraphVariantStyles += ` text-[${styles.fontSizePx}px]`;
+  paragraphVariantStyles += ` ${styles.fontWeight}`;
+
   return { paragraphVariantStyles, containerVariantStyles };
 }
