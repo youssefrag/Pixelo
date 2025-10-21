@@ -7,6 +7,7 @@ import {
   closeComponentPicker,
   startHeadingDraft,
   startParagraphDraft,
+  startTableDraft,
 } from "@/store/slices/builderSlice";
 
 import HIcon from "@/public/assets/heading-01.svg";
@@ -33,6 +34,10 @@ export default function ComponentPicker() {
 
   const handleParagraphDraft = () => {
     dispatch(startParagraphDraft({ parentId }));
+  };
+
+  const handleTableDraft = () => {
+    dispatch(startTableDraft({ parentId }));
   };
 
   return (
@@ -67,7 +72,10 @@ export default function ComponentPicker() {
           <div className="mt-1 text-[14px]">Paragraph</div>
         </div>
         <div>
-          <div className="h-[86px] w-[109px] bg-gray-200 flex justify-center items-center rounded-2xl cursor-pointer">
+          <div
+            onClick={handleTableDraft}
+            className="h-[86px] w-[109px] bg-gray-200 flex justify-center items-center rounded-2xl cursor-pointer"
+          >
             <TableIcon className="w-6 h-6 text-black" />
           </div>
           <div className="mt-1 text-[14px]">Table</div>

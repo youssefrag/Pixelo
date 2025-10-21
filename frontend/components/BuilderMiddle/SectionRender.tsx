@@ -77,6 +77,12 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
     !nodes[draft.id] &&
     draft.targetParentId === sectionId;
 
+  const shouldAppendTableDraft =
+    !!draft &&
+    draft.kind === "table" &&
+    !nodes[draft.id] &&
+    draft.targetParentId === sectionId;
+
   // console.log(shouldAppendParagraphDraft);
 
   return (

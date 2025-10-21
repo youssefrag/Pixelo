@@ -3,11 +3,14 @@ import type { RootState, AppDispatch } from "@/store";
 import { updateTextDraftContent } from "@/store/slices/builderSlice";
 import { getVariableStylesParagraph } from "@/helpers/styling-helpers";
 import { useLayoutEffect, useMemo, useRef } from "react";
+import { isTextDraft } from "@/helpers/type-helpers";
 
 export default function DraftParagraphInput() {
   const dispatch = useDispatch<AppDispatch>();
 
   const { ui } = useSelector((state: RootState) => state.builderSlice);
+
+  if (!isTextDraft(ui.draft)) return;
 
   const text = ui.draft?.props.text ?? "";
 

@@ -185,7 +185,14 @@ const builderSlice = createSlice({
         type: "component",
         kind: "table",
         targetParentId: parentId,
-        props: { rows: ["row 1"], cols: ["col 1"], cells: [[]] },
+        props: {
+          rows: ["r1", "r2"],
+          cols: ["c1", "c2"],
+          data: [
+            ["hello", "hi"],
+            ["example", "example"],
+          ],
+        },
         styles: {},
       };
 
@@ -338,6 +345,7 @@ export const {
   clearDraft,
   startHeadingDraft,
   startParagraphDraft,
+  startTableDraft,
   updateTextDraftContent,
   updateSelectedStyle,
   saveComponentDraft,
