@@ -65,6 +65,11 @@ export type TextDraft = DraftBase & {
   props: { text: string };
 };
 
-export type ComponentDraft = TextDraft | null;
+export type TableDraft = DraftBase & {
+  kind: "table";
+  props: { rows: string[]; cols: string[]; cells: string[][] };
+};
 
-export type DraftState = TextDraft | null;
+export type ComponentDraft = TextDraft | TableDraft | null;
+
+export type DraftState = TextDraft | TableDraft | null;

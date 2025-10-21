@@ -9,7 +9,7 @@ import {
   ComponentKind,
 } from "@/app/types";
 
-import { isTextKind } from "@/helpers/type-helpers";
+import { isTextKind, isTextDraft } from "@/helpers/type-helpers";
 
 const initialState: BuilderState = {
   rootOrder: [],
@@ -174,8 +174,27 @@ const builderSlice = createSlice({
       state.selectedId = id;
     },
 
+    startTableDraft(state, action: PayloadAction<{ parentId: string | null }>) {
+      const { parentId } = action.payload;
+      const id = nanoid();
+
+      state.ui.leftBar = { tab: "layout" };
+
+      state.ui.draft = {
+        id,
+        type: "component",
+        kind: "table",
+        targetParentId: parentId,
+        props: { rows: ["row 1"], cols: ["col 1"], cells: [[]] },
+        styles: {},
+      };
+
+      state.selectedId = id;
+    },
+
     updateTextDraftContent(state, action: PayloadAction<string>) {
       if (!state.ui.draft) return;
+      if (!isTextDraft(state.ui.draft)) return;
       state.ui.draft.props.text = action.payload;
     },
 
