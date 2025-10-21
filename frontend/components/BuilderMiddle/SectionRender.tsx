@@ -56,6 +56,12 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
             />
           );
         }
+        case "table": {
+          const isEditingThis =
+            draft && draft.id && child.id && draft.targetParentId === sectionId;
+
+          if (isEditingThis) return <TableDraft key={child.id} />;
+        }
         default:
           return null; // TODO: add other kinds later
       }

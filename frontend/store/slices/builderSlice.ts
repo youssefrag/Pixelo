@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, nanoid, current } from "@reduxjs/toolkit";
 
 import {
   BuilderState,
@@ -223,6 +223,30 @@ const builderSlice = createSlice({
       draft.props.data.push(newRow);
     },
 
+    selectEditCell(state, action: PayloadAction<{ cellId: string }>) {
+      const { draft } = state.ui;
+
+      if (!isTableDraft(draft)) return;
+
+      draft.props.editCell = action.payload.cellId;
+    },
+
+    updateCellDraftContent(state, action: PayloadAction<{ value: string }>) {
+      if (!isTableDraft(state.ui.draft)) return;
+
+      const cellLocation = state.ui.draft?.props.editCell?.split(" ");
+      console.log(cellLocation);
+
+      if (cellLocation && cellLocation[0] === "h") {
+        state.ui.draft.props.headers[Number(cellLocation[1])] =
+          action.payload.value;
+      } else if (cellLocation && cellLocation[0] !== "h") {
+        state.ui.draft.props.data[Number(cellLocation[0])][
+          Number(cellLocation[1])
+        ] = action.payload.value;
+      }
+    },
+
     updateTextDraftContent(state, action: PayloadAction<string>) {
       if (!state.ui.draft) return;
       if (!isTextDraft(state.ui.draft)) return;
@@ -311,27 +335,85 @@ const builderSlice = createSlice({
 
       if (!node || !isComponent(node)) return;
 
-      if (!isTextKind(node.kind)) {
-        // Not supported yet → clear draft (or just return; your call)
-        state.ui.draft = null;
-        return;
+      switch (node.kind) {
+        case "heading":
+        case "paragraph": {
+          const rawText = (node.props as Record<string, unknown>)?.["text"];
+          const text = typeof rawText === "string" ? rawText : "";
+
+          state.ui.draft = {
+            draft: "text",
+            id: node.id,
+            type: "component",
+            kind: node.kind,
+            targetParentId: node.parentId,
+            styles: { ...node.styles },
+            props: { text },
+          };
+          break;
+        }
+
+        case "table": {
+          const props = (node.props as Record<string, unknown>) || {};
+          const headers = Array.isArray(props.headers)
+            ? (props.headers as string[])
+            : [];
+          const data = Array.isArray(props.data)
+            ? (props.data as string[][])
+            : [];
+
+          state.ui.draft = {
+            id: node.id,
+            type: "component",
+            kind: "table",
+            targetParentId: node.parentId,
+            styles: { ...node.styles },
+            props: {
+              headers,
+              data,
+              editCell: null,
+            },
+          };
+          break;
+        }
+        default:
+          state.ui.draft = null;
+          return;
       }
-
-      const rawText = (node.props as Record<string, unknown>)?.["text"];
-      const text = typeof rawText === "string" ? rawText : "";
-
-      state.ui.draft = {
-        draft: "text",
-        id: node.id,
-        type: "component",
-        kind: node.kind,
-        targetParentId: node.parentId,
-        styles: { ...node.styles },
-        props: { text },
-      };
 
       state.selectedId = action.payload.id;
     },
+    // editComponent(
+    //   state,
+    //   action: PayloadAction<{
+    //     id: string;
+    //   }>
+    // ) {
+    //   const node = state.nodes[action.payload.id];
+
+    //   if (!node || !isComponent(node)) return;
+
+    //   if (!isTextKind(node.kind)) {
+    //     // Not supported yet → clear draft (or just return; your call)
+    //     state.ui.draft = null;
+    //     return;
+    //   }
+
+    //   const rawText = (node.props as Record<string, unknown>)?.["text"];
+    //   const text = typeof rawText === "string" ? rawText : "";
+
+    //   state.ui.draft = {
+    //     draft: "text",
+    //     id: node.id,
+    //     type: "component",
+    //     kind: node.kind,
+    //     targetParentId: node.parentId,
+    //     styles: { ...node.styles },
+    //     props: { text },
+    //   };
+
+    //   state.selectedId = action.payload.id;
+    // },
     deleteComponent(state, action: PayloadAction<{ id: string }>) {
       const { id } = action.payload;
       const existing = state.nodes[id];
@@ -372,6 +454,8 @@ export const {
   startTableDraft,
   addColTable,
   addRowTable,
+  selectEditCell,
+  updateCellDraftContent,
   updateTextDraftContent,
   updateSelectedStyle,
   saveComponentDraft,
