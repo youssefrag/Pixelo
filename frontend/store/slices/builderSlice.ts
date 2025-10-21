@@ -9,7 +9,7 @@ import {
   ComponentKind,
 } from "@/app/types";
 
-import { isTextKind, isTextDraft } from "@/helpers/type-helpers";
+import { isTextKind, isTextDraft, isTableDraft } from "@/helpers/type-helpers";
 
 const initialState: BuilderState = {
   rootOrder: [],
@@ -174,6 +174,8 @@ const builderSlice = createSlice({
       state.selectedId = id;
     },
 
+    // All logic for table draft
+
     startTableDraft(state, action: PayloadAction<{ parentId: string | null }>) {
       const { parentId } = action.payload;
       const id = nanoid();
@@ -186,17 +188,39 @@ const builderSlice = createSlice({
         kind: "table",
         targetParentId: parentId,
         props: {
-          rows: ["r1", "r2"],
-          cols: ["c1", "c2"],
+          headers: ["name", "age", "occupation"],
           data: [
-            ["hello", "hi"],
-            ["example", "example"],
+            ["Youssef", "21", "Engineer"],
+            ["Jon Jones", "34", "Janitor"],
           ],
+          editCell: null,
         },
         styles: {},
       };
 
       state.selectedId = id;
+    },
+
+    addColTable(state) {
+      const { draft } = state.ui;
+
+      if (!isTableDraft(draft)) return;
+
+      draft.props.headers.push("Header");
+
+      for (let row of draft.props.data) {
+        row.push("cell");
+      }
+    },
+
+    addRowTable(state) {
+      const { draft } = state.ui;
+
+      if (!isTableDraft(draft)) return;
+
+      const newRow = new Array(draft.props.headers.length).fill("cell");
+
+      draft.props.data.push(newRow);
     },
 
     updateTextDraftContent(state, action: PayloadAction<string>) {
@@ -346,6 +370,8 @@ export const {
   startHeadingDraft,
   startParagraphDraft,
   startTableDraft,
+  addColTable,
+  addRowTable,
   updateTextDraftContent,
   updateSelectedStyle,
   saveComponentDraft,

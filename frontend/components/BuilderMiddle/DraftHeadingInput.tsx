@@ -9,11 +9,14 @@ import {
 
 import { getVariableStylesHeading } from "../../helpers/styling-helpers";
 import { useEffect, useMemo, useRef } from "react";
+import { isTextDraft } from "@/helpers/type-helpers";
 
 export default function DraftHeadingInput() {
   const dispatch = useDispatch<AppDispatch>();
 
   const { ui } = useSelector((state: RootState) => state.builderSlice);
+
+  if (!isTextDraft(ui.draft)) return;
 
   const text = ui.draft?.props.text ?? "";
 

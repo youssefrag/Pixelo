@@ -10,6 +10,7 @@ import {
   ParagraphComponentNode,
 } from "@/app/types";
 import RenderParagraph from "../RenderComponents/RenderParagraph";
+import TableDraft from "./TableDraft";
 
 export default function SectionRender({ sectionId }: { sectionId: string }) {
   const { nodes, ui } = useSelector((state: RootState) => state.builderSlice);
@@ -94,6 +95,7 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
       {shouldAppendParagraphDraft && (
         <DraftParagraphInput key={`draft-${sectionId}`} />
       )}
+      {shouldAppendTableDraft && <TableDraft key={`draft-${sectionId}`} />}
     </>
   );
 }
