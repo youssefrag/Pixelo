@@ -3,8 +3,8 @@ import type { RootState, AppDispatch } from "@/store";
 
 import { HeadingComponentNode } from "@/app/types";
 
-import { select, editComponent } from "@/store/slices/builderSlice";
-import { getVariableStylesHeading } from "@/helpers/styling-helpers";
+import {  editComponent } from "@/store/slices/builderSlice";
+import {getVariableStylesHeading } from "@/helpers/styling-helpers";
 
 export default function RenderHeading({
   heading,
@@ -18,13 +18,8 @@ export default function RenderHeading({
   const text = heading?.props.text as string;
   const styles = heading.styles;
 
-  // console.log(styles);
-
   const { headingVariantStyles, containerVariantStyles } =
     getVariableStylesHeading(styles);
-
-  // console.log(headingVariantStyles);
-  // console.log(containerVariantStyles);
 
   const safeHeadingClass = headingVariantStyles.replace(
     /text-\[[^\]]+\]\s?/g,

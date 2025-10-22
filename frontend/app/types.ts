@@ -30,6 +30,8 @@ export type HeadingComponentNode = ComponentNode & { kind: "heading" };
 
 export type ParagraphComponentNode = ComponentNode & { kind: "paragraph" };
 
+export type TableComponentNode = ComponentNode & { kind: "table" };
+
 export type BuilderNode = SectionNode | ComponentNode;
 
 export type BuilderState = {

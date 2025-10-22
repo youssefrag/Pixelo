@@ -4,12 +4,14 @@ import { RootState } from "@/store";
 import DraftHeadingInput from "./DraftHeadingInput";
 import DraftParagraphInput from "./DraftParagraphInput";
 import RenderHeading from "../RenderComponents/RenderHeading";
+import RenderParagraph from "../RenderComponents/RenderParagraph";
+import RenderTable from "../RenderComponents/RenderTable";
 import {
   BuilderNode,
   HeadingComponentNode,
   ParagraphComponentNode,
+  TableComponentNode,
 } from "@/app/types";
-import RenderParagraph from "../RenderComponents/RenderParagraph";
 import TableDraft from "./TableDraft";
 
 export default function SectionRender({ sectionId }: { sectionId: string }) {
@@ -58,9 +60,16 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
         }
         case "table": {
           const isEditingThis =
-            draft && draft.id && child.id && draft.targetParentId === sectionId;
+            !!draft &&
+            draft.id === child.id &&
+            draft.targetParentId === sectionId &&
+            draft.kind === "table";
 
           if (isEditingThis) return <TableDraft key={child.id} />;
+
+          return (
+            <RenderTable key={child.id} table={child as TableComponentNode} />
+          );
         }
         default:
           return null; // TODO: add other kinds later
@@ -89,8 +98,6 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
     draft.kind === "table" &&
     !nodes[draft.id] &&
     draft.targetParentId === sectionId;
-
-  // console.log(shouldAppendParagraphDraft);
 
   return (
     <>

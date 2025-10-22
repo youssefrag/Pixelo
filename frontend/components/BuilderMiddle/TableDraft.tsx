@@ -23,8 +23,6 @@ export default function TableDraft() {
 
   const { headers, data } = draft?.props;
 
-  console.log({ headers, data });
-
   const handleAddCol = () => {
     dispatch(addColTable());
   };
@@ -33,11 +31,7 @@ export default function TableDraft() {
     dispatch(addRowTable());
   };
 
-  // console.log(draft.props.editCell);
-
   const editLocation = draft.props.editCell?.split(" ");
-
-  console.log(editLocation);
 
   return (
     <>

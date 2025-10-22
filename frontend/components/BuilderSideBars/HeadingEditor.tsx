@@ -16,6 +16,8 @@ import {
   deleteComponent,
 } from "@/store/slices/builderSlice";
 
+import { isTextDraft, isTextKind } from "@/helpers/type-helpers";
+
 const FONT_OPTIONS = [
   { id: "", label: "Switzer" },
   { id: "font-inter", label: "Inter" },
@@ -84,6 +86,9 @@ export default function HeadingEditor({
   };
 
   const handleSaveHeading = () => {
+    if (!isTextDraft(ui.draft)) {
+      return;
+    }
     dispatch(
       saveComponentDraft({
         id: componentId,

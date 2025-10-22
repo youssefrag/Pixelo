@@ -24,8 +24,6 @@ export default function RenderParagraph({
     ""
   );
 
-  console.log({ paragraphVariantStyles, containerVariantStyles });
-
   return (
     <div
       className={`flex ${containerVariantStyles} min-w-0`} // flex item can shrink

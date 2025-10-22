@@ -20,8 +20,6 @@ export default function DraftParagraphInput() {
     ? getVariableStylesParagraph(styles)
     : { paragraphVariantStyles: "", containerVariantStyles: "" };
 
-  console.log({ paragraphVariantStyles, containerVariantStyles });
-
   const containerBase = "flex";
   const inputUI = `rounded-lg border border-gray-300 px-3 py-2 placeholder:text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400`;
 

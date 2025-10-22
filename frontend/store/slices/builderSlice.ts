@@ -235,7 +235,6 @@ const builderSlice = createSlice({
       if (!isTableDraft(state.ui.draft)) return;
 
       const cellLocation = state.ui.draft?.props.editCell?.split(" ");
-      console.log(cellLocation);
 
       if (cellLocation && cellLocation[0] === "h") {
         state.ui.draft.props.headers[Number(cellLocation[1])] =
@@ -383,7 +382,7 @@ const builderSlice = createSlice({
 
       state.selectedId = action.payload.id;
     },
-    // editComponent(
+
     //   state,
     //   action: PayloadAction<{
     //     id: string;
