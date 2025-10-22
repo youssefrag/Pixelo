@@ -22,6 +22,62 @@ const initialState: BuilderState = {
   },
 };
 
+function commitCurrentDraft(state: BuilderState) {
+  const draft = state.ui.draft;
+  if (!draft) return;
+
+  const parentId = draft.targetParentId;
+  if (!parentId) {
+    state.ui.draft = null;
+    return;
+  }
+
+  const parent = state.nodes[parentId];
+  if (!parent || parent.type !== "section") {
+    state.ui.draft = null;
+    return;
+  }
+
+  let nextProps: Record<string, unknown>;
+  if (isTextDraft(draft)) {
+    nextProps = {
+      text: typeof draft.props.text === "string" ? draft.props.text : "",
+    };
+  } else if (isTableDraft(draft)) {
+    const headers = Array.isArray(draft.props.headers)
+      ? draft.props.headers
+      : [];
+    const data = Array.isArray(draft.props.data) ? draft.props.data : [];
+    nextProps = { headers, data };
+  } else {
+    state.ui.draft = null;
+    return;
+  }
+
+  const existing = state.nodes[draft.id];
+  if (!existing) {
+    // Create
+    state.nodes[draft.id] = {
+      id: draft.id,
+      name: draft.kind,
+      parentId,
+      depth: parent.depth + 1,
+      styles: { ...draft.styles },
+      type: "component",
+      kind: draft.kind,
+      props: nextProps,
+    };
+    if (!parent.children.includes(draft.id)) parent.children.push(draft.id);
+  } else if (existing.type === "component") {
+    existing.styles = { ...draft.styles };
+    existing.props = nextProps;
+  }
+
+  state.selectedId = draft.id;
+  state.ui.draft = null;
+  state.ui.leftBar.tab = "layout";
+}
+
 const builderSlice = createSlice({
   name: "builder",
   initialState,
@@ -84,6 +140,8 @@ const builderSlice = createSlice({
       state.ui.draft = null;
     },
     select(state, action: PayloadAction<string | null>) {
+      commitCurrentDraft(state);
+
       state.selectedId = action.payload;
       if (state.selectedId === null) return;
 
@@ -330,6 +388,8 @@ const builderSlice = createSlice({
         id: string;
       }>
     ) {
+      commitCurrentDraft(state); // <-- add this
+
       const node = state.nodes[action.payload.id];
 
       if (!node || !isComponent(node)) return;
