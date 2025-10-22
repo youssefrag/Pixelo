@@ -7,6 +7,8 @@ import {
   selectEditCell,
   updateCellDraftContent,
   saveComponentDraft,
+  deleteTableCol,
+  deleteTableRow,
 } from "@/store/slices/builderSlice";
 import { isTableDraft } from "@/helpers/type-helpers";
 
@@ -31,31 +33,36 @@ export default function TableDraft() {
     dispatch(addRowTable());
   };
 
+  const handleDeleteRow = (row: number) => {
+    dispatch(deleteTableRow({ row }));
+  };
+
+  const handleDeleteCol = (col: number) => {
+    dispatch(deleteTableCol({ col }));
+  };
+
   const editLocation = draft.props.editCell?.split(" ");
 
   return (
     <>
       <div className="flex items-start">
         <div></div>
-        <table className="w-[60%] text-center">
+        <table className="w-[60%] text-center table-fixed">
           <thead>
-            {/* Row 1 — column delete buttons */}
             <tr>
               {headers.map((_, i) => (
                 <th key={`trash-${i}`} className="px-2 py-1">
                   <button
-                    // onClick={() => handleDeleteColumn(i)}
+                    onClick={() => handleDeleteCol(i)}
                     className="bg-red-500 text-white font-semibold rounded-md px-2 py-1 hover:bg-red-600"
                   >
                     Trash
                   </button>
                 </th>
               ))}
-              {/* Empty header to align the right-side action column */}
               <th className="w-[80px]"></th>
             </tr>
 
-            {/* Row 2 — header labels / edit inputs */}
             <tr>
               {headers.map((h, i) => {
                 const isEditing =
@@ -69,13 +76,15 @@ export default function TableDraft() {
                     onClick={() =>
                       dispatch(selectEditCell({ cellId: `h ${i}` }))
                     }
-                    className="px-2 py-1 font-medium cursor-pointer"
+                    className="
+              px-2 py-2 font-semibold cursor-pointer align-middle
+              whitespace-normal break-words
+            "
                   >
                     {isEditing ? <EditCellInput tableId={draft.id} /> : h}
                   </th>
                 );
               })}
-              {/* Empty header to align the right-side action column */}
               <th></th>
             </tr>
           </thead>
@@ -83,7 +92,6 @@ export default function TableDraft() {
           <tbody>
             {data.map((row, r) => (
               <tr key={r}>
-                {/* Existing cells */}
                 {row.map((cell, c) => {
                   const isEditing =
                     editLocation &&
@@ -96,17 +104,19 @@ export default function TableDraft() {
                       onClick={() =>
                         dispatch(selectEditCell({ cellId: `${r} ${c}` }))
                       }
-                      className="px-2 py-1 align-middle cursor-pointer"
+                      className="
+                px-2 py-2 align-middle cursor-pointer
+                whitespace-normal break-words
+              "
                     >
                       {isEditing ? <EditCellInput tableId={draft.id} /> : cell}
                     </td>
                   );
                 })}
 
-                {/* Right-side row delete button */}
-                <td className="px-2 py-1 text-right">
+                <td className="px-2 py-2 text-right">
                   <button
-                    // onClick={() => handleDeleteRow(r)}
+                    onClick={() => handleDeleteRow(r)}
                     className="bg-red-500 text-white font-semibold rounded-md px-2 py-1 hover:bg-red-600"
                     aria-label={`Delete row ${r + 1}`}
                   >
@@ -118,12 +128,14 @@ export default function TableDraft() {
           </tbody>
         </table>
 
-        <button
-          onClick={handleAddCol}
-          className="bg-[#FF7A00] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer"
-        >
-          Add Column
-        </button>
+        {draft.props.headers.length < 10 && (
+          <button
+            onClick={handleAddCol}
+            className="bg-[#FF7A00] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer"
+          >
+            Add Column
+          </button>
+        )}
       </div>
       <button
         onClick={handleAddRow}
@@ -174,7 +186,12 @@ function EditCellInput({ tableId }: { tableId: string }) {
       }
       value={cellValue}
       onKeyDown={handleKeyDown}
-      className="text-center"
+      className="
+    w-full min-w-0 h-8 px-2 box-border text-center
+    [font:inherit] [line-height:inherit]
+    bg-transparent outline-none border border-transparent
+    focus:border-transparent focus:ring-0
+  "
     />
   );
 }

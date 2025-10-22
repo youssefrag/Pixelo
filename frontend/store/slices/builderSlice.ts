@@ -304,6 +304,30 @@ const builderSlice = createSlice({
       }
     },
 
+    deleteTableRow(state, action: PayloadAction<{ row: number }>) {
+      if (!isTableDraft(state.ui.draft)) return;
+
+      const row = action.payload.row;
+
+      state.ui.draft?.props.data.splice(row, 1);
+    },
+    deleteTableCol(state, action: PayloadAction<{ col: number }>) {
+      if (!isTableDraft(state.ui.draft)) return;
+
+      const col = action.payload.col;
+
+      state.ui.draft?.props.headers.splice(col, 1);
+
+      for (let row of state.ui.draft?.props.data) {
+        row.splice(col, 1);
+      }
+
+      if (!state.ui.draft?.props.headers.length) {
+        state.selectedId = state.ui.draft.targetParentId;
+        state.ui.draft = null;
+      }
+    },
+
     updateTextDraftContent(state, action: PayloadAction<string>) {
       if (!state.ui.draft) return;
       if (!isTextDraft(state.ui.draft)) return;
@@ -513,6 +537,8 @@ export const {
   startTableDraft,
   addColTable,
   addRowTable,
+  deleteTableRow,
+  deleteTableCol,
   selectEditCell,
   updateCellDraftContent,
   updateTextDraftContent,

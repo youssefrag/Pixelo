@@ -12,32 +12,32 @@ export default function RenderTable({ table }: { table: TableComponentNode }) {
   const { headers, data } = props as { headers: string[]; data: string[][] };
 
   return (
-    <table
-      onClick={() => {
-        dispatch(editComponent({ id: table.id }));
-      }}
-      className="w-[60%] text-center cursor-pointer"
-    >
-      <thead>
-        <tr>
-          {headers.map((h, i) => (
-            <th key={i} className="px-2 py-1 font-medium">
-              {h}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row, r) => (
-          <tr key={r}>
-            {row.map((cell, c) => (
-              <td key={c} className="px-2 py-1 align-middle">
-                {cell}
-              </td>
+    <div className="overflow-x-auto">
+      <table
+        onClick={() => dispatch(editComponent({ id: table.id }))}
+        className="table-auto max-w-full text-center cursor-pointer"
+      >
+        <thead>
+          <tr>
+            {headers.map((h, i) => (
+              <th key={i} className="px-2 py-1 font-medium">
+                {h}
+              </th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {data.map((row, r) => (
+            <tr key={r}>
+              {row.map((cell, c) => (
+                <td key={c} className="px-2 py-1 align-middle">
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
