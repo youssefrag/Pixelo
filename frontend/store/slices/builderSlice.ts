@@ -253,7 +253,17 @@ const builderSlice = createSlice({
           ],
           editCell: null,
         },
-        styles: {},
+        styles: {
+          font: "",
+          headingFontWeight: "font-semibold",
+          headerFontSize: "20",
+          headingBGColour: "#fff",
+          headingTextColour: "#000",
+          dataFontWeight: "font-normal",
+          dataFontSize: "18",
+          dataBGColour: "#fff",
+          dataTextColour: "#000",
+        },
       };
 
       state.selectedId = id;
@@ -467,36 +477,6 @@ const builderSlice = createSlice({
       state.selectedId = action.payload.id;
     },
 
-    //   state,
-    //   action: PayloadAction<{
-    //     id: string;
-    //   }>
-    // ) {
-    //   const node = state.nodes[action.payload.id];
-
-    //   if (!node || !isComponent(node)) return;
-
-    //   if (!isTextKind(node.kind)) {
-    //     // Not supported yet → clear draft (or just return; your call)
-    //     state.ui.draft = null;
-    //     return;
-    //   }
-
-    //   const rawText = (node.props as Record<string, unknown>)?.["text"];
-    //   const text = typeof rawText === "string" ? rawText : "";
-
-    //   state.ui.draft = {
-    //     draft: "text",
-    //     id: node.id,
-    //     type: "component",
-    //     kind: node.kind,
-    //     targetParentId: node.parentId,
-    //     styles: { ...node.styles },
-    //     props: { text },
-    //   };
-
-    //   state.selectedId = action.payload.id;
-    // },
     deleteComponent(state, action: PayloadAction<{ id: string }>) {
       const { id } = action.payload;
       const existing = state.nodes[id];
