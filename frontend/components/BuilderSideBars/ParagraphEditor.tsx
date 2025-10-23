@@ -14,24 +14,8 @@ import { useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useDispatch, useSelector } from "react-redux";
 
-const FONT_OPTIONS = [
-  { id: "", label: "Switzer" },
-  { id: "font-inter", label: "Inter" },
-  { id: "font-playfair", label: "Playfair Display" },
-  { id: "font-poppins", label: "Poppins" },
-  { id: "font-bebas", label: "Bebas Neue" },
-  { id: "font-pacifico", label: "Pacifico" },
-];
-
-const FONT_WEIGHTS = [
-  { id: "font-extralight", label: "Extra Light" },
-  { id: "font-light", label: "Light" },
-  { id: "font-normal", label: "Normal" },
-  { id: "font-medium", label: "Medium" },
-  { id: "font-semibold", label: "Semi Bold" },
-  { id: "font-bold", label: "Bold" },
-  { id: "font-extrabold", label: "Extra Bold" },
-];
+import { FONT_OPTIONS, FONT_WEIGHTS } from "@/helpers/constants";
+import { isTextDraft } from "@/helpers/type-helpers";
 
 export default function ParagraphEditor({
   componentId,
@@ -80,6 +64,9 @@ export default function ParagraphEditor({
   };
 
   const handleSaveParagraph = () => {
+    if (!isTextDraft(ui.draft)) {
+      return;
+    }
     dispatch(
       saveComponentDraft({
         id: componentId,
