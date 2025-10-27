@@ -11,6 +11,7 @@ import {
   deleteTableRow,
 } from "@/store/slices/builderSlice";
 import { isTableDraft } from "@/helpers/type-helpers";
+import { weightMap } from "@/helpers/constants";
 
 export default function TableDraft() {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +19,10 @@ export default function TableDraft() {
   const { ui } = useSelector((state: RootState) => state.builderSlice);
 
   const { draft } = ui;
+
+  const styles = draft?.styles;
+
+  console.log(styles);
 
   if (!isTableDraft(draft)) return null;
 
@@ -77,9 +82,18 @@ export default function TableDraft() {
                       dispatch(selectEditCell({ cellId: `h ${i}` }))
                     }
                     className="
-              px-2 py-2 font-semibold cursor-pointer align-middle
-              whitespace-normal break-words
-            "
+                      px-2 py-2  cursor-pointer align-middle
+                      whitespace-normal break-words
+                    "
+                    style={{
+                      fontSize: `${styles?.headerFontSize}px`,
+                      fontWeight:
+                        weightMap[
+                          styles?.headingFontWeight as keyof typeof weightMap
+                        ] ?? 400,
+                      backgroundColor: styles?.headingBGColour,
+                      color: styles?.headingTextColour,
+                    }}
                   >
                     {isEditing ? <EditCellInput tableId={draft.id} /> : h}
                   </th>
@@ -105,9 +119,18 @@ export default function TableDraft() {
                         dispatch(selectEditCell({ cellId: `${r} ${c}` }))
                       }
                       className="
-                px-2 py-2 align-middle cursor-pointer
-                whitespace-normal break-words
-              "
+                        px-2 py-2 align-middle cursor-pointer
+                        whitespace-normal break-words
+                      "
+                      style={{
+                        fontSize: `${styles?.dataFontSize}px`,
+                        fontWeight:
+                          weightMap[
+                            styles?.dataFontWeight as keyof typeof weightMap
+                          ] ?? 400,
+                        backgroundColor: styles?.dataBGColour,
+                        color: styles?.dataTextColour,
+                      }}
                     >
                       {isEditing ? <EditCellInput tableId={draft.id} /> : cell}
                     </td>
