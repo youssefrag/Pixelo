@@ -1,6 +1,7 @@
 import {
   ComponentDraft,
   ComponentKind,
+  ListDraft,
   TableDraft,
   TextDraft,
 } from "@/app/types";
@@ -14,6 +15,10 @@ export const isTextDraft = (draft: ComponentDraft): draft is TextDraft => {
 
 export const isTableDraft = (draft: ComponentDraft): draft is TableDraft => {
   return !!draft && draft.kind === "table";
+};
+
+export const isListDraft = (draft: ComponentDraft): draft is ListDraft => {
+  return !!draft && draft.kind === "list";
 };
 
 export const deepClone = <T>(x: T): T => JSON.parse(JSON.stringify(x));

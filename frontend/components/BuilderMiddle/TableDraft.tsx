@@ -12,6 +12,7 @@ import {
 } from "@/store/slices/builderSlice";
 import { isTableDraft } from "@/helpers/type-helpers";
 import { weightMap } from "@/helpers/constants";
+import { getVariableStylesTable } from "@/helpers/styling-helpers";
 
 export default function TableDraft() {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,11 +49,15 @@ export default function TableDraft() {
 
   const editLocation = draft.props.editCell?.split(" ");
 
+  const { tableVariantStyles } = getVariableStylesTable(draft?.styles);
+
   return (
     <>
       <div className="flex items-start">
         <div></div>
-        <table className="w-[60%] text-center table-fixed">
+        <table
+          className={`w-[60%] text-center table-fixed ${tableVariantStyles}`}
+        >
           <thead>
             <tr>
               {headers.map((_, i) => (

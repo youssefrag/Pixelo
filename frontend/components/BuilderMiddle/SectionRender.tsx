@@ -13,6 +13,7 @@ import {
   TableComponentNode,
 } from "@/app/types";
 import TableDraft from "./TableDraft";
+import ListDraft from "./ListDraft";
 
 export default function SectionRender({ sectionId }: { sectionId: string }) {
   const { nodes, ui } = useSelector((state: RootState) => state.builderSlice);
@@ -99,6 +100,12 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
     !nodes[draft.id] &&
     draft.targetParentId === sectionId;
 
+  const shouldAppendListDraft =
+    !!draft &&
+    draft.kind === "list" &&
+    !nodes[draft.id] &&
+    draft.targetParentId === sectionId;
+
   return (
     <>
       {renderedChildren}
@@ -109,6 +116,7 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
         <DraftParagraphInput key={`draft-${sectionId}`} />
       )}
       {shouldAppendTableDraft && <TableDraft key={`draft-${sectionId}`} />}
+      {shouldAppendListDraft && <ListDraft key={`draft-${sectionId}`} />}
     </>
   );
 }

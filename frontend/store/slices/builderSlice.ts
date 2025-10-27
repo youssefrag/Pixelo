@@ -5,11 +5,16 @@ import {
   BuilderNode,
   isSection,
   isComponent,
-  DraftState,
+  ComponentDraft,
   ComponentKind,
 } from "@/app/types";
 
-import { isTextKind, isTextDraft, isTableDraft } from "@/helpers/type-helpers";
+import {
+  isTextKind,
+  isTextDraft,
+  isTableDraft,
+  isListDraft,
+} from "@/helpers/type-helpers";
 
 const initialState: BuilderState = {
   rootOrder: [],
@@ -338,6 +343,40 @@ const builderSlice = createSlice({
       }
     },
 
+    // Logic for list draft
+
+    startListDraft(state, action: PayloadAction<{ parentId: string | null }>) {
+      const { parentId } = action.payload;
+      const id = nanoid();
+
+      state.ui.leftBar = { tab: "layout" };
+
+      state.ui.draft = {
+        id,
+        type: "component",
+        kind: "list",
+        targetParentId: parentId,
+        props: {
+          items: ["Example list item"],
+        },
+        styles: {
+          listType: "unordered",
+          font: "",
+          fontSizePx: "16",
+          fontWeight: "font-normal",
+          listItemGap: "8",
+        },
+      };
+
+      state.selectedId = id;
+    },
+
+    addListItem(state) {
+      if (!isListDraft(state.ui.draft)) return;
+
+      state.ui.draft.props.items.push("Sample List Item");
+    },
+
     updateTextDraftContent(state, action: PayloadAction<string>) {
       if (!state.ui.draft) return;
       if (!isTextDraft(state.ui.draft)) return;
@@ -521,6 +560,8 @@ export const {
   deleteTableCol,
   selectEditCell,
   updateCellDraftContent,
+  startListDraft,
+  addListItem,
   updateTextDraftContent,
   updateSelectedStyle,
   saveComponentDraft,
