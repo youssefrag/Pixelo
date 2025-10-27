@@ -48,10 +48,19 @@ export function getVariableStylesParagraph(styles: Record<string, string>): {
   }
 
   paragraphVariantStyles += styles.font;
-  // paragraphVariantStyles += ` text-[${styles.fontSizePx}px]`;
   paragraphVariantStyles += ` ${styles.fontWeight}`;
 
   containerVariantStyles += ` w-[${styles.width}%]`;
 
   return { paragraphVariantStyles, containerVariantStyles };
+}
+
+export function getVariableStylesTable(styles: Record<string, string>): {
+  tableVariantStyles: string;
+} {
+  let tableVariantStyles = "";
+
+  tableVariantStyles += `${styles.font}`;
+
+  return { tableVariantStyles };
 }

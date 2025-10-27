@@ -3,8 +3,8 @@ import type { RootState, AppDispatch } from "@/store";
 
 import { HeadingComponentNode } from "@/app/types";
 
-import {  editComponent } from "@/store/slices/builderSlice";
-import {getVariableStylesHeading } from "@/helpers/styling-helpers";
+import { editComponent } from "@/store/slices/builderSlice";
+import { getVariableStylesHeading } from "@/helpers/styling-helpers";
 
 export default function RenderHeading({
   heading,
