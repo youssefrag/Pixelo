@@ -5,6 +5,7 @@ import type { RootState, AppDispatch } from "@/store";
 import HeadingEditor from "./HeadingEditor";
 import ParagraphEditor from "./ParagraphEditor";
 import TableEditor from "./TableEditor";
+import ListEditor from "./ListEditor";
 
 export default function ComponentEditor() {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,6 +28,8 @@ export default function ComponentEditor() {
       return <ParagraphEditor componentId={selectedId} />;
     case "table":
       return <TableEditor componentId={selectedId} />;
+    case "list":
+      return <ListEditor componentId={selectedId} />;
     default:
       return null;
   }
