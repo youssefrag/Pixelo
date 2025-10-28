@@ -401,6 +401,14 @@ const builderSlice = createSlice({
       props.items[itemIdx] = action.payload.value;
     },
 
+    deleteListItem(state, action: PayloadAction<{ itemIdx: number }>) {
+      const { draft } = state.ui;
+
+      if (!isListDraft(draft)) return;
+
+      draft.props.items.splice(action.payload.itemIdx, 1);
+    },
+
     updateTextDraftContent(state, action: PayloadAction<string>) {
       if (!state.ui.draft) return;
       if (!isTextDraft(state.ui.draft)) return;
@@ -623,6 +631,7 @@ export const {
   addListItem,
   selectEditListItem,
   updateListContent,
+  deleteListItem,
   updateTextDraftContent,
   updateSelectedStyle,
   saveComponentDraft,

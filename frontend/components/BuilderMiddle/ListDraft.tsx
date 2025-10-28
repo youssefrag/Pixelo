@@ -4,6 +4,7 @@ import type { RootState, AppDispatch } from "@/store";
 
 import {
   addListItem,
+  deleteListItem,
   saveComponentDraft,
   selectEditListItem,
   updateListContent,
@@ -57,7 +58,11 @@ export default function ListDraft() {
                     }
                     className="cursor-pointer"
                   />
-                  <FontAwesomeIcon icon={faTrash} />
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    onClick={() => dispatch(deleteListItem({ itemIdx: index }))}
+                    className="cursor-pointer"
+                  />
                 </div>
               </div>
             </li>

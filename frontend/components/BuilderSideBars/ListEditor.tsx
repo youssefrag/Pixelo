@@ -1,6 +1,11 @@
 import { FONT_OPTIONS, FONT_WEIGHTS } from "@/helpers/constants";
+import { isListDraft } from "@/helpers/type-helpers";
 import type { RootState, AppDispatch } from "@/store";
-import { updateSelectedStyle } from "@/store/slices/builderSlice";
+import {
+  saveComponentDraft,
+  select,
+  updateSelectedStyle,
+} from "@/store/slices/builderSlice";
 import { useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useSelector } from "react-redux";
@@ -10,6 +15,10 @@ export default function ListEditor({ componentId }: { componentId: string }) {
   const dispatch = useDispatch<AppDispatch>();
 
   const { ui } = useSelector((state: RootState) => state.builderSlice);
+
+  const { draft } = ui;
+
+  if (!isListDraft(draft)) return;
 
   const styles = ui.draft?.styles;
 
@@ -68,6 +77,23 @@ export default function ListEditor({ componentId }: { componentId: string }) {
 
   const setListType = (value: "ordered" | "unordered") => {
     dispatch(updateSelectedStyle({ key: "listType", value }));
+  };
+
+  // Save and delete logic
+
+  const handleSaveList = () => {
+    dispatch(
+      saveComponentDraft({
+        id: draft.id,
+        kind: "list",
+        parentId: parentId || "",
+        styles: draft.styles,
+        props: draft.props,
+      })
+    );
+
+    if (parentId === undefined) return;
+    dispatch(select(parentId));
   };
 
   return (
@@ -211,7 +237,7 @@ export default function ListEditor({ componentId }: { componentId: string }) {
       </div>
       <div className="mt-4 flex justify-around">
         <button
-          // onClick={handleSaveParagraph}
+          onClick={handleSaveList}
           className="bg-[#FF7A00] px-6 py-3 rounded-md text-white cursor-pointer"
         >
           Save
