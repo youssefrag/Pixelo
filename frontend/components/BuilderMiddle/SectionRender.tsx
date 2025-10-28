@@ -14,6 +14,7 @@ import {
 } from "@/app/types";
 import TableDraft from "./TableDraft";
 import ListDraft from "./ListDraft";
+import RenderList from "../RenderComponents/RenderList";
 
 export default function SectionRender({ sectionId }: { sectionId: string }) {
   const { nodes, ui } = useSelector((state: RootState) => state.builderSlice);
@@ -72,6 +73,18 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
             <RenderTable key={child.id} table={child as TableComponentNode} />
           );
         }
+        case "list": {
+          const isEditingThis =
+            !!draft &&
+            draft.id === child.id &&
+            draft.targetParentId === sectionId &&
+            draft.kind === "list";
+
+          if (isEditingThis) return <ListDraft key={child.id} />;
+
+          return <RenderList />;
+        }
+
         default:
           return null; // TODO: add other kinds later
       }

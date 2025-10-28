@@ -2,6 +2,7 @@ import { FONT_OPTIONS, FONT_WEIGHTS } from "@/helpers/constants";
 import { isTableDraft } from "@/helpers/type-helpers";
 import { AppDispatch, RootState } from "@/store";
 import {
+  select,
   deleteComponent,
   saveComponentDraft,
   updateSelectedStyle,
@@ -158,6 +159,8 @@ export default function TableEditor({ componentId }: { componentId: string }) {
         props: { ...ui.draft?.props },
       })
     );
+
+    dispatch(select(ui.draft.targetParentId));
   };
 
   const handleDeleteTable = () => {

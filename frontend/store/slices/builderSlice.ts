@@ -296,7 +296,7 @@ const builderSlice = createSlice({
       draft.props.data.push(newRow);
     },
 
-    selectEditCell(state, action: PayloadAction<{ cellId: string }>) {
+    selectEditCell(state, action: PayloadAction<{ cellId: string | null }>) {
       const { draft } = state.ui;
 
       if (!isTableDraft(draft)) return;
@@ -387,6 +387,20 @@ const builderSlice = createSlice({
       draft.props.editItem = action.payload.itemIdx;
     },
 
+    updateListContent(state, action: PayloadAction<{ value: string }>) {
+      if (!state.ui.draft) return;
+      const draft = state.ui.draft;
+      if (!isListDraft(draft)) return;
+
+      const { props } = draft;
+
+      const itemIdx = props.editItem;
+
+      if (itemIdx === null) return;
+
+      props.items[itemIdx] = action.payload.value;
+    },
+
     updateTextDraftContent(state, action: PayloadAction<string>) {
       if (!state.ui.draft) return;
       if (!isTextDraft(state.ui.draft)) return;
@@ -436,6 +450,12 @@ const builderSlice = createSlice({
           props = { text: typeof raw === "string" ? raw : "" };
           break;
         }
+        case "list": {
+          const rawItems = props["items"];
+          const items = Array.isArray(rawItems) ? rawItems.map(String) : [];
+          props = { items };
+          break;
+        }
       }
 
       const styles = { ...action.payload.styles };
@@ -461,8 +481,16 @@ const builderSlice = createSlice({
         existing.props = props;
       }
 
-      state.ui.draft = null;
-      state.selectedId = parentId;
+      if (
+        state.ui.draft &&
+        state.ui.draft.type === "component" &&
+        state.ui.draft.kind === "list"
+      ) {
+        state.ui.draft.props.editItem = null;
+      }
+
+      // state.ui.draft = null;
+      // state.selectedId = parentId;
       state.ui.leftBar.tab = "layout";
     },
     editComponent(
@@ -471,7 +499,7 @@ const builderSlice = createSlice({
         id: string;
       }>
     ) {
-      commitCurrentDraft(state); // <-- add this
+      commitCurrentDraft(state);
 
       const node = state.nodes[action.payload.id];
 
@@ -518,6 +546,27 @@ const builderSlice = createSlice({
           };
           break;
         }
+
+        case "list": {
+          const props = (node.props as Record<string, unknown>) || {};
+          const items = Array.isArray(props.items)
+            ? (props.items as string[])
+            : [];
+
+          state.ui.draft = {
+            id: node.id,
+            type: "component",
+            kind: "list",
+            targetParentId: node.parentId,
+            styles: { ...node.styles },
+            props: {
+              items,
+              editItem: props.editItem as number,
+            },
+          };
+          break;
+        }
+
         default:
           state.ui.draft = null;
           return;
@@ -573,6 +622,7 @@ export const {
   startListDraft,
   addListItem,
   selectEditListItem,
+  updateListContent,
   updateTextDraftContent,
   updateSelectedStyle,
   saveComponentDraft,

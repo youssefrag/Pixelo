@@ -6,15 +6,21 @@ import {
   addListItem,
   saveComponentDraft,
   selectEditListItem,
+  updateListContent,
 } from "@/store/slices/builderSlice";
 import { isListDraft } from "@/helpers/type-helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useRef } from "react";
 
 export default function ListDraft() {
   const dispatch = useDispatch<AppDispatch>();
 
   const { ui } = useSelector((state: RootState) => state.builderSlice);
+
+  const draft = ui.draft;
+
+  if (!draft) return;
 
   if (!isListDraft(ui.draft)) return;
 
@@ -34,23 +40,29 @@ export default function ListDraft() {
           lineHeight: "1.6",
         }}
       >
-        {items.map((item, index) => (
-          <li key={index}>
-            <div className="flex items-center gap-2">
-              <span>{item}</span>
-              <div className="ml-2 flex gap-2">
-                <FontAwesomeIcon
-                  icon={faEdit}
-                  onClick={() =>
-                    dispatch(selectEditListItem({ itemIdx: index }))
-                  }
-                  className="cursor-pointer"
-                />
-                <FontAwesomeIcon icon={faTrash} />
+        {items.map((item, index) => {
+          if (index === props.editItem) {
+            return <EditItemInput key={index} listId={draft.id} />;
+          }
+
+          return (
+            <li key={index}>
+              <div className="flex items-center gap-2">
+                <span>{item}</span>
+                <div className="ml-2 flex gap-2">
+                  <FontAwesomeIcon
+                    icon={faEdit}
+                    onClick={() =>
+                      dispatch(selectEditListItem({ itemIdx: index }))
+                    }
+                    className="cursor-pointer"
+                  />
+                  <FontAwesomeIcon icon={faTrash} />
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ListTag>
       <button
         onClick={() => dispatch(addListItem())}
@@ -59,5 +71,65 @@ export default function ListDraft() {
         + Add List Item
       </button>
     </>
+  );
+}
+
+function EditItemInput({ listId }: { listId: string }) {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { ui } = useSelector((state: RootState) => state.builderSlice);
+  const { draft } = ui;
+
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  if (!isListDraft(draft)) return;
+
+  if (draft.props.editItem === null) return;
+
+  const listItemText = draft.props.items[draft.props.editItem];
+
+  const save = () => {
+    if (draft.props.editItem !== null) {
+      dispatch(
+        saveComponentDraft({
+          id: listId,
+          kind: "list",
+          parentId: draft.targetParentId || "",
+          styles: draft.styles,
+          props: draft.props,
+        })
+      );
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      save();
+    }
+  };
+
+  useEffect(() => {
+    const handleMouseDown = (e: MouseEvent) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) {
+        save();
+      }
+    };
+
+    document.addEventListener("mousedown", handleMouseDown, true);
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown, true);
+    };
+  }, [listId, draft.targetParentId, draft.styles, draft.props, dispatch]);
+
+  return (
+    <div ref={wrapRef}>
+      <input
+        autoFocus
+        onChange={(e) => dispatch(updateListContent({ value: e.target.value }))}
+        value={listItemText}
+        onKeyDown={handleKeyDown}
+      />
+    </div>
   );
 }

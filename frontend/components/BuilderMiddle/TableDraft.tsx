@@ -202,7 +202,7 @@ function EditCellInput({ tableId }: { tableId: string }) {
         })
       );
 
-      // optionally clear edit mode so it switches back to text view
+      dispatch(selectEditCell({ cellId: null }));
     }
   };
 
