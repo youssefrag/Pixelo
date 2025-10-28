@@ -358,6 +358,7 @@ const builderSlice = createSlice({
         targetParentId: parentId,
         props: {
           items: ["Example list item"],
+          editItem: null,
         },
         styles: {
           listType: "unordered",
@@ -365,6 +366,7 @@ const builderSlice = createSlice({
           fontSizePx: "16",
           fontWeight: "font-normal",
           listItemGap: "8",
+          color: "#000000",
         },
       };
 
@@ -375,6 +377,14 @@ const builderSlice = createSlice({
       if (!isListDraft(state.ui.draft)) return;
 
       state.ui.draft.props.items.push("Sample List Item");
+    },
+
+    selectEditListItem(state, action: PayloadAction<{ itemIdx: number }>) {
+      const { draft } = state.ui;
+
+      if (!isListDraft(draft)) return;
+
+      draft.props.editItem = action.payload.itemIdx;
     },
 
     updateTextDraftContent(state, action: PayloadAction<string>) {
@@ -562,6 +572,7 @@ export const {
   updateCellDraftContent,
   startListDraft,
   addListItem,
+  selectEditListItem,
   updateTextDraftContent,
   updateSelectedStyle,
   saveComponentDraft,

@@ -2,8 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import type { RootState, AppDispatch } from "@/store";
 
-import { addListItem, saveComponentDraft } from "@/store/slices/builderSlice";
+import {
+  addListItem,
+  saveComponentDraft,
+  selectEditListItem,
+} from "@/store/slices/builderSlice";
 import { isListDraft } from "@/helpers/type-helpers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function ListDraft() {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,19 +30,33 @@ export default function ListDraft() {
       <ListTag
         style={{
           listStyleType: isOrdered ? "decimal" : "disc",
-          paddingLeft: "1.5rem",
+          paddingLeft: "2rem",
           lineHeight: "1.6",
         }}
       >
-        {items.map((item, index) => {
-          return <li key={index}>{item}</li>;
-        })}
+        {items.map((item, index) => (
+          <li key={index}>
+            <div className="flex items-center gap-2">
+              <span>{item}</span>
+              <div className="ml-2 flex gap-2">
+                <FontAwesomeIcon
+                  icon={faEdit}
+                  onClick={() =>
+                    dispatch(selectEditListItem({ itemIdx: index }))
+                  }
+                  className="cursor-pointer"
+                />
+                <FontAwesomeIcon icon={faTrash} />
+              </div>
+            </div>
+          </li>
+        ))}
       </ListTag>
       <button
         onClick={() => dispatch(addListItem())}
         className="bg-[#FF7A00] px-[10px] p-[6px] text-white font-[700] rounded-[8px] cursor-pointer"
       >
-        + Add Section
+        + Add List Item
       </button>
     </>
   );

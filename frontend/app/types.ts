@@ -74,7 +74,7 @@ export type TableDraft = DraftBase & {
 
 export type ListDraft = DraftBase & {
   kind: "list";
-  props: { items: string[] };
+  props: { items: string[]; editItem: number | null };
 };
 
 export type ComponentDraft = TextDraft | TableDraft | ListDraft | null;
