@@ -2,6 +2,7 @@ import { AppDispatch, RootState } from "@/store";
 import {
   deleteComponent,
   saveComponentDraft,
+  select,
   updateSelectedStyle,
 } from "@/store/slices/builderSlice";
 import {
@@ -76,6 +77,7 @@ export default function ParagraphEditor({
         props: { text: ui.draft?.props.text },
       })
     );
+    dispatch(select(ui.draft.targetParentId));
   };
 
   const handleDeleteParagraph = () => {

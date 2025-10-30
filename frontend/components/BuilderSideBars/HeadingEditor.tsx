@@ -14,6 +14,7 @@ import {
   updateSelectedStyle,
   saveComponentDraft,
   deleteComponent,
+  select,
 } from "@/store/slices/builderSlice";
 
 import { isTextDraft } from "@/helpers/type-helpers";
@@ -81,6 +82,7 @@ export default function HeadingEditor({
         props: { text: ui.draft?.props.text },
       })
     );
+    dispatch(select(ui.draft.targetParentId));
   };
 
   const handleDeleteheading = () => {

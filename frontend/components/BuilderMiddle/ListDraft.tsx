@@ -145,6 +145,7 @@ function EditItemInput({ listId }: { listId: string }) {
         onChange={(e) => dispatch(updateListContent({ value: e.target.value }))}
         value={listItemText}
         onKeyDown={handleKeyDown}
+        onBlur={save}
       />
     </div>
   );

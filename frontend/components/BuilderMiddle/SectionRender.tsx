@@ -82,7 +82,7 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
 
           if (isEditingThis) return <ListDraft key={child.id} />;
 
-          return <RenderList />;
+          return <RenderList key={child.id} />;
         }
 
         default:

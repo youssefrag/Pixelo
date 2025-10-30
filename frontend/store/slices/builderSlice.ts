@@ -178,6 +178,7 @@ const builderSlice = createSlice({
         parentId: string | null;
       }>
     ) {
+      commitCurrentDraft(state);
       const { parentId } = action.payload;
       const id = nanoid();
 
@@ -209,6 +210,7 @@ const builderSlice = createSlice({
         parentId: string | null;
       }>
     ) {
+      commitCurrentDraft(state);
       const { parentId } = action.payload;
       const id = nanoid();
 
@@ -240,6 +242,7 @@ const builderSlice = createSlice({
     // All logic for table draft
 
     startTableDraft(state, action: PayloadAction<{ parentId: string | null }>) {
+      commitCurrentDraft(state);
       const { parentId } = action.payload;
       const id = nanoid();
 
@@ -346,6 +349,7 @@ const builderSlice = createSlice({
     // Logic for list draft
 
     startListDraft(state, action: PayloadAction<{ parentId: string | null }>) {
+      commitCurrentDraft(state);
       const { parentId } = action.payload;
       const id = nanoid();
 
