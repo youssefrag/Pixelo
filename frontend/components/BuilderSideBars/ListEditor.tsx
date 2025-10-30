@@ -22,7 +22,7 @@ export default function ListEditor({ componentId }: { componentId: string }) {
 
   const styles = ui.draft?.styles;
 
-  console.log(styles);
+  // console.log(styles);
 
   const parentId = ui.draft?.targetParentId;
 

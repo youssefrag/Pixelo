@@ -5,6 +5,7 @@ import type { RootState, AppDispatch } from "@/store";
 import {
   updateTextDraftContent,
   saveComponentDraft,
+  select,
 } from "@/store/slices/builderSlice";
 
 import { getVariableStylesHeading } from "../../helpers/styling-helpers";
@@ -76,6 +77,7 @@ export default function DraftHeadingInput() {
           props: ui.draft.props,
         })
       );
+      dispatch(select(ui.draft.targetParentId));
     }
   };
 

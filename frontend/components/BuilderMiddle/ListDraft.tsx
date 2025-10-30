@@ -13,6 +13,7 @@ import { isListDraft } from "@/helpers/type-helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef } from "react";
+import { weightMap } from "@/helpers/constants";
 
 export default function ListDraft() {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,13 +33,23 @@ export default function ListDraft() {
   const isOrdered = styles.listType === "ordered";
   const ListTag = isOrdered ? "ol" : "ul";
 
+  console.log(styles);
+
   return (
     <>
       <ListTag
+        className={`${styles.font}`}
         style={{
           listStyleType: isOrdered ? "decimal" : "disc",
           paddingLeft: "2rem",
           lineHeight: "1.6",
+          fontWeight:
+            weightMap[styles?.fontWeight as keyof typeof weightMap] ?? 400,
+          fontSize: `${styles?.fontSizePx}px`,
+          color: styles?.color,
+          display: "flex",
+          flexDirection: "column",
+          gap: `${styles.listItemGap}px`,
         }}
       >
         {items.map((item, index) => {
@@ -56,12 +67,12 @@ export default function ListDraft() {
                     onClick={() =>
                       dispatch(selectEditListItem({ itemIdx: index }))
                     }
-                    className="cursor-pointer"
+                    className="cursor-pointer text-black"
                   />
                   <FontAwesomeIcon
                     icon={faTrash}
                     onClick={() => dispatch(deleteListItem({ itemIdx: index }))}
-                    className="cursor-pointer"
+                    className="cursor-pointer text-black"
                   />
                 </div>
               </div>
