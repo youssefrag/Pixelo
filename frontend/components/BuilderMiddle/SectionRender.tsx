@@ -9,6 +9,7 @@ import RenderTable from "../RenderComponents/RenderTable";
 import {
   BuilderNode,
   HeadingComponentNode,
+  ListComponentNode,
   ParagraphComponentNode,
   TableComponentNode,
 } from "@/app/types";
@@ -82,7 +83,9 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
 
           if (isEditingThis) return <ListDraft key={child.id} />;
 
-          return <RenderList key={child.id} />;
+          return (
+            <RenderList key={child.id} list={child as ListComponentNode} />
+          );
         }
 
         default:

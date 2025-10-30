@@ -54,6 +54,8 @@ function commitCurrentDraft(state: BuilderState) {
       : [];
     const data = Array.isArray(draft.props.data) ? draft.props.data : [];
     nextProps = { headers, data };
+  } else if (isListDraft(draft)) {
+    nextProps = { items: draft.props.items };
   } else {
     state.ui.draft = null;
     return;

@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef } from "react";
 import { weightMap } from "@/helpers/constants";
+import AutoWidthInput from "../HelperComponents/AutoWidthInput";
 
 export default function ListDraft() {
   const dispatch = useDispatch<AppDispatch>();
@@ -54,7 +55,9 @@ export default function ListDraft() {
       >
         {items.map((item, index) => {
           if (index === props.editItem) {
-            return <EditItemInput key={index} listId={draft.id} />;
+            return (
+              <EditItemInput key={index} listId={draft.id} index={index} />
+            );
           }
 
           return (
@@ -64,14 +67,16 @@ export default function ListDraft() {
                 <div className="ml-2 flex gap-2">
                   <FontAwesomeIcon
                     icon={faEdit}
-                    onClick={() =>
-                      dispatch(selectEditListItem({ itemIdx: index }))
-                    }
+                    onClick={() => {
+                      dispatch(selectEditListItem({ itemIdx: index }));
+                    }}
                     className="cursor-pointer text-black"
                   />
                   <FontAwesomeIcon
                     icon={faTrash}
-                    onClick={() => dispatch(deleteListItem({ itemIdx: index }))}
+                    onClick={() => {
+                      dispatch(deleteListItem({ itemIdx: index }));
+                    }}
                     className="cursor-pointer text-black"
                   />
                 </div>
@@ -90,7 +95,7 @@ export default function ListDraft() {
   );
 }
 
-function EditItemInput({ listId }: { listId: string }) {
+function EditItemInput({ listId, index }: { listId: string; index: number }) {
   const dispatch = useDispatch<AppDispatch>();
 
   const { ui } = useSelector((state: RootState) => state.builderSlice);
@@ -139,13 +144,21 @@ function EditItemInput({ listId }: { listId: string }) {
   }, [listId, draft.targetParentId, draft.styles, draft.props, dispatch]);
 
   return (
-    <div ref={wrapRef}>
-      <input
+    <div ref={wrapRef} className="flex gap-4">
+      <AutoWidthInput
         autoFocus
-        onChange={(e) => dispatch(updateListContent({ value: e.target.value }))}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          dispatch(updateListContent({ value: e.target.value }))
+        }
         value={listItemText}
         onKeyDown={handleKeyDown}
-        onBlur={save}
+      />
+      <FontAwesomeIcon
+        icon={faEdit}
+        onClick={() => {
+          dispatch(selectEditListItem({ itemIdx: index }));
+        }}
+        className="cursor-pointer text-black"
       />
     </div>
   );
