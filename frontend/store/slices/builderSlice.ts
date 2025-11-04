@@ -438,6 +438,7 @@ const builderSlice = createSlice({
             { name: "Jan", uv: 400, pv: 240 },
             { name: "Feb", uv: 300, pv: 456 },
             { name: "Mar", uv: 200, pv: 300 },
+            { name: "Apr", uv: 700, pv: 300 },
           ],
         },
         styles: {},
