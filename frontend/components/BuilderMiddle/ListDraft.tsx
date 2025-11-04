@@ -21,7 +21,7 @@ export default function ListDraft() {
 
   const { ui } = useSelector((state: RootState) => state.builderSlice);
 
-  const draft = ui.draft;
+  const { draft } = ui;
 
   if (!draft) return;
 
