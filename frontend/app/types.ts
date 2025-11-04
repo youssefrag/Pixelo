@@ -16,6 +16,7 @@ export type ComponentKind =
   | "paragraph"
   | "list"
   | "table"
+  | "chart"
   | "image"
   | "video";
 
@@ -33,6 +34,8 @@ export type ParagraphComponentNode = ComponentNode & { kind: "paragraph" };
 export type TableComponentNode = ComponentNode & { kind: "table" };
 
 export type ListComponentNode = ComponentNode & { kind: "list" };
+
+export type ChartComponentNode = ComponentNode & { kind: "chart" };
 
 export type BuilderNode = SectionNode | ComponentNode;
 
@@ -79,6 +82,16 @@ export type ListDraft = DraftBase & {
   props: { items: string[]; editItem: number | null };
 };
 
-export type ComponentDraft = TextDraft | TableDraft | ListDraft | null;
+export type ChartDraft = DraftBase & {
+  kind: "chart";
+  props: { data: unknown };
+};
+
+export type ComponentDraft =
+  | TextDraft
+  | TableDraft
+  | ListDraft
+  | ChartDraft
+  | null;
 
 export type DraftState = ComponentDraft;

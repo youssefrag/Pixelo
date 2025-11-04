@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faChartLine } from "@fortawesome/free-solid-svg-icons";
 
 import type { RootState, AppDispatch } from "@/store";
 import {
@@ -9,6 +9,7 @@ import {
   startParagraphDraft,
   startTableDraft,
   startListDraft,
+  startChartDraft,
 } from "@/store/slices/builderSlice";
 
 import HIcon from "@/public/assets/heading-01.svg";
@@ -43,6 +44,10 @@ export default function ComponentPicker() {
 
   const handleListDraft = () => {
     dispatch(startListDraft({ parentId }));
+  };
+
+  const handleChartDraft = () => {
+    dispatch(startChartDraft({ parentId }));
   };
 
   return (
@@ -93,6 +98,15 @@ export default function ComponentPicker() {
             <LIcon className="w-8 h-8 text-black" />
           </div>
           <div className="mt-1 text-[14px]">List</div>
+        </div>
+        <div>
+          <div
+            onClick={handleChartDraft}
+            className="h-[86px] w-[109px] bg-gray-200 flex justify-center items-center rounded-2xl cursor-pointer"
+          >
+            <FontAwesomeIcon icon={faChartLine} size="2x" />
+          </div>
+          <div className="mt-1 text-[14px]">Chart</div>
         </div>
       </div>
       <div className="my-3 font-[600] text-[16px] mt-5">Media</div>

@@ -16,6 +16,7 @@ import {
 import TableDraft from "./TableDraft";
 import ListDraft from "./ListDraft";
 import RenderList from "../RenderComponents/RenderList";
+import ChartDraft from "./ChartDraft";
 
 export default function SectionRender({ sectionId }: { sectionId: string }) {
   const { nodes, ui } = useSelector((state: RootState) => state.builderSlice);
@@ -87,6 +88,17 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
             <RenderList key={child.id} list={child as ListComponentNode} />
           );
         }
+        // case "chart": {
+        //   const isEditingThis =
+        //     !!draft &&
+        //     draft.id === child.id &&
+        //     draft.targetParentId === sectionId &&
+        //     draft.kind === "chart";
+
+        //   console.log({ isEditingThis });
+
+        //   if (isEditingThis) return <ChartDraft key={child.id} />;
+        // }
 
         default:
           return null; // TODO: add other kinds later
@@ -122,6 +134,12 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
     !nodes[draft.id] &&
     draft.targetParentId === sectionId;
 
+  const shouldAppendChartDraft =
+    !!draft &&
+    draft.kind === "chart" &&
+    !nodes[draft.id] &&
+    draft.targetParentId === sectionId;
+
   return (
     <>
       {renderedChildren}
@@ -133,6 +151,7 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
       )}
       {shouldAppendTableDraft && <TableDraft key={`draft-${sectionId}`} />}
       {shouldAppendListDraft && <ListDraft key={`draft-${sectionId}`} />}
+      {shouldAppendChartDraft && <ChartDraft key={`draft-${sectionId}`} />}
     </>
   );
 }

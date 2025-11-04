@@ -421,6 +421,31 @@ const builderSlice = createSlice({
       state.ui.draft.props.text = action.payload;
     },
 
+    startChartDraft(state, action: PayloadAction<{ parentId: string | null }>) {
+      commitCurrentDraft(state);
+      const { parentId } = action.payload;
+      const id = nanoid();
+
+      state.ui.leftBar = { tab: "layout" };
+
+      state.ui.draft = {
+        id,
+        type: "component",
+        kind: "chart",
+        targetParentId: parentId,
+        props: {
+          data: [
+            { name: "Jan", uv: 400, pv: 240 },
+            { name: "Feb", uv: 300, pv: 456 },
+            { name: "Mar", uv: 200, pv: 300 },
+          ],
+        },
+        styles: {},
+      };
+
+      state.selectedId = id;
+    },
+
     updateSelectedStyle(
       state,
       action: PayloadAction<{ key: string; value: string }>
@@ -639,6 +664,7 @@ export const {
   updateListContent,
   deleteListItem,
   updateTextDraftContent,
+  startChartDraft,
   updateSelectedStyle,
   saveComponentDraft,
   editComponent,
