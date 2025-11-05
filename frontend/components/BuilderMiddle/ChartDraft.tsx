@@ -1,18 +1,15 @@
 import { isChartDraft } from "@/helpers/type-helpers";
 import { RootState } from "@/store";
+import {
+  addToChartData,
+  selectEditChartItem,
+  editChartData,
+  removeChartData,
+} from "@/store/slices/builderSlice";
 import { useCallback, useDebugValue, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis } from "recharts";
 
 export default function ChartDraft() {
   const { ui } = useSelector((state: RootState) => state.builderSlice);
@@ -25,32 +22,27 @@ export default function ChartDraft() {
 
   if (!isChartDraft(draft)) return null;
 
-  // const data = draft.props.data as Array<Record<string, any>>;
+  const data = draft.props.data as Array<Record<string, any>>;
+
+  console.log(data);
+
+  const { editIdx } = draft.props;
 
   const { styles } = draft;
 
   // Form State
 
-  const [data, setData] = useState<{ name: string; value: number }[]>([
-    { name: "Jan", value: 400 },
-    { name: "Feb", value: 300 },
-    { name: "Mar", value: 990 },
-    { name: "Apr", value: 200 },
-  ]);
-
-  const [idx, setIdx] = useState<number | null>(null);
-
   const [name, setName] = useState("");
   const [value, setValue] = useState<number | "">("");
 
   const reset = () => {
-    setIdx(null);
+    dispatch(selectEditChartItem({ idx: null }));
     setName("");
     setValue("");
   };
 
   const startEdit = (i: number) => {
-    setIdx(i);
+    dispatch(selectEditChartItem({ idx: i }));
     setName(data[i].name);
     setValue(data[i].value);
   };
@@ -60,21 +52,17 @@ export default function ChartDraft() {
 
     const row = { name, value: Number(value) };
 
-    setData((d) => {
-      if (idx === null) return [...d, row];
-
-      const copy = d.slice();
-
-      copy[idx] = row;
-
-      return copy;
-    });
+    if (editIdx === null) {
+      dispatch(addToChartData({ newData: row }));
+      reset();
+    } else {
+      dispatch(editChartData({ newData: row, idx: editIdx }));
+      reset();
+    }
   };
 
   const remove = (i: number) => {
-    setData((d) => d.filter((_, k) => k !== i));
-
-    if (idx === i) reset();
+    dispatch(removeChartData({ idx: i }));
   };
 
   return (
@@ -110,9 +98,9 @@ export default function ChartDraft() {
           />
         </div>
         <button className="border px-3 py-1" onClick={addOrSave}>
-          {idx === null ? "Add point" : "Save changes"}
+          {editIdx === null ? "Add point" : "Save changes"}
         </button>
-        {idx !== null && (
+        {editIdx !== null && (
           <button className="border px-3 py-1" onClick={reset}>
             Cancel
           </button>

@@ -84,7 +84,7 @@ export type ListDraft = DraftBase & {
 
 export type ChartDraft = DraftBase & {
   kind: "chart";
-  props: { data: unknown };
+  props: { data: unknown[]; editIdx: number | null };
 };
 
 export type ComponentDraft =

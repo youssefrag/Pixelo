@@ -14,6 +14,7 @@ import {
   isTextDraft,
   isTableDraft,
   isListDraft,
+  isChartDraft,
 } from "@/helpers/type-helpers";
 
 const initialState: BuilderState = {
@@ -435,16 +436,57 @@ const builderSlice = createSlice({
         targetParentId: parentId,
         props: {
           data: [
-            { name: "Jan", uv: 400 },
-            { name: "Feb", uv: 300 },
-            { name: "Mar", uv: 200 },
-            { name: "Apr", uv: 700 },
+            { name: "Jan", value: 400 },
+            { name: "Feb", value: 300 },
+            { name: "Mar", value: 200 },
+            { name: "Apr", value: 700 },
           ],
+          editIdx: null,
         },
         styles: {},
       };
 
       state.selectedId = id;
+    },
+
+    addToChartData(
+      state,
+      action: PayloadAction<{ newData: { name: string; value: number } }>
+    ) {
+      if (!isChartDraft(state.ui.draft)) return;
+
+      const currentData = state.ui.draft.props.data;
+
+      currentData.push(action.payload.newData);
+    },
+    editChartData(
+      state,
+      action: PayloadAction<{
+        newData: { name: string; value: number };
+        idx: number;
+      }>
+    ) {
+      if (!isChartDraft(state.ui.draft)) return;
+
+      state.ui.draft.props.data[action.payload.idx] = action.payload.newData;
+    },
+
+    removeChartData(state, action: PayloadAction<{ idx: number }>) {
+      if (!isChartDraft(state.ui.draft)) return;
+
+      if (state.ui.draft.props.data.length === 1) {
+        state.selectedId = state.ui.draft.targetParentId;
+        state.ui.draft = null;
+        return;
+      }
+
+      state.ui.draft.props.data.splice(action.payload.idx, 1);
+    },
+
+    selectEditChartItem(state, action: PayloadAction<{ idx: number | null }>) {
+      if (!isChartDraft(state.ui.draft)) return;
+
+      state.ui.draft.props.editIdx = action.payload.idx;
     },
 
     updateSelectedStyle(
@@ -666,6 +708,10 @@ export const {
   deleteListItem,
   updateTextDraftContent,
   startChartDraft,
+  addToChartData,
+  editChartData,
+  selectEditChartItem,
+  removeChartData,
   updateSelectedStyle,
   saveComponentDraft,
   editComponent,
