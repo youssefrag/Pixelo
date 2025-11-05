@@ -70,12 +70,7 @@ export default function ChartDraft() {
       <LineChart width={400} height={300} data={data}>
         <XAxis dataKey="name" />
         <YAxis />
-        <Line
-          type="monotone"
-          dataKey="value"
-          stroke="#000"
-          name="Unique Visitors"
-        />
+        <Line type="monotone" dataKey="value" stroke="#000" name="Values" />
       </LineChart>
 
       <div className="flex gap-2 items-end flex-wrap">
