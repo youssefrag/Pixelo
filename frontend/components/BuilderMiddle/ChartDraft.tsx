@@ -6,7 +6,7 @@ import {
   editChartData,
   removeChartData,
 } from "@/store/slices/builderSlice";
-import { useCallback, useDebugValue, useState } from "react";
+import { useCallback, useDebugValue, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { LineChart, Line, XAxis, YAxis } from "recharts";
@@ -35,6 +35,14 @@ export default function ChartDraft() {
 
   const [name, setName] = useState("");
   const [value, setValue] = useState<number | "">("");
+
+  // on onMount i want to reset
+
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, []);
 
   const reset = () => {
     dispatch(selectEditChartItem({ idx: null }));
@@ -82,6 +90,18 @@ export default function ChartDraft() {
           dataKey="value"
           stroke="#000"
           name="Values"
+          isAnimationActive={false}
+          dot={(dotProps) => {
+            const { key, ...rest } = dotProps;
+            return (
+              <CustomDot
+                key={key ?? rest.index}
+                {...rest}
+                editIdx={editIdx}
+                startEdit={startEdit}
+              />
+            );
+          }}
         />
       </LineChart>
 
@@ -135,5 +155,37 @@ export default function ChartDraft() {
         </div>
       </div>
     </>
+  );
+}
+
+type CustomDotProps = {
+  cx: number;
+  cy: number;
+  index: number;
+  editIdx: number | null;
+  startEdit: (i: number) => void;
+};
+
+function CustomDot({ cx, cy, index, editIdx, startEdit }: CustomDotProps) {
+  const isActive = editIdx === index;
+
+  return (
+    <g
+      transform={`translate(${cx}, ${cy})`}
+      style={{ pointerEvents: "all", cursor: "pointer" }}
+      onClick={(e) => {
+        e.stopPropagation();
+        startEdit(index);
+      }}
+    >
+      <circle cy={-6} r={20} fill="transparent" />
+
+      <circle
+        r={isActive ? 6 : 3}
+        fill={isActive ? "#FF7A00" : "#000"}
+        stroke="#fff"
+        strokeWidth={isActive ? 2 : 1}
+      />
+    </g>
   );
 }
