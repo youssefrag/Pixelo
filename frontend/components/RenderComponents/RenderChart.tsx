@@ -12,7 +12,7 @@ export default function RenderChart({ chart }: { chart: ChartComponentNode }) {
 
   const data = chart.props.data as ChartDataPoint[];
 
-  const { lineType } = chart.styles;
+  const { lineType, strokeColour } = chart.styles;
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function RenderChart({ chart }: { chart: ChartComponentNode }) {
         <Line
           type={lineType as CurveType}
           dataKey="value"
-          stroke="#000"
+          stroke={strokeColour}
           name="Values"
         />
       </LineChart>

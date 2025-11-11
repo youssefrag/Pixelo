@@ -74,11 +74,7 @@ export default function ChartDraft() {
     dispatch(removeChartData({ idx: i }));
   };
 
-  console.log(draft.styles);
-
-  const { lineType } = draft.styles;
-
-  console.log(lineType);
+  const { lineType, strokeColour, strokeWidth } = draft.styles;
 
   return (
     <>
@@ -88,7 +84,8 @@ export default function ChartDraft() {
         <Line
           type={lineType as CurveType}
           dataKey="value"
-          stroke="#000"
+          stroke={strokeColour}
+          strokeWidth={Number(strokeWidth)}
           name="Values"
           isAnimationActive={false}
           dot={(dotProps) => {
