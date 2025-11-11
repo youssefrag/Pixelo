@@ -6,6 +6,7 @@ import HeadingEditor from "./HeadingEditor";
 import ParagraphEditor from "./ParagraphEditor";
 import TableEditor from "./TableEditor";
 import ListEditor from "./ListEditor";
+import ChartEditor from "./ChartEditor";
 
 export default function ComponentEditor() {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,6 +31,8 @@ export default function ComponentEditor() {
       return <TableEditor componentId={selectedId} />;
     case "list":
       return <ListEditor componentId={selectedId} />;
+    case "chart":
+      return <ChartEditor componentId={selectedId} />;
     default:
       return null;
   }

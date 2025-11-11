@@ -16,6 +16,7 @@ import {
   isListDraft,
   isChartDraft,
 } from "@/helpers/type-helpers";
+import { Interface } from "readline";
 
 const initialState: BuilderState = {
   rootOrder: [],
@@ -645,6 +646,35 @@ const builderSlice = createSlice({
               items,
               editItem: props.editItem as number,
             },
+          };
+          break;
+        }
+
+        case "chart": {
+          interface ChartDataPoint {
+            name: string;
+            value: string;
+          }
+
+          console.log("reached here!!!!!");
+
+          const props =
+            (node.props as {
+              data?: ChartDataPoint[];
+              editIdx?: number | null;
+            }) || {};
+
+          const data: ChartDataPoint[] = Array.isArray(props.data)
+            ? props.data
+            : [];
+
+          state.ui.draft = {
+            id: node.id,
+            type: "component",
+            kind: "chart",
+            targetParentId: node.parentId,
+            styles: { ...node.styles },
+            props: { data: data, editIdx: props.editIdx ?? null },
           };
           break;
         }

@@ -50,7 +50,6 @@ export const SectionNode = memo(function SectionNode({ id }: SectionNodeProps) {
       <>
         <div
           onClick={() => dispatch(select(id))}
-          // className="cursor-pointer flex items-center gap-4 bg-[#FFEFE0]"
           className={`cursor-pointer flex items-center gap-4 ${
             isSectionSelected
               ? "bg-[#FF7A00] text-white font-bold"
