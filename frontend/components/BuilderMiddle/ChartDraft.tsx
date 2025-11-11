@@ -10,6 +10,7 @@ import { useCallback, useDebugValue, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { LineChart, Line, XAxis, YAxis } from "recharts";
+import { CurveType } from "recharts/types/shape/Curve";
 
 export default function ChartDraft() {
   const { ui } = useSelector((state: RootState) => state.builderSlice);
@@ -65,12 +66,23 @@ export default function ChartDraft() {
     dispatch(removeChartData({ idx: i }));
   };
 
+  console.log(draft.styles);
+
+  const { lineType } = draft.styles;
+
+  console.log(lineType);
+
   return (
     <>
       <LineChart width={400} height={300} data={data}>
         <XAxis dataKey="name" />
         <YAxis />
-        <Line type="monotone" dataKey="value" stroke="#000" name="Values" />
+        <Line
+          type={lineType as CurveType}
+          dataKey="value"
+          stroke="#000"
+          name="Values"
+        />
       </LineChart>
 
       <div className="flex gap-2 items-end flex-wrap">

@@ -87,6 +87,11 @@ export type ChartDraft = DraftBase & {
   props: { data: unknown[]; editIdx: number | null };
 };
 
+export interface ChartDataPoint {
+  name: string;
+  value: string;
+}
+
 export type ComponentDraft =
   | TextDraft
   | TableDraft

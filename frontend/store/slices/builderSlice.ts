@@ -7,6 +7,7 @@ import {
   isComponent,
   ComponentDraft,
   ComponentKind,
+  ChartDataPoint,
 } from "@/app/types";
 
 import {
@@ -58,6 +59,8 @@ function commitCurrentDraft(state: BuilderState) {
     nextProps = { headers, data };
   } else if (isListDraft(draft)) {
     nextProps = { items: draft.props.items };
+  } else if (isChartDraft(draft)) {
+    nextProps = { data: draft.props.data, editIdx: draft.props.editIdx };
   } else {
     state.ui.draft = null;
     return;
@@ -444,7 +447,9 @@ const builderSlice = createSlice({
           ],
           editIdx: null,
         },
-        styles: {},
+        styles: {
+          lineType: "monotone",
+        },
       };
 
       state.selectedId = id;
@@ -651,13 +656,6 @@ const builderSlice = createSlice({
         }
 
         case "chart": {
-          interface ChartDataPoint {
-            name: string;
-            value: string;
-          }
-
-          console.log("reached here!!!!!");
-
           const props =
             (node.props as {
               data?: ChartDataPoint[];

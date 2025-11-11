@@ -6,8 +6,10 @@ import DraftParagraphInput from "./DraftParagraphInput";
 import RenderHeading from "../RenderComponents/RenderHeading";
 import RenderParagraph from "../RenderComponents/RenderParagraph";
 import RenderTable from "../RenderComponents/RenderTable";
+import RenderChart from "../RenderComponents/RenderChart";
 import {
   BuilderNode,
+  ChartComponentNode,
   HeadingComponentNode,
   ListComponentNode,
   ParagraphComponentNode,
@@ -88,17 +90,21 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
             <RenderList key={child.id} list={child as ListComponentNode} />
           );
         }
-        // case "chart": {
-        //   const isEditingThis =
-        //     !!draft &&
-        //     draft.id === child.id &&
-        //     draft.targetParentId === sectionId &&
-        //     draft.kind === "chart";
+        case "chart": {
+          const isEditingThis =
+            !!draft &&
+            draft.id === child.id &&
+            draft.targetParentId === sectionId &&
+            draft.kind === "chart";
 
-        //   console.log({ isEditingThis });
+          console.log({ isEditingThis });
 
-        //   if (isEditingThis) return <ChartDraft key={child.id} />;
-        // }
+          if (isEditingThis) return <ChartDraft key={child.id} />;
+
+          return (
+            <RenderChart key={child.id} chart={child as ChartComponentNode} />
+          );
+        }
 
         default:
           return null; // TODO: add other kinds later
