@@ -55,106 +55,113 @@ export default function TableDraft() {
     <>
       <div className="flex items-start">
         <div></div>
-        <table
-          className={`w-[60%] text-center table-fixed ${tableVariantStyles}`}
-        >
-          <thead>
-            <tr>
+
+        <div className="not-prose overflow-x-auto">
+          <table
+            className={`table-fixed w-auto min-w-max text-center ${tableVariantStyles}`}
+          >
+            <colgroup>
               {headers.map((_, i) => (
-                <th key={`trash-${i}`} className="px-2 py-1">
-                  <button
-                    onClick={() => handleDeleteCol(i)}
-                    className="bg-red-500 text-white font-semibold rounded-md px-2 py-1 hover:bg-red-600"
-                  >
-                    Trash
-                  </button>
-                </th>
+                <col key={i} style={{ width: 160 }} />
               ))}
-              <th className="w-[80px]"></th>
-            </tr>
+              <col style={{ width: 80 }} />
+            </colgroup>
 
-            <tr>
-              {headers.map((h, i) => {
-                const isEditing =
-                  editLocation &&
-                  editLocation[0] === "h" &&
-                  Number(editLocation[1]) === i;
-
-                return (
-                  <th
-                    key={`h-${i}`}
-                    onClick={() =>
-                      dispatch(selectEditCell({ cellId: `h ${i}` }))
-                    }
-                    className="
-                      px-2 py-2  cursor-pointer align-middle
-                      whitespace-normal break-words
-                    "
-                    style={{
-                      fontSize: `${styles?.headerFontSize}px`,
-                      fontWeight:
-                        weightMap[
-                          styles?.headingFontWeight as keyof typeof weightMap
-                        ] ?? 400,
-                      backgroundColor: styles?.headingBGColour,
-                      color: styles?.headingTextColour,
-                    }}
-                  >
-                    {isEditing ? <EditCellInput tableId={draft.id} /> : h}
+            <thead>
+              <tr>
+                {headers.map((_, i) => (
+                  <th key={`trash-${i}`} className="px-2 py-1">
+                    <button
+                      onClick={() => handleDeleteCol(i)}
+                      className="bg-red-500 text-white font-semibold rounded-md px-2 py-1 hover:bg-red-600"
+                    >
+                      Trash
+                    </button>
                   </th>
-                );
-              })}
-              <th></th>
-            </tr>
-          </thead>
+                ))}
+                <th className="w-[80px]"></th>
+              </tr>
 
-          <tbody>
-            {data.map((row, r) => (
-              <tr key={r}>
-                {row.map((cell, c) => {
+              <tr>
+                {headers.map((h, i) => {
                   const isEditing =
                     editLocation &&
-                    Number(editLocation[0]) === r &&
-                    Number(editLocation[1]) === c;
+                    editLocation[0] === "h" &&
+                    Number(editLocation[1]) === i;
 
                   return (
-                    <td
-                      key={`${r}-${c}`}
+                    <th
+                      key={`h-${i}`}
                       onClick={() =>
-                        dispatch(selectEditCell({ cellId: `${r} ${c}` }))
+                        dispatch(selectEditCell({ cellId: `h ${i}` }))
                       }
-                      className="
-                        px-2 py-2 align-middle cursor-pointer
-                        whitespace-normal break-words
-                      "
+                      className="px-2 py-2 cursor-pointer align-middle whitespace-normal break-words"
                       style={{
-                        fontSize: `${styles?.dataFontSize}px`,
+                        fontSize: `${styles?.headerFontSize}px`,
                         fontWeight:
                           weightMap[
-                            styles?.dataFontWeight as keyof typeof weightMap
+                            styles?.headingFontWeight as keyof typeof weightMap
                           ] ?? 400,
-                        backgroundColor: styles?.dataBGColour,
-                        color: styles?.dataTextColour,
+                        backgroundColor: styles?.headingBGColour,
+                        color: styles?.headingTextColour,
                       }}
                     >
-                      {isEditing ? <EditCellInput tableId={draft.id} /> : cell}
-                    </td>
+                      {isEditing ? <EditCellInput tableId={draft.id} /> : h}
+                    </th>
                   );
                 })}
-
-                <td className="px-2 py-2 text-right">
-                  <button
-                    onClick={() => handleDeleteRow(r)}
-                    className="bg-red-500 text-white font-semibold rounded-md px-2 py-1 hover:bg-red-600"
-                    aria-label={`Delete row ${r + 1}`}
-                  >
-                    Delete
-                  </button>
-                </td>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {data.map((row, r) => (
+                <tr key={r}>
+                  {row.map((cell, c) => {
+                    const isEditing =
+                      editLocation &&
+                      Number(editLocation[0]) === r &&
+                      Number(editLocation[1]) === c;
+
+                    return (
+                      <td
+                        key={`${r}-${c}`}
+                        onClick={() =>
+                          dispatch(selectEditCell({ cellId: `${r} ${c}` }))
+                        }
+                        className="px-2 py-2 align-middle cursor-pointer whitespace-normal break-words"
+                        style={{
+                          fontSize: `${styles?.dataFontSize}px`,
+                          fontWeight:
+                            weightMap[
+                              styles?.dataFontWeight as keyof typeof weightMap
+                            ] ?? 400,
+                          backgroundColor: styles?.dataBGColour,
+                          color: styles?.dataTextColour,
+                        }}
+                      >
+                        {isEditing ? (
+                          <EditCellInput tableId={draft.id} />
+                        ) : (
+                          cell
+                        )}
+                      </td>
+                    );
+                  })}
+                  <td className="px-2 py-2 text-right">
+                    <button
+                      onClick={() => handleDeleteRow(r)}
+                      className="bg-red-500 text-white font-semibold rounded-md px-2 py-1 hover:bg-red-600"
+                      aria-label={`Delete row ${r + 1}`}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {draft.props.headers.length < 10 && (
           <button
