@@ -9,7 +9,14 @@ import {
 import { useCallback, useDebugValue, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
 import { CurveType } from "recharts/types/shape/Curve";
 
 export default function ChartDraft() {
@@ -74,22 +81,37 @@ export default function ChartDraft() {
     dispatch(removeChartData({ idx: i }));
   };
 
-  const { lineType, strokeColour, strokeWidth } = draft.styles;
+  const { lineType, lineColour, strokeWidth, axisColour, textColour } =
+    draft.styles;
+
+  const rawWidth = Number(styles?.widthPct);
+  const safeWidth = Number.isFinite(rawWidth) ? rawWidth : 80;
 
   return (
     <>
       <div
         className="relative aspect-[2/1] rounded-xl bg-white/5"
-        style={{ width: `${styles?.widthPct}%` }}
+        style={{ width: `${safeWidth}%` }}
       >
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer key={safeWidth} width="100%" height="100%">
           <LineChart width={400} height={300} data={data}>
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis
+              dataKey="name"
+              tick={{ fill: textColour, fontSize: 15, fontWeight: 700 }}
+              axisLine={{ stroke: axisColour, strokeWidth: 4 }}
+              tickLine={{ stroke: axisColour, strokeWidth: 4 }}
+              padding={{ left: 20, right: 20 }}
+            />
+            <YAxis
+              tick={{ fill: textColour, fontSize: 15, fontWeight: 700 }}
+              axisLine={{ stroke: axisColour, strokeWidth: 4 }}
+              tickLine={{ stroke: axisColour, strokeWidth: 4 }}
+              padding={{ top: 20, bottom: 20 }}
+            />
             <Line
               type={lineType as CurveType}
               dataKey="value"
-              stroke={strokeColour}
+              stroke={lineColour}
               strokeWidth={Number(strokeWidth)}
               name="Values"
               isAnimationActive={false}

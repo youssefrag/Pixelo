@@ -21,23 +21,80 @@ export default function ChartEditor({ componentId }: { componentId: string }) {
 
   // Logic for stroke colour
 
-  const [isOpen, setIsOpen] = useState(false);
-  const popover = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState({
+    lineColour: false,
+    axisColour: false,
+    textColour: false,
+  });
 
-  const color = styles?.color;
+  const refs = {
+    lineColour: useRef<HTMLDivElement>(null),
+    axisColour: useRef<HTMLDivElement>(null),
+    textColour: useRef<HTMLDivElement>(null),
+  };
+
+  const triggerRefs = {
+    lineColour: useRef<HTMLButtonElement>(null),
+    axisColour: useRef<HTMLButtonElement>(null),
+    textColour: useRef<HTMLButtonElement>(null),
+  };
+
+  const anyOpen = Object.values(isOpen).some(Boolean);
 
   useEffect(() => {
-    const closeOnOutsideClick = (e: MouseEvent) => {
-      if (popover.current && !popover.current.contains(e.target as Node)) {
-        setIsOpen(false);
+    if (!anyOpen) return;
+
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target as Node;
+
+      const containers = [
+        refs.lineColour.current,
+        refs.axisColour.current,
+        refs.textColour.current,
+        // pressing ob buttons shouldn't count as outside
+        triggerRefs.lineColour.current,
+        triggerRefs.axisColour.current,
+        triggerRefs.textColour.current,
+      ].filter(Boolean) as Node[];
+
+      const clickedInsideAny = containers.some((node) => node.contains(target));
+
+      if (!clickedInsideAny) {
+        setIsOpen({
+          lineColour: false,
+          axisColour: false,
+          textColour: false,
+        });
       }
     };
-    document.addEventListener("mousedown", closeOnOutsideClick);
-    return () => document.removeEventListener("mousedown", closeOnOutsideClick);
-  }, []);
 
-  const handleColorChange = (newColor: string) => {
-    dispatch(updateSelectedStyle({ key: "strokeColour", value: newColor }));
+    document.addEventListener("pointerdown", onPointerDown, true);
+    return () =>
+      document.removeEventListener("pointerdown", onPointerDown, true);
+  }, [anyOpen]);
+
+  // line colour
+
+  const lineColour = styles?.lineColour || "#000";
+
+  const handleLineColourChange = (newColour: string) => {
+    dispatch(updateSelectedStyle({ key: "lineColour", value: newColour }));
+  };
+
+  // axis colour
+
+  const axisColour = styles?.axisColout || "#000";
+
+  const handleAxisColourChange = (newColour: string) => {
+    dispatch(updateSelectedStyle({ key: "axisColour", value: newColour }));
+  };
+
+  // text colour
+
+  const textColour = styles?.textColour || "#000";
+
+  const handleTextColourChange = (newColour: string) => {
+    dispatch(updateSelectedStyle({ key: "textColour", value: newColour }));
   };
 
   // Logic chart width
@@ -142,26 +199,111 @@ export default function ChartEditor({ componentId }: { componentId: string }) {
       <div>
         <div className="relative inline-block">
           <label className="text-sm text-neutral-600 block mb-2 font-bold">
-            Choose color
+            Line color
           </label>
 
           <button
             type="button"
             className="h-8 w-8 rounded border border-gray-300 shadow-sm"
-            style={{ backgroundColor: styles?.strokeColour }}
-            onClick={() => setIsOpen(!isOpen)}
+            style={{ backgroundColor: styles?.lineColour }}
+            onClick={() =>
+              setIsOpen({
+                lineColour: true,
+                axisColour: false,
+                textColour: false,
+              })
+            }
           />
 
-          {isOpen && (
+          {isOpen.lineColour && (
             <div
-              ref={popover}
+              ref={refs.lineColour}
               className="absolute z-50 mt-2 rounded-lg border border-gray-200 bg-white p-3 shadow-lg"
             >
-              <HexColorPicker color={color} onChange={handleColorChange} />
+              <HexColorPicker
+                color={lineColour}
+                onChange={handleLineColourChange}
+              />
               <input
                 type="text"
-                value={styles?.strokeColour ?? "#000000"}
-                onChange={(e) => handleColorChange(e.target.value)}
+                value={styles?.lineColour ?? "#000000"}
+                onChange={(e) => handleLineColourChange(e.target.value)}
+                className="mt-2 w-full rounded border px-2 py-1 text-sm"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <div>
+        <div className="relative inline-block">
+          <label className="text-sm text-neutral-600 block mb-2 font-bold">
+            Axis color
+          </label>
+
+          <button
+            type="button"
+            className="h-8 w-8 rounded border border-gray-300 shadow-sm"
+            style={{ backgroundColor: styles?.axisColour }}
+            onClick={() =>
+              setIsOpen({
+                lineColour: false,
+                axisColour: true,
+                textColour: false,
+              })
+            }
+          />
+
+          {isOpen.axisColour && (
+            <div
+              ref={refs.axisColour}
+              className="absolute z-50 mt-2 rounded-lg border border-gray-200 bg-white p-3 shadow-lg"
+            >
+              <HexColorPicker
+                color={axisColour}
+                onChange={handleAxisColourChange}
+              />
+              <input
+                type="text"
+                value={styles?.axisColour ?? "#000000"}
+                onChange={(e) => handleAxisColourChange(e.target.value)}
+                className="mt-2 w-full rounded border px-2 py-1 text-sm"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <div>
+        <div className="relative inline-block">
+          <label className="text-sm text-neutral-600 block mb-2 font-bold">
+            Text color
+          </label>
+
+          <button
+            type="button"
+            className="h-8 w-8 rounded border border-gray-300 shadow-sm"
+            style={{ backgroundColor: styles?.textColour }}
+            onClick={() =>
+              setIsOpen({
+                lineColour: false,
+                axisColour: false,
+                textColour: true,
+              })
+            }
+          />
+
+          {isOpen.textColour && (
+            <div
+              ref={refs.textColour}
+              className="absolute z-50 mt-2 rounded-lg border border-gray-200 bg-white p-3 shadow-lg"
+            >
+              <HexColorPicker
+                color={textColour}
+                onChange={handleTextColourChange}
+              />
+              <input
+                type="text"
+                value={styles?.textColour ?? "#000000"}
+                onChange={(e) => handleTextColourChange(e.target.value)}
                 className="mt-2 w-full rounded border px-2 py-1 text-sm"
               />
             </div>

@@ -449,8 +449,10 @@ const builderSlice = createSlice({
         },
         styles: {
           lineType: "monotone",
-          strokeColour: "#000000",
-          strokeWidth: "1",
+          lineColour: "#000000",
+          axisColour: "#000000",
+          textColour: "#000000",
+          strokeWidth: "2",
           widthPct: "80%",
         },
       };
