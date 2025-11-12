@@ -42,9 +42,9 @@ export default function ChartEditor({ componentId }: { componentId: string }) {
 
   // Logic chart width
 
-  const width = styles?.widthPct;
-
-  console.log(width);
+  const handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(updateSelectedStyle({ key: "widthPct", value: e.target.value }));
+  };
 
   // Logic for Save and Delete
 
@@ -124,6 +124,20 @@ export default function ChartEditor({ componentId }: { componentId: string }) {
             Step
           </label>
         </div>
+      </div>
+      <div className="mb-4">
+        <label className="font-medium text-gray-700">
+          Size: {styles?.widthPct}%
+        </label>
+        <input
+          type="range"
+          min={40}
+          max={100}
+          step={10}
+          value={styles?.widthPct ?? 80}
+          onChange={handleSizeChange}
+          className="w-full accent-gray-700 cursor-pointer"
+        />
       </div>
       <div>
         <div className="relative inline-block">

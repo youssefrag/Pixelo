@@ -9,7 +9,7 @@ import {
 import { useCallback, useDebugValue, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { LineChart, Line, XAxis, YAxis } from "recharts";
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { CurveType } from "recharts/types/shape/Curve";
 
 export default function ChartDraft() {
@@ -78,29 +78,36 @@ export default function ChartDraft() {
 
   return (
     <>
-      <LineChart width={400} height={300} data={data}>
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Line
-          type={lineType as CurveType}
-          dataKey="value"
-          stroke={strokeColour}
-          strokeWidth={Number(strokeWidth)}
-          name="Values"
-          isAnimationActive={false}
-          dot={(dotProps) => {
-            const { key, ...rest } = dotProps;
-            return (
-              <CustomDot
-                key={key ?? rest.index}
-                {...rest}
-                editIdx={editIdx}
-                startEdit={startEdit}
-              />
-            );
-          }}
-        />
-      </LineChart>
+      <div
+        className="relative aspect-[2/1] rounded-xl bg-white/5"
+        style={{ width: `${styles?.widthPct}%` }}
+      >
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart width={400} height={300} data={data}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Line
+              type={lineType as CurveType}
+              dataKey="value"
+              stroke={strokeColour}
+              strokeWidth={Number(strokeWidth)}
+              name="Values"
+              isAnimationActive={false}
+              dot={(dotProps) => {
+                const { key, ...rest } = dotProps;
+                return (
+                  <CustomDot
+                    key={key ?? rest.index}
+                    {...rest}
+                    editIdx={editIdx}
+                    startEdit={startEdit}
+                  />
+                );
+              }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
 
       <div className="flex gap-2 items-end flex-wrap">
         <div>
