@@ -1,6 +1,7 @@
 import { isChartDraft } from "@/helpers/type-helpers";
 import { AppDispatch, RootState } from "@/store";
 import {
+  deleteComponent,
   saveComponentDraft,
   select,
   updateSelectedStyle,
@@ -39,6 +40,14 @@ export default function ChartEditor({ componentId }: { componentId: string }) {
     dispatch(updateSelectedStyle({ key: "strokeColour", value: newColor }));
   };
 
+  // Logic chart width
+
+  const width = styles?.widthPct;
+
+  console.log(width);
+
+  // Logic for Save and Delete
+
   const handleSaveChart = () => {
     if (!isChartDraft(ui.draft)) {
       return;
@@ -55,6 +64,10 @@ export default function ChartEditor({ componentId }: { componentId: string }) {
     );
 
     dispatch(select(ui.draft.targetParentId));
+  };
+
+  const handleDeleteChart = () => {
+    dispatch(deleteComponent({ id: componentId }));
   };
 
   return (
@@ -118,7 +131,6 @@ export default function ChartEditor({ componentId }: { componentId: string }) {
             Choose color
           </label>
 
-          {/* color swatch button */}
           <button
             type="button"
             className="h-8 w-8 rounded border border-gray-300 shadow-sm"
@@ -142,6 +154,29 @@ export default function ChartEditor({ componentId }: { componentId: string }) {
           )}
         </div>
       </div>
+      <div className="mt-4">
+        <h2>Line Width</h2>
+        <div>
+          <input
+            type="number"
+            min={1}
+            max={8}
+            step={1}
+            value={styles?.strokeWidth}
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              const clamped = Math.max(1, Math.min(8, value));
+              dispatch(
+                updateSelectedStyle({
+                  key: "strokeWidth",
+                  value: String(clamped),
+                })
+              );
+            }}
+            className="w-24 rounded border px-3 py-2 text-md font-semibold"
+          />
+        </div>
+      </div>
       <div className="mt-4 flex justify-around">
         <button
           onClick={handleSaveChart}
@@ -149,9 +184,9 @@ export default function ChartEditor({ componentId }: { componentId: string }) {
         >
           Save
         </button>
-        {/* <button onClick={handleDeleteheading} className="cursor-pointer">
+        <button onClick={handleDeleteChart} className="cursor-pointer">
           Delete
-        </button> */}
+        </button>
       </div>
     </>
   );

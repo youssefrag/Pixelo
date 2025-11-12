@@ -451,6 +451,7 @@ const builderSlice = createSlice({
           lineType: "monotone",
           strokeColour: "#000000",
           strokeWidth: "1",
+          widthPct: "80%",
         },
       };
 
@@ -489,6 +490,11 @@ const builderSlice = createSlice({
       }
 
       state.ui.draft.props.data.splice(action.payload.idx, 1);
+
+      if (state.ui.draft.props.data.length === 0) {
+        state.selectedId = state.ui.draft.targetParentId;
+        state.ui.draft = null;
+      }
     },
 
     selectEditChartItem(state, action: PayloadAction<{ idx: number | null }>) {

@@ -114,6 +114,7 @@ export default function ChartDraft() {
         <div>
           <label className="block text-sm">value</label>
           <input
+            type="number"
             className="border px-2 py-1"
             value={value}
             onChange={(e) =>

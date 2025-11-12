@@ -2,6 +2,7 @@ import { FONT_OPTIONS, FONT_WEIGHTS } from "@/helpers/constants";
 import { isListDraft } from "@/helpers/type-helpers";
 import type { RootState, AppDispatch } from "@/store";
 import {
+  deleteComponent,
   saveComponentDraft,
   select,
   updateSelectedStyle,
@@ -94,6 +95,10 @@ export default function ListEditor({ componentId }: { componentId: string }) {
 
     if (parentId === undefined) return;
     dispatch(select(parentId));
+  };
+
+  const handleDeleteList = () => {
+    dispatch(deleteComponent({ id: componentId }));
   };
 
   return (
@@ -242,10 +247,7 @@ export default function ListEditor({ componentId }: { componentId: string }) {
         >
           Save
         </button>
-        <button
-          // onClick={handleDeleteParagraph}
-          className="cursor-pointer"
-        >
+        <button onClick={handleDeleteList} className="cursor-pointer">
           Delete
         </button>
       </div>
