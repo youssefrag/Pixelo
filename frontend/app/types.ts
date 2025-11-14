@@ -92,11 +92,17 @@ export interface ChartDataPoint {
   value: string;
 }
 
+export type ImageDraft = DraftBase & {
+  kind: "image";
+  props: { url: string | null };
+};
+
 export type ComponentDraft =
   | TextDraft
   | TableDraft
   | ListDraft
   | ChartDraft
+  | ImageDraft
   | null;
 
 export type DraftState = ComponentDraft;

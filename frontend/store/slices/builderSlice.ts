@@ -505,6 +505,27 @@ const builderSlice = createSlice({
       state.ui.draft.props.editIdx = action.payload.idx;
     },
 
+    startImageDraft(state, action: PayloadAction<{ parentId: string | null }>) {
+      commitCurrentDraft(state);
+      const { parentId } = action.payload;
+      const id = nanoid();
+
+      state.ui.leftBar = { tab: "layout" };
+
+      state.ui.draft = {
+        id,
+        type: "component",
+        kind: "image",
+        targetParentId: parentId,
+        props: { url: null },
+        styles: {
+          widthPct: "80%",
+          opacity: "0",
+          borderRadius: "0",
+        },
+      };
+    },
+
     updateSelectedStyle(
       state,
       action: PayloadAction<{ key: string; value: string }>
@@ -749,6 +770,7 @@ export const {
   addToChartData,
   editChartData,
   selectEditChartItem,
+  startImageDraft,
   removeChartData,
   updateSelectedStyle,
   saveComponentDraft,

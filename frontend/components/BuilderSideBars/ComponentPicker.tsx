@@ -10,6 +10,7 @@ import {
   startTableDraft,
   startListDraft,
   startChartDraft,
+  startImageDraft,
 } from "@/store/slices/builderSlice";
 
 import HIcon from "@/public/assets/heading-01.svg";
@@ -48,6 +49,10 @@ export default function ComponentPicker() {
 
   const handleChartDraft = () => {
     dispatch(startChartDraft({ parentId }));
+  };
+
+  const handleImageDraft = () => {
+    dispatch(startImageDraft({ parentId }));
   };
 
   return (
@@ -112,7 +117,10 @@ export default function ComponentPicker() {
       <div className="my-3 font-[600] text-[16px] mt-5">Media</div>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <div className="h-[86px] w-[109px] bg-gray-200 flex justify-center items-center rounded-2xl cursor-pointer">
+          <div
+            onClick={handleImageDraft}
+            className="h-[86px] w-[109px] bg-gray-200 flex justify-center items-center rounded-2xl cursor-pointer"
+          >
             <ImageIcon className="w-6 h-6 text-black" />
           </div>
           <div className="mt-1 text-[14px]">Image</div>

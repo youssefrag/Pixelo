@@ -2,6 +2,7 @@ import {
   ChartDraft,
   ComponentDraft,
   ComponentKind,
+  ImageDraft,
   ListDraft,
   TableDraft,
   TextDraft,
@@ -24,6 +25,10 @@ export const isListDraft = (draft: ComponentDraft): draft is ListDraft => {
 
 export const isChartDraft = (draft: ComponentDraft): draft is ChartDraft => {
   return !!draft && draft.kind === "chart";
+};
+
+export const isImageDraft = (draft: ComponentDraft): draft is ImageDraft => {
+  return !!draft && draft.kind === "image";
 };
 
 export const deepClone = <T>(x: T): T => JSON.parse(JSON.stringify(x));

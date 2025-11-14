@@ -19,6 +19,7 @@ import TableDraft from "./TableDraft";
 import ListDraft from "./ListDraft";
 import RenderList from "../RenderComponents/RenderList";
 import ChartDraft from "./ChartDraft";
+import ImageDraft from "./ImageDraft";
 
 export default function SectionRender({ sectionId }: { sectionId: string }) {
   const { nodes, ui } = useSelector((state: RootState) => state.builderSlice);
@@ -146,6 +147,12 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
     !nodes[draft.id] &&
     draft.targetParentId === sectionId;
 
+  const shouldAppendImageDraft =
+    !!draft &&
+    draft.kind === "image" &&
+    !nodes[draft.id] &&
+    draft.targetParentId === sectionId;
+
   return (
     <>
       {renderedChildren}
@@ -158,6 +165,7 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
       {shouldAppendTableDraft && <TableDraft key={`draft-${sectionId}`} />}
       {shouldAppendListDraft && <ListDraft key={`draft-${sectionId}`} />}
       {shouldAppendChartDraft && <ChartDraft key={`draft-${sectionId}`} />}
+      {shouldAppendImageDraft && <ImageDraft key={`draft-${sectionId}`} />}
     </>
   );
 }
