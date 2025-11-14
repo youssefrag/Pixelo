@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAaGI5D2lvRSBzO_3JcM8xMZFhXDHPMeqI",
-  authDomain: "pixelo-aadfb.firebaseapp.com",
-  projectId: "pixelo-aadfb",
-  storageBucket: "pixelo-aadfb.firebasestorage.app",
-  messagingSenderId: "769804491438",
-  appId: "1:769804491438:web:8ad4bcc710cfa9b0c06b3f",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
