@@ -81,10 +81,16 @@ export default function ChartDraft() {
     dispatch(removeChartData({ idx: i }));
   };
 
-  const { lineType, lineColour, strokeWidth, axisColour, textColour } =
-    draft.styles;
+  const {
+    lineType,
+    lineColour,
+    strokeWidth,
+    axisColour,
+    textColour,
+    widthPct,
+  } = draft.styles;
 
-  const rawWidth = Number(styles?.widthPct);
+  const rawWidth = Number(widthPct);
   const safeWidth = Number.isFinite(rawWidth) ? rawWidth : 80;
 
   return (
@@ -100,13 +106,13 @@ export default function ChartDraft() {
               tick={{ fill: textColour, fontSize: 15, fontWeight: 700 }}
               axisLine={{ stroke: axisColour, strokeWidth: 4 }}
               tickLine={{ stroke: axisColour, strokeWidth: 4 }}
-              padding={{ left: 20, right: 20 }}
+              padding={{ right: 20 }}
             />
             <YAxis
               tick={{ fill: textColour, fontSize: 15, fontWeight: 700 }}
               axisLine={{ stroke: axisColour, strokeWidth: 4 }}
               tickLine={{ stroke: axisColour, strokeWidth: 4 }}
-              padding={{ top: 20, bottom: 20 }}
+              padding={{ top: 20 }}
             />
             <Line
               type={lineType as CurveType}

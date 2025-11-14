@@ -12,7 +12,17 @@ export default function RenderChart({ chart }: { chart: ChartComponentNode }) {
 
   const data = chart.props.data as ChartDataPoint[];
 
-  const { lineType, strokeColour, strokeWidth, widthPct } = chart.styles;
+  const {
+    lineType,
+    lineColour,
+    strokeWidth,
+    axisColour,
+    textColour,
+    widthPct,
+  } = chart.styles;
+
+  const rawWidth = Number(widthPct);
+  const safeWidth = Number.isFinite(rawWidth) ? rawWidth : 80;
 
   return (
     <>
@@ -29,12 +39,23 @@ export default function RenderChart({ chart }: { chart: ChartComponentNode }) {
               dispatch(editComponent({ id: chart.id }));
             }}
           >
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis
+              dataKey="name"
+              tick={{ fill: textColour, fontSize: 15, fontWeight: 700 }}
+              axisLine={{ stroke: axisColour, strokeWidth: 4 }}
+              tickLine={{ stroke: axisColour, strokeWidth: 4 }}
+              padding={{ right: 20 }}
+            />
+            <YAxis
+              tick={{ fill: textColour, fontSize: 15, fontWeight: 700 }}
+              axisLine={{ stroke: axisColour, strokeWidth: 4 }}
+              tickLine={{ stroke: axisColour, strokeWidth: 4 }}
+              padding={{ top: 20 }}
+            />
             <Line
               type={lineType as CurveType}
               dataKey="value"
-              stroke={strokeColour}
+              stroke={lineColour}
               strokeWidth={Number(strokeWidth)}
               name="Values"
             />
