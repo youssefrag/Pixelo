@@ -7,6 +7,7 @@ import ParagraphEditor from "./ParagraphEditor";
 import TableEditor from "./TableEditor";
 import ListEditor from "./ListEditor";
 import ChartEditor from "./ChartEditor";
+import ImageEditor from "./ImageEditor";
 
 export default function ComponentEditor() {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +19,7 @@ export default function ComponentEditor() {
 
   const draft = ui.draft && ui.draft.id === selectedId ? ui.draft : null;
   const node = nodes[selectedId];
+  console.log({ ui, draft, node });
 
   const kind =
     draft?.kind ?? (node && node.type === "component" ? node.kind : undefined);
@@ -33,6 +35,8 @@ export default function ComponentEditor() {
       return <ListEditor componentId={selectedId} />;
     case "chart":
       return <ChartEditor componentId={selectedId} />;
+    case "image":
+      return <ImageEditor componentId={selectedId} />;
     default:
       return null;
   }

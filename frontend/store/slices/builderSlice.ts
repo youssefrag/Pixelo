@@ -520,11 +520,12 @@ const builderSlice = createSlice({
         targetParentId: parentId,
         props: { url: null },
         styles: {
-          widthPct: "80%",
+          widthPct: "50",
           opacity: "0",
           borderRadius: "0",
         },
       };
+      state.selectedId = id;
     },
 
     uploadImage(state, action: PayloadAction<{ url: string }>) {

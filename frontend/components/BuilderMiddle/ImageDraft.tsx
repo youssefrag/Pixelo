@@ -67,7 +67,11 @@ export default function ImageDraft() {
     noKeyboard: true,
   });
 
-  console.log(draft);
+  const { styles } = draft;
+
+  console.log(styles);
+
+  const { widthPct, opacity, borderRadius } = styles;
 
   return (
     <div className="space-y-4">
@@ -127,7 +131,10 @@ export default function ImageDraft() {
 
       {/* Preview once src is set */}
       {url && (
-        <div className="rounded-xl overflow-hidden bg-black/20">
+        <div
+          className="rounded-xl overflow-hidden bg-black/20"
+          style={{ width: `${widthPct}%` }}
+        >
           <img src={url} alt="" className="block w-full h-auto" />
         </div>
       )}
