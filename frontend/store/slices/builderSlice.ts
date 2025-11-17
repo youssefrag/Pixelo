@@ -16,6 +16,7 @@ import {
   isTableDraft,
   isListDraft,
   isChartDraft,
+  isImageDraft,
 } from "@/helpers/type-helpers";
 import { Interface } from "readline";
 
@@ -526,6 +527,12 @@ const builderSlice = createSlice({
       };
     },
 
+    uploadImage(state, action: PayloadAction<{ url: string }>) {
+      if (!isImageDraft(state.ui.draft)) return;
+
+      state.ui.draft.props.url = action.payload.url;
+    },
+
     updateSelectedStyle(
       state,
       action: PayloadAction<{ key: string; value: string }>
@@ -770,8 +777,9 @@ export const {
   addToChartData,
   editChartData,
   selectEditChartItem,
-  startImageDraft,
   removeChartData,
+  startImageDraft,
+  uploadImage,
   updateSelectedStyle,
   saveComponentDraft,
   editComponent,
