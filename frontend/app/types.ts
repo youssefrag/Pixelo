@@ -37,6 +37,8 @@ export type ListComponentNode = ComponentNode & { kind: "list" };
 
 export type ChartComponentNode = ComponentNode & { kind: "chart" };
 
+export type ImageComponentNode = ComponentNode & { kind: "image" };
+
 export type BuilderNode = SectionNode | ComponentNode;
 
 export type BuilderState = {

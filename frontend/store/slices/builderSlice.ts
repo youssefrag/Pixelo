@@ -62,6 +62,8 @@ function commitCurrentDraft(state: BuilderState) {
     nextProps = { items: draft.props.items };
   } else if (isChartDraft(draft)) {
     nextProps = { data: draft.props.data, editIdx: draft.props.editIdx };
+  } else if (isImageDraft(draft)) {
+    nextProps = { url: draft.props.url };
   } else {
     state.ui.draft = null;
     return;
@@ -712,6 +714,22 @@ const builderSlice = createSlice({
             targetParentId: node.parentId,
             styles: { ...node.styles },
             props: { data: data, editIdx: props.editIdx ?? null },
+          };
+          break;
+        }
+
+        case "image": {
+          const props = (node.props as { url?: string | null }) || {};
+
+          state.ui.draft = {
+            id: node.id,
+            type: "component",
+            kind: "image",
+            targetParentId: node.parentId,
+            styles: { ...node.styles },
+            props: {
+              url: props.url ?? null,
+            },
           };
           break;
         }

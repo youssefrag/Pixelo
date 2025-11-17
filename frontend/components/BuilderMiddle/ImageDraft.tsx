@@ -75,7 +75,6 @@ export default function ImageDraft() {
 
   return (
     <div className="space-y-4">
-      <h1>IMAGE DRAFT</h1>
       {/* Drag & Drop area */}
       <div
         {...getRootProps()}
@@ -106,7 +105,6 @@ export default function ImageDraft() {
           {!url && <div>Upload Image</div>}
           {url && <div>Replace Image</div>}
         </button>
-        {/* Upload progress */}
         {uploading && (
           <div className="w-full max-w-xs">
             <div className="h-2 rounded-full bg-blue-900 overflow-hidden">
@@ -121,7 +119,6 @@ export default function ImageDraft() {
           </div>
         )}
 
-        {/* Errors */}
         {(error || localError) && (
           <p className="mt-2 text-xs text-red-400 text-center">
             {localError ?? error}
@@ -129,7 +126,6 @@ export default function ImageDraft() {
         )}
       </div>
 
-      {/* Preview once src is set */}
       {url && (
         <div
           className="rounded-xl overflow-hidden bg-black/20"

@@ -7,6 +7,7 @@ import RenderHeading from "../RenderComponents/RenderHeading";
 import RenderParagraph from "../RenderComponents/RenderParagraph";
 import RenderTable from "../RenderComponents/RenderTable";
 import RenderChart from "../RenderComponents/RenderChart";
+import RenderImage from "../RenderComponents/RenderImage";
 import {
   BuilderNode,
   ChartComponentNode,
@@ -14,6 +15,7 @@ import {
   ListComponentNode,
   ParagraphComponentNode,
   TableComponentNode,
+  ImageComponentNode,
 } from "@/app/types";
 import TableDraft from "./TableDraft";
 import ListDraft from "./ListDraft";
@@ -98,12 +100,23 @@ export default function SectionRender({ sectionId }: { sectionId: string }) {
             draft.targetParentId === sectionId &&
             draft.kind === "chart";
 
-          console.log({ isEditingThis });
-
           if (isEditingThis) return <ChartDraft key={child.id} />;
 
           return (
             <RenderChart key={child.id} chart={child as ChartComponentNode} />
+          );
+        }
+        case "image": {
+          const isEditingThis =
+            !!draft &&
+            draft.id === child.id &&
+            draft.targetParentId === sectionId &&
+            draft.kind === "image";
+
+          if (isEditingThis) return <ImageDraft key={child.id} />;
+
+          return (
+            <RenderImage key={child.id} image={child as ImageComponentNode} />
           );
         }
 

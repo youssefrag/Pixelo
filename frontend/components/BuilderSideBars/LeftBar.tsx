@@ -33,7 +33,18 @@ export default function LeftBar() {
 
   if (ui.leftBar.tab === "layout") {
     return (
-      <div className="w-[260px] border-r border-[#E9EAEB] p-4">
+      // <aside className="w-[260px] border-r border-[#E9EAEB] p-4">
+      <aside
+        className="
+        w-[260px]
+        border-r border-[#E9EAEB]
+        sticky
+        top-[66px]
+        h-[calc(100vh-66px)]
+        overflow-y-auto
+        p-4
+      "
+      >
         {!rootOrder.length ? (
           <div className="text-[#6D6D6D] font-[600] mb-[15px]">
             No sections added yet!
@@ -49,7 +60,7 @@ export default function LeftBar() {
             + Add Section
           </button>
         </div>
-      </div>
+      </aside>
     );
   } else {
     return <ComponentPicker />;

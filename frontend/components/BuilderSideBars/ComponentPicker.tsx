@@ -56,7 +56,18 @@ export default function ComponentPicker() {
   };
 
   return (
-    <div className="w-[260px] border-r border-[#E9EAEB] p-4">
+    // <aside className="w-[260px] border-r border-[#E9EAEB] p-4">
+    <aside
+      className="
+        w-[260px]
+        border-r border-[#E9EAEB]
+        sticky
+        top-[66px]
+        h-[calc(100vh-66px)]
+        overflow-y-auto
+        p-4
+      "
+    >
       <div className="flex items-center gap-4 border-b border-b-[#E9EAEB] pb-3">
         <FontAwesomeIcon
           onClick={handleBackToLayout}
@@ -132,6 +143,6 @@ export default function ComponentPicker() {
           <div className="mt-1 text-[14px]">Video</div>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
