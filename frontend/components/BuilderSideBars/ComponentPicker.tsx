@@ -56,7 +56,6 @@ export default function ComponentPicker() {
   };
 
   return (
-    // <aside className="w-[260px] border-r border-[#E9EAEB] p-4">
     <aside
       className="
         w-[260px]
@@ -124,9 +123,6 @@ export default function ComponentPicker() {
           </div>
           <div className="mt-1 text-[14px]">Chart</div>
         </div>
-      </div>
-      <div className="my-3 font-[600] text-[16px] mt-5">Media</div>
-      <div className="grid grid-cols-2 gap-4">
         <div>
           <div
             onClick={handleImageDraft}
@@ -135,12 +131,6 @@ export default function ComponentPicker() {
             <ImageIcon className="w-6 h-6 text-black" />
           </div>
           <div className="mt-1 text-[14px]">Image</div>
-        </div>
-        <div>
-          <div className="h-[86px] w-[109px] bg-gray-200 flex justify-center items-center rounded-2xl cursor-pointer">
-            <VideoIcon className="w-6 h-6 text-black" />
-          </div>
-          <div className="mt-1 text-[14px]">Video</div>
         </div>
       </div>
     </aside>

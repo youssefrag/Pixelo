@@ -1,5 +1,11 @@
+import { isImageDraft } from "@/helpers/type-helpers";
 import { AppDispatch, RootState } from "@/store";
-import { updateSelectedStyle } from "@/store/slices/builderSlice";
+import {
+  deleteComponent,
+  saveComponentDraft,
+  select,
+  updateSelectedStyle,
+} from "@/store/slices/builderSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function ImageEditor({ componentId }: { componentId: string }) {
@@ -25,7 +31,24 @@ export default function ImageEditor({ componentId }: { componentId: string }) {
     dispatch(updateSelectedStyle({ key: "brightness", value: e.target.value }));
   };
 
-  console.log(styles?.borderRadius);
+  const handleSaveImage = () => {
+    if (!isImageDraft(ui.draft)) return;
+
+    dispatch(
+      saveComponentDraft({
+        id: componentId,
+        kind: "image",
+        parentId: parentId ?? "",
+        styles: styles ?? {},
+        props: { ...ui.draft.props },
+      })
+    );
+    dispatch(select(ui.draft.targetParentId));
+  };
+
+  const handleDeleteImage = () => {
+    dispatch(deleteComponent({ id: componentId }));
+  };
 
   return (
     <>
@@ -70,6 +93,17 @@ export default function ImageEditor({ componentId }: { componentId: string }) {
           onChange={handleBrightnessChange}
           className="w-full accent-gray-700 cursor-pointer"
         />
+      </div>
+      <div className="mt-4 flex justify-around">
+        <button
+          onClick={handleSaveImage}
+          className="bg-[#FF7A00] px-6 py-3 rounded-md text-white cursor-pointer"
+        >
+          Save
+        </button>
+        <button onClick={handleDeleteImage} className="cursor-pointer">
+          Delete
+        </button>
       </div>
     </>
   );

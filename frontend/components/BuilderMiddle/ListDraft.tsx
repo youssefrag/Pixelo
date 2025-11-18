@@ -11,7 +11,7 @@ import {
 } from "@/store/slices/builderSlice";
 import { isListDraft } from "@/helpers/type-helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useRef } from "react";
 import { weightMap } from "@/helpers/constants";
 import AutoWidthInput from "../HelperComponents/AutoWidthInput";
@@ -154,10 +154,8 @@ function EditItemInput({ listId, index }: { listId: string; index: number }) {
         onKeyDown={handleKeyDown}
       />
       <FontAwesomeIcon
-        icon={faEdit}
-        onClick={() => {
-          dispatch(selectEditListItem({ itemIdx: index }));
-        }}
+        icon={faSave}
+        onClick={save}
         className="cursor-pointer text-black"
       />
     </div>

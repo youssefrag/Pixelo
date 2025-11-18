@@ -12,7 +12,7 @@ export default function RenderImage({ image }: { image: ImageComponentNode }) {
 
   const { styles } = image;
 
-  const { widthPct, opacity, borderRadius } = styles;
+  const { widthPct, brightness, borderRadius } = styles;
 
   return (
     <div>
@@ -20,7 +20,11 @@ export default function RenderImage({ image }: { image: ImageComponentNode }) {
         <div
           onClick={() => dispatch(editComponent({ id: image.id }))}
           className="rounded-xl overflow-hidden bg-black/20 cursor-pointer"
-          style={{ width: `${widthPct}%` }}
+          style={{
+            width: `${widthPct}%`,
+            borderRadius: `${borderRadius}%`,
+            filter: `brightness(${brightness}%)`,
+          }}
         >
           <img src={url} alt="" className="block w-full h-auto" />
         </div>

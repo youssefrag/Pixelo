@@ -49,6 +49,7 @@ function commitCurrentDraft(state: BuilderState) {
 
   let nextProps: Record<string, unknown>;
   if (isTextDraft(draft)) {
+    if (!draft.props.text) return;
     nextProps = {
       text: typeof draft.props.text === "string" ? draft.props.text : "",
     };
@@ -63,6 +64,7 @@ function commitCurrentDraft(state: BuilderState) {
   } else if (isChartDraft(draft)) {
     nextProps = { data: draft.props.data, editIdx: draft.props.editIdx };
   } else if (isImageDraft(draft)) {
+    if (!draft.props.url) return;
     nextProps = { url: draft.props.url };
   } else {
     state.ui.draft = null;

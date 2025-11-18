@@ -17,8 +17,7 @@ export type ComponentKind =
   | "list"
   | "table"
   | "chart"
-  | "image"
-  | "video";
+  | "image";
 
 export type ComponentNode = BaseNode & {
   type: "component";
