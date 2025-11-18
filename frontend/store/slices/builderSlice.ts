@@ -523,7 +523,7 @@ const builderSlice = createSlice({
         props: { url: null },
         styles: {
           widthPct: "50",
-          opacity: "0",
+          brightness: "100",
           borderRadius: "0",
         },
       };

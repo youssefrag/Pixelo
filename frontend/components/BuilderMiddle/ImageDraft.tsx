@@ -71,7 +71,7 @@ export default function ImageDraft() {
 
   console.log(styles);
 
-  const { widthPct, opacity, borderRadius } = styles;
+  const { widthPct, brightness, borderRadius } = styles;
 
   return (
     <div className="space-y-4">
@@ -128,8 +128,12 @@ export default function ImageDraft() {
 
       {url && (
         <div
-          className="rounded-xl overflow-hidden bg-black/20"
-          style={{ width: `${widthPct}%` }}
+          className="overflow-hidden bg-black/20"
+          style={{
+            width: `${widthPct}%`,
+            borderRadius: `${borderRadius}%`,
+            filter: `brightness(${brightness}%)`,
+          }}
         >
           <img src={url} alt="" className="block w-full h-auto" />
         </div>
